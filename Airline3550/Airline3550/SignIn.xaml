@@ -1,0 +1,26 @@
+﻿<Page x:Class="Airline3550.SignIn"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Airline3550"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Height="23" Margin="340,28,0,0" TextWrapping="Wrap" Text="Welcome to Air3550!" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Margin="100,208,0,0" TextWrapping="Wrap" Text="ID:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="56" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Margin="100,233,0,0" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="56" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <TextBox Name ="Password" HorizontalAlignment="Left" Height="23" Margin="161,233,0,0" TextWrapping="Wrap" Text="Enter Password Here" TextAlignment="Center" VerticalAlignment="Top" Width="544" GotMouseCapture="Password_Enter"/>
+        <TextBox Name ="ID" HorizontalAlignment="Left" Height="23" Margin="161,208,0,0" TextWrapping="Wrap" Text="Enter ID Here" TextAlignment="Center" VerticalAlignment="Top" Width="544" GotMouseCapture="ID_Enter"/>
+        <Button Content="Submit" HorizontalAlignment="Left" Margin= "365,300,0,0" VerticalAlignment="Top" Width="70" Click="Submit_Click"/>
+        <Button Content="Create Account" HorizontalAlignment="Left" Margin="300,330,0,0" VerticalAlignment="Top" Width="100" Click="Create_Click"/>
+        <Button Content="Forgot Password" HorizontalAlignment="Left" Margin="400,330,0,0" VerticalAlignment="Top" Width="100" Click="Forgot_Click"/>
+
+    </Grid>
+</Page>
