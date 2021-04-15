@@ -113,11 +113,18 @@ namespace Air3550
         public bool isTime(string input)
         { //function to check if an input is a time
 
-            if ((input.Length > 3 && input.Length < 6) && ((Char.IsDigit(input[0]) && input[1] == ':' &&
+            if ((input.Length > 5 && input.Length < 9) && ((Char.IsDigit(input[0]) && input[1] == ':' &&
                 Char.IsDigit(input[2]) && Char.IsDigit(input[3])) || (Char.IsDigit(input[0]) && Char.IsDigit(input[1])
                 && input[2] == ':' && Char.IsDigit(input[3]) && Char.IsDigit(input[4]))))
             { //check that the input is a time
-                return true;
+                if (input.Substring(input.Length - 2) == "PM" || input.Substring(input.Length - 2) == "AM")
+                { //check that AM or PM is at the back
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             return false;
         }

@@ -57,7 +57,7 @@ namespace Air3550
         }
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
-            MainMenuLoadEngineer mainMenu = new MainMenuLoadEngineer(identification); //create a new main menu and go to it
+            MainMenuFlightManager mainMenu = new MainMenuFlightManager(identification); //create a new main menu and go to it
             this.NavigationService.Navigate(mainMenu);
         }
         private void Print(object sender, RoutedEventArgs e)

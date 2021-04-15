@@ -45,7 +45,7 @@ namespace Air3550
         }
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
-            MainMenuFlightManager mainMenu = new MainMenuFlightManager(userID); //create a new main menu and go to it
+            MainMenuFlightManager mainMenu = new MainMenuFlightManager(Identification); //create a new main menu and go to it
             this.NavigationService.Navigate(mainMenu);
         }
 

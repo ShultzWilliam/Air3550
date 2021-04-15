@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Release\
+C:\Users\Nathan Burns\Source\Repos\Air3550\Airline3550\obj\Release\
 Air3550
 none
 false
 TRACE
-C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\App.xaml
-26-1681107900
+C:\Users\Nathan Burns\Source\Repos\Air3550\Airline3550\App.xaml
+30404983203
 
-31907720933
+35-1146557748
 13-1505183044
-AirlineHistory.xaml;Airport.xaml;AirportFlight.xaml;BookFlight.xaml;CreateAccount.xaml;CreateFlight.xaml;Dictionary1.xaml;EditFlight.xaml;EditFlightSearch.xaml;FlightDetails.xaml;FlightHistory.xaml;Flights.xaml;ForgotPassword.xaml;MainMenuAccountant.xaml;MainMenuCustomer.xaml;MainMenuLoadEngineer.xaml;MainMenuMarketingManager.xaml;MainWindow.xaml;MyFlights.xaml;OldFlight.xaml;Profile.xaml;ResetPassword.xaml;SchedulePlane.xaml;SearchFlight.xaml;SearchPlane.xaml;SignIn.xaml;
+AirlineHistory.xaml;Airport.xaml;AirportFlight.xaml;BookFlight.xaml;CreateAccount.xaml;CreateFlight.xaml;Dictionary1.xaml;EditFlight.xaml;EditFlightSearch.xaml;FlightDetails.xaml;FlightHistory.xaml;FlightLog.xaml;FlightManifest.xaml;Flights.xaml;ForgotPassword.xaml;MainMenuAccountant.xaml;MainMenuCustomer.xaml;MainMenuFlightManager.xaml;MainMenuLoadEngineer.xaml;MainMenuMarketingManager.xaml;MainWindow.xaml;MyFlights.xaml;OldFlight.xaml;Profile.xaml;ResetPassword.xaml;SchedulePlane.xaml;SearchFlight.xaml;SearchPlane.xaml;SignIn.xaml;UserRecord.xaml;
 
 True
 

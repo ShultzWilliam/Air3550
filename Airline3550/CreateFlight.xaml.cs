@@ -64,7 +64,55 @@ namespace Air3550
         }
         private void Calculate_Click(object sender, RoutedEventArgs e)
         { //to calculate the price of the flight
-            Price.Text = "95";
+            Functions functions = new Functions();
+            if (!(functions.isTime(Arrival_Time.Text) && functions.isTime(Departure_Time.Text)))
+            {
+                Warning.Text = "Incorrect time input";
+            }
+            else
+            {
+                double price = 50; //set the base price
+                //calculate the total price (12 cents per mile)
+                //if a flight is a two leg, add $8
+
+                int arrival, departure; //save values to get the aspects of the time and price 
+                string arrivalHour, arrivalMinute, departureHour, departureMinute;
+                double arrivalTime, departureTime;
+                arrival = Arrival_Time.Text.IndexOf(":"); //get the index of ":" in the arrival and departure times
+                departure = Departure_Time.Text.IndexOf(":");
+                arrivalHour = Arrival_Time.Text.Substring(0, arrival); //get the arrival and departure hours and times
+                arrivalMinute = Arrival_Time.Text.Substring(arrival + 1, 2);
+                departureHour = Departure_Time.Text.Substring(0, departure);
+                departureMinute = Departure_Time.Text.Substring(departure + 1, 2);
+                arrivalTime = Int32.Parse(arrivalHour) + ((double)Int32.Parse(arrivalMinute) / 60); //convert the time to an integer, with minutes as decimal
+                departureTime = Int32.Parse(departureHour) + ((double)Int32.Parse(departureMinute) / 60); //convert the time to an integer, with minutes as decimal
+                if (Arrival_Time.Text.Contains("PM"))
+                { //if it includes PM, add 12 to the time value
+                    arrivalTime = arrivalTime + 12;
+                }
+                else if (Arrival_Time.Text.Contains("AM") && arrivalHour == "12")
+                { //if it's 12 AM
+                    arrivalTime = arrivalTime - 12;
+                }
+                if (Departure_Time.Text.Contains("PM"))
+                { //if it includes PM, add 12 to the time value
+                    departureTime = departureTime + 12;
+                }
+                else if (Departure_Time.Text.Contains("AM") && departureHour == "12")
+                { //if it's 12 AM
+                    departureTime = departureTime - 12;
+                }
+                if (arrivalTime < 5.0 || departureTime < 5.0)
+                { //if they're arriving between midnight and 5AM, give them the 20% red eye discount
+                    price = price * 0.8;
+                }
+                else if (departureTime < 8.0 || arrivalTime > 19.0)
+                { //for the off peak discount
+                    price = price * 0.9;
+                }
+
+                Price.Text = price.ToString(); //display the price
+            }
         }
     }
 }
