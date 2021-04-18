@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Security.Cryptography;
 
 namespace Air3550
 {
@@ -32,6 +33,11 @@ namespace Air3550
             id = ID.Text; //set the strings
             password = Password.Text;
             string userType = password; //use the password to check each user type for now
+            byte[] passwordHash; //to save the password
+            using (SHA512 shaM = new SHA512Managed())
+            { //save the password as a SHA512 hash
+                passwordHash = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
+            }
             if (userType == "Customer")
             {
                 MainMenuCustomer mainMenu = new MainMenuCustomer(id); //create a new main menu and go to it

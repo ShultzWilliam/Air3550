@@ -51,7 +51,7 @@ namespace Air3550
         }
         private void Book_Click(object sender, RoutedEventArgs e)
         { //to book the flight
-            if(((bool)Credit.IsChecked == true && (bool)CreditCard.IsChecked == false && (bool)Points.IsChecked == false) ||
+            if (((bool)Credit.IsChecked == true && (bool)CreditCard.IsChecked == false && (bool)Points.IsChecked == false) ||
                 ((bool)Credit.IsChecked == false && (bool)CreditCard.IsChecked == true && (bool)Points.IsChecked == false) ||
                 ((bool)Credit.IsChecked == false && (bool)CreditCard.IsChecked == false && (bool)Points.IsChecked == true))
             { //check that only one check box is checked
@@ -62,7 +62,7 @@ namespace Air3550
             { //otherwise, display a warning
                 Warning.Text = "Cannot select more than one payment method";
             }
-            
+
         }
         private void Sign_Out(object sender, RoutedEventArgs e)
         { //to sign out

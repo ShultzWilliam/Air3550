@@ -15,11 +15,11 @@ namespace Air3550
 
             for (int i = 0; i < name.Length; i++)
             { //check that the name is two or three words and that no chars are digits
-                if(name[i] == ' ')
+                if (name[i] == ' ')
                 {
                     names++;
                 }
-                if (((i == 0) || (i > 0 && name[i-1] == ' ')) && (name[i] > 90 || name[i] < 65))
+                if (((i == 0) || (i > 0 && name[i - 1] == ' ')) && (name[i] > 90 || name[i] < 65))
                 { //if the beginning of the name isn't capitalized
                     return "name formatting wrong";
                 }
@@ -36,7 +36,7 @@ namespace Air3550
 
             //check the address and email
 
-            for(int i = 0; i < city.Length; i++)
+            for (int i = 0; i < city.Length; i++)
             { //check that the city contains the correct characters
                 if (!((city[i] > 64 && city[i] < 91) || (city[i] > 96 && city[i] < 123) || city[i] == ' '))
                 {
@@ -62,7 +62,7 @@ namespace Air3550
             var pattern2 = @"\(?<AreaCode>\d{3}(?:-|\s*)?<Number>\d{3}(?:-|\s*)\d{4})";
             var regexp2 = new System.Text.RegularExpressions.Regex(pattern2);
 
-            if(!(regexp1.IsMatch(phone) || regexp2.IsMatch(phone)))
+            if (!(regexp1.IsMatch(phone) || regexp2.IsMatch(phone)))
             { //if wrong format for the phone number
                 return "Phone Wrong";
             }
@@ -130,5 +130,5 @@ namespace Air3550
         }
     }
 
-    
+
 }

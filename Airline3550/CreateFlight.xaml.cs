@@ -60,7 +60,7 @@ namespace Air3550
             { //if the time input is incorrect
                 Warning.Text = "Incorrect time input";
             }
-            
+
         }
         private void Calculate_Click(object sender, RoutedEventArgs e)
         { //to calculate the price of the flight
