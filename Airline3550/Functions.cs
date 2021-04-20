@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Air3550
 {
@@ -127,6 +128,58 @@ namespace Air3550
                 }
             }
             return false;
+        }
+
+        public Excel.Workbook database_connect()
+        { //easy way to connect to a database so that, when a user needs to change the file path, they only do so in one location
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\Air3550Excel.xlsx");
+            return xlWorkbook;
+        }
+        public int getIDColumn(string ID)
+        { //get the ID column
+            //connect to the excel database
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\Air3550Excel.xlsx");
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = xlRange.Rows.Count;
+            int colCount = xlRange.Columns.Count;
+            int IDcolumn = 0; //initialize the ID column
+
+            for (int i = 1; i <= rowCount; i++)
+            { //get the column of the ID
+                if (xlRange.Cells[i, 1].Value2.ToString() == ID)
+                { //if we found the ID, set the column
+                    IDcolumn = i;
+                }
+            }
+            return IDcolumn; //return the ID column
+        }
+
+        public string getUserType(int IDcolumn)
+        { //get the user type
+            //connect to the database
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = xlRange.Rows.Count;
+            int colCount = xlRange.Columns.Count;
+            string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
+            return userType; //return the user type
+        }
+        public string getName(int IDcolumn)
+        { //get the user's name
+            //connect to the database
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = xlRange.Rows.Count;
+            int colCount = xlRange.Columns.Count;
+            string name = xlRange.Cells[IDcolumn, 3].Value2.ToString(); //get the user's name from the database
+            return name; //return the name
         }
     }
 

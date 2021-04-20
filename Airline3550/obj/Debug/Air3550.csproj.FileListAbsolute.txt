@@ -142,3 +142,4 @@ C:\Users\twild\Desktop\Air3550\Air3550\Airline3550\obj\Debug\Air3550.csproj.Gene
 C:\Users\twild\Desktop\Air3550\Air3550\Airline3550\obj\Debug\Air3550.csproj.CoreCompileInputs.cache
 C:\Users\twild\Desktop\Air3550\Air3550\Airline3550\obj\Debug\Air3550.exe
 C:\Users\twild\Desktop\Air3550\Air3550\Airline3550\obj\Debug\Air3550.pdb
+C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\Air3550.csproj.ResolveComReference.cache
