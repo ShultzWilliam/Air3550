@@ -61,7 +61,7 @@ namespace Air3550
             //string checker;
             
             //define the excel variables
-            Excel.Application xlApp = new Excel.Application();
+            //Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
             Excel.Range xlRange = xlWorksheet.UsedRange;
@@ -119,14 +119,7 @@ namespace Air3550
                 }
             }
 
-            /*
-            var query =
-            from product in dataEntities.Products
-            where product.Color == "Red"
-            orderby product.ListPrice
-            select new { product.Name, product.Color, CategoryName = product.ProductCategory.Name, product.ListPrice };
-            Flights.ItemsSource = query.ToList();
-            */
+            xlWorkbook.Close();
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //Go back to the main menu

@@ -139,8 +139,8 @@ namespace Air3550
         public int getIDColumn(string ID)
         { //get the ID column
             //connect to the excel database
-            Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\Air3550Excel.xlsx");
+            //Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
             int rowCount = xlRange.Rows.Count;
@@ -154,31 +154,34 @@ namespace Air3550
                     IDcolumn = i;
                 }
             }
+            xlWorkbook.Close();
             return IDcolumn; //return the ID column
         }
 
         public string getUserType(int IDcolumn)
         { //get the user type
             //connect to the database
-            Excel.Application xlApp = new Excel.Application();
+            //Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
             int rowCount = xlRange.Rows.Count;
             int colCount = xlRange.Columns.Count;
             string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
+            xlWorkbook.Close();
             return userType; //return the user type
         }
         public string getName(int IDcolumn)
         { //get the user's name
             //connect to the database
-            Excel.Application xlApp = new Excel.Application();
+            //Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
             int rowCount = xlRange.Rows.Count;
             int colCount = xlRange.Columns.Count;
             string name = xlRange.Cells[IDcolumn, 3].Value2.ToString(); //get the user's name from the database
+            xlWorkbook.Close();
             return name; //return the name
         }
 
@@ -249,7 +252,7 @@ namespace Air3550
         { //check if a flight is completely booked
             bool full = true; //value to say if we're full or not
             //define the excel variables
-            Excel.Application xlApp = new Excel.Application();
+            //Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
             Excel.Range xlRange = xlWorksheet.UsedRange;
@@ -265,6 +268,7 @@ namespace Air3550
                     }
                 }
             }
+            xlWorkbook.Close();
             return full;
         }
     }

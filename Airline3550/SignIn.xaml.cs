@@ -34,7 +34,7 @@ namespace Air3550
             Functions functions = new Functions();
 
             //define the excel variables
-            Excel.Application xlApp = new Excel.Application();
+            //Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
@@ -101,6 +101,7 @@ namespace Air3550
             {
                 Warning.Text = "ID not found ";
             }
+            xlWorkbook.Close();
 
         }
 
