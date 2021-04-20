@@ -33,12 +33,12 @@
             <ComboBoxItem Content="Queens, New York"></ComboBoxItem>
             <ComboBoxItem Content="Billings, Montana"></ComboBoxItem>
             <ComboBoxItem Content="Los Angeles, California"></ComboBoxItem>
-            <ComboBoxItem Content="Ketchikan, Arkansas"></ComboBoxItem>
+            <ComboBoxItem Content="Ketchikan, Alaska"></ComboBoxItem>
             <ComboBoxItem Content="Hilo, Hawaii"></ComboBoxItem>
             <ComboBoxItem Content="Salt Lake City, Utah"></ComboBoxItem>
             <ComboBoxItem Content="San Diego, California"></ComboBoxItem>
             <ComboBoxItem Content="Abuquerque, New Mexico"></ComboBoxItem>
-            <ComboBoxItem Content="Burningham, Alaska"></ComboBoxItem>
+            <ComboBoxItem Content="Birmingham, Alabama"></ComboBoxItem>
             <ComboBoxItem Content="Kansas City, Missouri"></ComboBoxItem>
         </ComboBox>
         <ComboBox Name ="End" HorizontalAlignment="Left" Height="23" Margin="420,58,0,0"   VerticalAlignment="Top" Width="175" >
@@ -49,19 +49,28 @@
             <ComboBoxItem Content="Queens, New York"></ComboBoxItem>
             <ComboBoxItem Content="Billings, Montana"></ComboBoxItem>
             <ComboBoxItem Content="Los Angeles, California"></ComboBoxItem>
-            <ComboBoxItem Content="Ketchikan, Arkansas"></ComboBoxItem>
+            <ComboBoxItem Content="Ketchikan, Alaska"></ComboBoxItem>
             <ComboBoxItem Content="Hilo, Hawaii"></ComboBoxItem>
             <ComboBoxItem Content="Salt Lake City, Utah"></ComboBoxItem>
             <ComboBoxItem Content="San Diego, California"></ComboBoxItem>
             <ComboBoxItem Content="Abuquerque, New Mexico"></ComboBoxItem>
-            <ComboBoxItem Content="Burningham, Alaska"></ComboBoxItem>
+            <ComboBoxItem Content="Birmingham, Alabama"></ComboBoxItem>
             <ComboBoxItem Content="Kansas City, Missouri"></ComboBoxItem>
         </ComboBox>
         <DatePicker Name ="Departure" HorizontalAlignment="Left" Height="23" Margin="161,83,0,0" VerticalAlignment="Top" Width="175"/>
         <DatePicker Name ="Arrival" HorizontalAlignment="Left" Height="23" Margin="420,83,0,0" VerticalAlignment="Top" Width="175"/>
         <Button Content="Search" HorizontalAlignment="Left" Margin= "161,108,0,0" VerticalAlignment="Top" Width="100" Click="Search_Click"/>
         <CheckBox Content="Round Trip" HorizontalAlignment="Left" Margin="420,108,0,0" VerticalAlignment="Top"/>
-        <DataGrid Name ="Flights" HorizontalAlignment="Left" Height="250" Margin="100,133,0,0" VerticalAlignment="Top" Width="600" />
+        <DataGrid Name ="Flights" HorizontalAlignment="Left" Height="250" Margin="100,133,0,0" VerticalAlignment="Top" Width="600">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Flight ID"  Binding="{Binding ID}"/>
+                <DataGridTextColumn Header="Origin"  Binding="{Binding Origin}"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" />
+                <DataGridTextColumn Header="Departure"  Binding="{Binding Departure}"/>
+                <DataGridTextColumn Header="Arrival" Binding="{Binding Arrival}" />
+                <DataGridTextColumn Header="Price"  Binding="{Binding Price}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Button Content="Sign Out" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" Width="100" Click="Sign_Out"/>
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="260,400,0,0" TextWrapping="Wrap" Text="Flight ID:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>

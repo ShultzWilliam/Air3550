@@ -181,6 +181,92 @@ namespace Air3550
             string name = xlRange.Cells[IDcolumn, 3].Value2.ToString(); //get the user's name from the database
             return name; //return the name
         }
+
+        public string getAirportCode(string airport)
+        {  //function to get the airport code based on the inputted airport
+            string code = " ";
+            //go through the airports and return the code
+            if (airport == "Cleveland, Ohio")
+            {
+                code = "44135";
+            }
+            else if (airport == "Nashville, Tennessee")
+            {
+                code = "37214";
+            }
+            else if (airport == "Miami, Florida")
+            {
+                code = "33122";
+            }
+            else if (airport == "Houston, Texas")
+            {
+                code = "77032";
+            }
+            else if (airport == "Queens, New York")
+            {
+                code = "11340";
+            }
+            else if (airport == "Billings, Montana")
+            {
+                code = "59105";
+            }
+            else if (airport == "Los Angeles, California")
+            {
+                code = "90045";
+            }
+            else if (airport == "Ketchikan, Alaska")
+            {
+                code = "99901";
+            }
+            else if (airport == "Hilo, Hawaii")
+            {
+                code = "96720";
+            }
+            else if (airport == "Salt Lake City, Utah")
+            {
+                code = "84122";
+            }
+            else if (airport == "San Diego, California")
+            {
+                code = "92101";
+            }
+            else if (airport == "Abuquerque, New Mexico")
+            {
+                code = "87106";
+            }
+            else if (airport == "Birmingham, Alabama")
+            {
+                code = "35212";
+            }
+            else if (airport == "Kansas City, Missouri")
+            {
+                code = "64153";
+            }
+            return code;
+        }
+
+        public bool fullFlight(int attendance, string plane)
+        { //check if a flight is completely booked
+            bool full = true; //value to say if we're full or not
+            //define the excel variables
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = xlRange.Rows.Count;
+            int colCount = xlRange.Columns.Count;
+            for (int i = 1; i <= rowCount; i++)
+            { //get the column of the ID
+                if (xlRange.Cells[i, 1].Value2.ToString() == plane)
+                { //if we found the ID, set the column
+                    if (attendance < Int32.Parse(xlRange.Cells[i, 3].Value2.ToString()))
+                    { //if the flight is not completely booked, set full to false
+                        full = false;
+                    }
+                }
+            }
+            return full;
+        }
     }
 
 

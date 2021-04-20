@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Air3550
 {
@@ -21,7 +22,7 @@ namespace Air3550
     public partial class SearchFlight : Page
     {
         //AdventureWorksLT2008Entities dataEntities = new AdventureWorksLT2008Entities();
-        string start, end, arrival, departure, flightID, identification; //initialize global variables
+        string origin, destination, flightID, identification; //initialize global variables
         public SearchFlight()
         {
             InitializeComponent();
@@ -31,6 +32,15 @@ namespace Air3550
             InitializeComponent();
             identification = id;
         }
+        public class flightItem
+        { //class used to insert flights into the data grid
+            public string ID { get; set; }
+            public string Origin { get; set; }
+            public string Destination { get; set; }
+            public DateTime Departure { get; set; }
+            public DateTime Arrival { get; set; }
+            public string Price { get; set; }
+        }
         private void Sign_Out(object sender, RoutedEventArgs e)
         { //sign out of the application
             SignIn signIn = new SignIn();
@@ -38,10 +48,76 @@ namespace Air3550
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         { //search for flights
-            start = Start.Text;
-            end = End.Text;
-            arrival = Arrival.Text;
-            departure = Departure.Text;
+
+            //get access to functions
+            Functions functions = new Functions();
+            DateTime dt = DateTime.Now;
+
+            //get the origin, destination and dates
+            origin = functions.getAirportCode(Start.Text);
+            destination = functions.getAirportCode(End.Text);
+            DateTime startDate = Convert.ToDateTime(Departure.Text);
+            DateTime endDate = Convert.ToDateTime(Arrival.Text);
+            //string checker;
+            
+            //define the excel variables
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = functions.database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = xlRange.Rows.Count;
+            int colCount = xlRange.Columns.Count;
+            int[,] flight = new int[rowCount, 2]; //two dimensional array of potential flights
+            int[] twoD = new int[rowCount]; //use to record which flight returned is a round trip
+
+            int numOfFlights = 0; //the number of flights in the array
+            int attendance; //the attendance of the flight
+            string plane; //the plane ID
+            DateTime foundDate;
+
+            //need to adjust for two leg flight and round trip
+
+            for (int i = 2; i <= rowCount; i++)
+            { //Find the flights going to and from the origin and destination
+                //string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
+                //origin is 5, destination is 6, date is 7th row
+                foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
+                if (foundDate > startDate && foundDate < endDate)
+                { //if the flight takes place between the start and end date
+                    if (xlRange.Cells[i, 5].Value2.ToString() == origin && xlRange.Cells[i, 6].Value2.ToString() == destination)
+                    { //if the origin and destination match
+                        attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                        plane = xlRange.Cells[i, 14].Value2.ToString();
+                        if (functions.fullFlight(attendance, plane) == false)
+                        { //if the flight isn't full
+                            flight[numOfFlights, 0] = i; //save the index of the flight
+                            numOfFlights++;
+                        }
+                    }
+                }
+            }
+
+            if (endDate < DateTime.Today)
+            {
+                Warning.Text = "Please search for flights that are in the future";
+            }
+            if (numOfFlights == 0)
+            { //if num of flights = 0, then we didn't find any flights
+                Warning.Text = "No flights found";
+            }
+            else
+            { //otherwise
+                for (int i = 0; i < numOfFlights; i++)
+                { //for each flight we found
+                    var item = new flightItem { ID = xlRange.Cells[flight[i,0], 1].Value2.ToString(),
+                        Origin = Start.Text,
+                        Destination = End.Text,
+                        Departure = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 7].Value2),
+                        Arrival = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 10].Value2),
+                        Price = "$" + xlRange.Cells[flight[i, 0], 17].Value2.ToString()}; //create a new flight item to insert into the data grid
+                    Flights.Items.Add(item);
+                }
+            }
 
             /*
             var query =
