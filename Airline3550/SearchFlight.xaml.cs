@@ -65,7 +65,7 @@ namespace Air3550
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = xlRange.Rows.Count;
+            int rowCount = functions.getRows(2);
             int colCount = xlRange.Columns.Count;
             int[,] flight = new int[rowCount, 2]; //two dimensional array of potential flights
             int[] twoD = new int[rowCount]; //use to record which flight returned is a round trip
@@ -127,7 +127,7 @@ namespace Air3550
 
             //check if the flightID exists
             Functions functions = new Functions();
-            if(functions.isNum(flightID) == true)
+            if((functions.isNum(flightID) == true) && (functions.isFlight(flightID) == true))
             { //if the flight ID exists, go to the flight
                 BookFlight bookFlight = new BookFlight(identification, flightID);
                 this.NavigationService.Navigate(bookFlight);
@@ -141,7 +141,9 @@ namespace Air3550
 
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
-            string userType = "Customer";
+            Functions functions = new Functions();
+            int IDrow = functions.getIDRow(identification, 1);
+            string userType = functions.getUserType(IDrow);
             if (userType == "Customer")
             {
                 MainMenuCustomer mainMenu = new MainMenuCustomer(identification); //create a new main menu and go to it

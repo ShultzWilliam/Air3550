@@ -36,8 +36,8 @@ namespace Air3550
         private void Window_Loaded(object sender, RoutedEventArgs e)
         { //Load in necessary data
             Functions functions = new Functions();
-            int IDcolumn = functions.getIDColumn(Identification); //get the ID column for the user
-            User.Text = functions.getName(IDcolumn); //Print the passed in ID
+            int IDRow = functions.getIDRow(Identification, 1); //get the ID column for the user
+            User.Text = functions.getName(IDRow); //Print the passed in ID
         }
 
         private void Sign_Out(object sender, RoutedEventArgs e)

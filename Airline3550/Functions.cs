@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
-
 namespace Air3550
 {
     class Functions
@@ -133,29 +132,29 @@ namespace Air3550
         public Excel.Workbook database_connect()
         { //easy way to connect to a database so that, when a user needs to change the file path, they only do so in one location
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\Air3550Excel.xlsx");
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\Air3550Database.xlsx");
             return xlWorkbook;
         }
-        public int getIDColumn(string ID)
+        public int getIDRow(string ID, int sheet)
         { //get the ID column
             //connect to the excel database
             //Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = database_connect();
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[sheet];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = xlRange.Rows.Count;
+            int rowCount = getRows(sheet);
             int colCount = xlRange.Columns.Count;
-            int IDcolumn = 0; //initialize the ID column
+            int IDrow = 0; //initialize the ID column
 
             for (int i = 1; i <= rowCount; i++)
             { //get the column of the ID
                 if (xlRange.Cells[i, 1].Value2.ToString() == ID)
                 { //if we found the ID, set the column
-                    IDcolumn = i;
+                    IDrow = i;
                 }
             }
             xlWorkbook.Close();
-            return IDcolumn; //return the ID column
+            return IDrow; //return the ID column
         }
 
         public string getUserType(int IDcolumn)
@@ -165,7 +164,7 @@ namespace Air3550
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = xlRange.Rows.Count;
+            int rowCount = getRows(1);
             int colCount = xlRange.Columns.Count;
             string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
             xlWorkbook.Close();
@@ -178,7 +177,7 @@ namespace Air3550
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = xlRange.Rows.Count;
+            int rowCount = getRows(1);
             int colCount = xlRange.Columns.Count;
             string name = xlRange.Cells[IDcolumn, 3].Value2.ToString(); //get the user's name from the database
             xlWorkbook.Close();
@@ -248,6 +247,69 @@ namespace Air3550
             return code;
         }
 
+        public string getAirport(string airport)
+        {  //function to get the airport code based on the inputted airport
+            string code = " ";
+            //go through the airport codes and return the airport
+            if (airport == "44135")
+            {
+                code = "Cleveland, Ohio";
+            }
+            else if (airport == "37214")
+            {
+                code = "Nashville, Tennessee";
+            }
+            else if (airport == "33122")
+            {
+                code = "Miami, Florida";
+            }
+            else if (airport == "77032")
+            {
+                code = "Houston, Texas";
+            }
+            else if (airport == "11340")
+            {
+                code = "Queens, New York";
+            }
+            else if (airport == "59105")
+            {
+                code = "Billings, Montana";
+            }
+            else if (airport == "90045")
+            {
+                code = "Los Angeles, California";
+            }
+            else if (airport == "99901")
+            {
+                code = "Ketchikan, Alaska";
+            }
+            else if (airport == "96720")
+            {
+                code = "Hilo, Hawaii";
+            }
+            else if (airport == "84122")
+            {
+                code = "Salt Lake City, Utah";
+            }
+            else if (airport == "92101")
+            {
+                code = "San Diego, California";
+            }
+            else if (airport == "87106")
+            {
+                code = "Abuquerque, New Mexico";
+            }
+            else if (airport == "35212")
+            {
+                code = "Birmingham, Alabama";
+            }
+            else if (airport == "64143")
+            {
+                code = "Kansas City, Missouri";
+            }
+            return code;
+        }
+
         public bool fullFlight(int attendance, string plane)
         { //check if a flight is completely booked
             bool full = true; //value to say if we're full or not
@@ -256,7 +318,7 @@ namespace Air3550
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = xlRange.Rows.Count;
+            int rowCount = getRows(3);
             int colCount = xlRange.Columns.Count;
             for (int i = 1; i <= rowCount; i++)
             { //get the column of the ID
@@ -270,6 +332,55 @@ namespace Air3550
             }
             xlWorkbook.Close();
             return full;
+        }
+        public int getRows(int sheet)
+        { //used to get the number of rows in a workbook
+            int rowCount = 1; //initialize the row count
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[sheet];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            //while the rows aren't null, loop through and increment the counter
+            while (true)
+            {
+                if (((xlRange.Cells[rowCount + 1, 1].Value2) == null) || (xlRange.Cells[rowCount + 1, 1].Value2.ToString()==""))
+                { //if the cell is null or empty, break
+                    break;
+                }
+                rowCount++;
+            }
+            xlWorkbook.Close();
+            return rowCount;
+        }
+        public bool isEmpty(int sheet, int row, int column)
+        { //check if a cell is empty
+            bool empty = false; //boolean value to return
+            Excel.Workbook xlWorkbook = database_connect(); //define the excel values
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[sheet];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            if (((xlRange.Cells[row, column].Value2) == null) || (xlRange.Cells[row, column].Value2.ToString() == ""))
+            { //if the cell is null or empty, set to true
+                empty = true;
+            }
+            return empty;
+        }
+
+        public bool isFlight(string flightID)
+        { //check if the flight exists
+            bool exists = false; //boolean value to return
+            //create the excel variables
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = getRows(2);
+            for (int i = 1; i <= rowCount; i++)
+            {
+                if (xlRange.Cells[i, 1].Value2.ToString() == flightID)
+                { //if we found the ID, set exists to true
+                    exists = true;
+                }
+            }
+            xlWorkbook.Close(); //close the workbook
+            return exists;
         }
     }
 

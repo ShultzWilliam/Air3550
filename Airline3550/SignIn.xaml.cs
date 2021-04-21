@@ -38,9 +38,9 @@ namespace Air3550
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = xlRange.Rows.Count;
+            int rowCount = functions.getRows(1);
             int colCount = xlRange.Columns.Count;
-            int IDcolumn = 0;
+            int IDrow = 0;
             byte[] passwordHash;
             byte[] foundPassword;
 
@@ -53,16 +53,16 @@ namespace Air3550
                 passwordHash = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
             }
             password = passwordHash.ToString();
-            IDcolumn = functions.getIDColumn(id);
+            IDrow = functions.getIDRow(id, 1);
 
-            if (IDcolumn != 0)
+            if (IDrow != 0)
             { //grab the password from the database
-                password = xlRange.Cells[IDcolumn, 20].Value2;
+                password = xlRange.Cells[IDrow, 20].Value2;
                 foundPassword = Encoding.ASCII.GetBytes(password);
 
                 if ((foundPassword.ToString() == passwordHash.ToString()))
                 {
-                    string userType = functions.getUserType(IDcolumn); //get the user type from the database
+                    string userType = functions.getUserType(IDrow); //get the user type from the database
                     if (userType == "Customer")
                     {
                         MainMenuCustomer mainMenu = new MainMenuCustomer(id); //create a new main menu and go to it
@@ -97,11 +97,11 @@ namespace Air3550
                     Warning.Text = "Incorrect Password";
                 }
             }
-            else if (IDcolumn == 0)
+            else if (IDrow == 0)
             {
                 Warning.Text = "ID not found ";
             }
-            xlWorkbook.Close();
+            xlWorkbook.Close(true);
 
         }
 
