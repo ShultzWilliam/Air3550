@@ -48,17 +48,17 @@ namespace Air3550
             MiddleName.Text = xlWorksheet.Cells[IDRow, 4].Value2.ToString();
             LastName.Text = xlWorksheet.Cells[IDRow, 5].Value2.ToString();
             Address.Text = xlWorksheet.Cells[IDRow, 6].Value2.ToString(); //Set the address in the text box
-            Phone.Text = xlWorksheet.Cells[IDRow, 25].Value2.ToString(); //Set the phone in the text box
+            Phone.Text = xlWorksheet.Cells[IDRow, 11].Value2.ToString(); //Set the phone in the text box
             City.Text = xlWorksheet.Cells[IDRow, 7].Value2.ToString(); //Set the city in the text box
             State.Text = xlWorksheet.Cells[IDRow, 8].Value2.ToString(); //Set the state in the text box
             Zip.Text = xlWorksheet.Cells[IDRow, 9].Value2.ToString(); //Set the Zip Code in the text box
             Email.Text = xlWorksheet.Cells[IDRow, 10].Value2.ToString(); //Set the email in the text box
-            Birth.SelectedDate = DateTime.FromOADate(xlWorksheet.Cells[IDRow, 11].Value2); //Set the birth date in the text box
-            Credit.Text = xlWorksheet.Cells[IDRow, 12].Value2.ToString(); //Set the credit card number in the text box
-            Expiration.SelectedDate = DateTime.FromOADate(xlWorksheet.Cells[IDRow, 14].Value2); //Set the expiration date in the text box
-            CSV.Text = xlWorksheet.Cells[IDRow, 13].Value2.ToString(); //Set the Credit Card CSV in the text box
-            Credits.Text = xlWorksheet.Cells[IDRow, 15].Value2.ToString();
-            Points.Text = xlWorksheet.Cells[IDRow, 16].Value2.ToString();
+            Birth.SelectedDate = DateTime.FromOADate(xlWorksheet.Cells[IDRow, 12].Value2); //Set the birth date in the text box
+            Credit.Text = xlWorksheet.Cells[IDRow, 13].Value2.ToString(); //Set the credit card number in the text box
+            Expiration.SelectedDate = DateTime.FromOADate(xlWorksheet.Cells[IDRow, 15].Value2); //Set the expiration date in the text box
+            CSV.Text = xlWorksheet.Cells[IDRow, 14].Value2.ToString(); //Set the Credit Card CSV in the text box
+            Credits.Text = xlWorksheet.Cells[IDRow, 16].Value2.ToString();
+            Points.Text = xlWorksheet.Cells[IDRow, 17].Value2.ToString();
             xlWorkbook.Close(true);
         }
         private void Sign_Out(object sender, RoutedEventArgs e)
@@ -82,11 +82,11 @@ namespace Air3550
             xlWorksheet.Cells[IdRow, 8].value = State.Text;
             xlWorksheet.Cells[IdRow, 9].value = Zip.Text;
             xlWorksheet.Cells[IdRow, 10].value = Email.Text;
-            xlWorksheet.Cells[IdRow, 11].value = Birth.Text;
-            xlWorksheet.Cells[IdRow, 12].value = Credit.Text;
-            xlWorksheet.Cells[IdRow, 13].value = CSV.Text;
-            xlWorksheet.Cells[IdRow, 14].value = Expiration.Text;
-            xlWorksheet.Cells[IdRow, 25].value = Phone.Text;
+            xlWorksheet.Cells[IdRow, 12].value = Birth.Text;
+            xlWorksheet.Cells[IdRow, 13].value = Credit.Text;
+            xlWorksheet.Cells[IdRow, 14].value = CSV.Text;
+            xlWorksheet.Cells[IdRow, 15].value = Expiration.Text;
+            xlWorksheet.Cells[IdRow, 11].value = Phone.Text;
 
             if (Password.Text != "")
             {
@@ -95,9 +95,9 @@ namespace Air3550
                 { //save the password as a SHA512 hash
                     password = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
                 }
-                xlWorksheet.Cells[IdRow, 20].value = password.ToString();
+                xlWorksheet.Cells[IdRow, 22].value = password.ToString();
 
-                xlWorksheet.Cells[IdRow, 26].value = Password.Text;
+                xlWorksheet.Cells[IdRow, 27].value = Password.Text;
             }
             
             string userType = functions.getUserType(IdRow);

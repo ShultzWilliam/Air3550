@@ -80,16 +80,16 @@ namespace Air3550
             xlWorksheet.Cells[rowCount + 1, 8].value = State.Text;
             xlWorksheet.Cells[rowCount + 1, 9].value = Zip.Text;
             xlWorksheet.Cells[rowCount + 1, 10].value = Email.Text;
-            xlWorksheet.Cells[rowCount + 1, 11].value = Birth.Text;
-            xlWorksheet.Cells[rowCount + 1, 12].value = Credit.Text;
-            xlWorksheet.Cells[rowCount + 1, 13].value = CSV.Text;
-            xlWorksheet.Cells[rowCount + 1, 14].value = Expiration.Text;
-            xlWorksheet.Cells[rowCount + 1, 20].value = password.ToString();
-            xlWorksheet.Cells[rowCount + 1, 25].value = Phone.Text;
-            xlWorksheet.Cells[rowCount + 1, 26].value = Password.Text;
-            xlWorksheet.Cells[rowCount + 1, 15].value = "0";
-            xlWorksheet.Cells[rowCount + 1, 16].value = "0";
-            xlWorksheet.Cells[rowCount + 1, 17].value = "0";
+            xlWorksheet.Cells[rowCount + 1, 11].value = Phone.Text;
+            xlWorksheet.Cells[rowCount + 1, 12].value = Birth.Text;
+            xlWorksheet.Cells[rowCount + 1, 13].value = Credit.Text;
+            xlWorksheet.Cells[rowCount + 1, 14].value = CSV.Text;
+            xlWorksheet.Cells[rowCount + 1, 15].value = Expiration.Text;
+            xlWorksheet.Cells[rowCount + 1, 22].value = password.ToString();
+            xlWorksheet.Cells[rowCount + 1, 27].value = Password.Text;
+            xlWorksheet.Cells[rowCount + 1, 16].value = "0"; //Credit
+            xlWorksheet.Cells[rowCount + 1, 17].value = "0"; //Points
+            xlWorksheet.Cells[rowCount + 1, 18].value = "0"; //Money Spent
             xlWorkbook.Close(true);
 
             MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
