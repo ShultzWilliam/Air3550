@@ -442,6 +442,7 @@ namespace Air3550
             { //if the cell is null or empty, set to true
                 empty = true;
             }
+            xlWorkbook.Close();
             return empty;
         }
 

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Air3550
 {
@@ -22,6 +23,7 @@ namespace Air3550
     public partial class OldFlight : Page
     {
         string flightID, Identification; //define the global variables
+        Functions functions = new Functions();
 
         public OldFlight()
         {
@@ -37,19 +39,26 @@ namespace Air3550
         private void Window_Loaded(object sender, RoutedEventArgs e)
         { //when the window is loaded, load in the flight info
 
-            //load in the data from the database (for now I have placeholder data)
+            //get the necessary excel variables
+            Excel.Workbook xlWorkbook = functions.database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = functions.getRows(2);
+            int IDRow = functions.getIDRow(flightID, 2);
 
+            //load in the information to the page
             FlightID.Text = flightID;
-            Origin.Text = "Origin";
-            Destination.Text = "Destination";
-            Departure_Date.Text = "4/29/2021";
-            Departure_Time.Text = "5:00 AM";
-            Departure_Terminal.Text = "A";
-            Departure_Date.Text = "4/29/2021";
-            Departure_Time.Text = "5:00 PM";
-            Departure_Terminal.Text = "B";
-            Price.Text = "$" + Convert.ToString(95);
-            Plane.Text = "737";
+            Origin.Text = functions.getAirport(xlWorksheet.Cells[IDRow, 5].Value2.ToString());
+            Destination.Text = functions.getAirport(xlWorksheet.Cells[IDRow, 6].Value2.ToString());
+            Departure_Date.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 7].Value2)).ToString("MM/dd/yyyy");
+            Departure_Time.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 8].Value2)).ToString("h:mm tt");
+            Departure_Terminal.Text = xlWorksheet.Cells[IDRow, 9].Value2.ToString();
+            Arrival_Date.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 10].Value2)).ToString("MM/dd/yyyy");
+            Arrival_Time.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 11].Value2)).ToString("h:mm tt");
+            Arrival_Terminal.Text = xlWorksheet.Cells[IDRow, 12].Value2.ToString();
+            Price.Text = "$" + xlWorksheet.Cells[IDRow, 17].Value2.ToString();
+            Plane.Text = xlWorksheet.Cells[IDRow, 14].Value2.ToString();
+            xlWorkbook.Close();
         }
         private void Sign_Out(object sender, RoutedEventArgs e)
         { //to sign out
@@ -58,7 +67,8 @@ namespace Air3550
         }
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
-            string userType = "Customer";
+            int IDrow = functions.getIDRow(Identification, 1);
+            string userType = functions.getUserType(IDrow);
             if (userType == "Customer")
             {
                 MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it

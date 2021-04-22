@@ -37,8 +37,8 @@ namespace Air3550
             public string ID { get; set; }
             public string Origin { get; set; }
             public string Destination { get; set; }
-            public DateTime Departure { get; set; }
-            public DateTime Arrival { get; set; }
+            public string Departure { get; set; }
+            public string Arrival { get; set; }
             public string Price { get; set; }
         }
         private void Sign_Out(object sender, RoutedEventArgs e)
@@ -48,7 +48,7 @@ namespace Air3550
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         { //search for flights
-
+            Flights.Items.Clear();
             //get access to functions
             Functions functions = new Functions();
 
@@ -84,7 +84,7 @@ namespace Air3550
                     //string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
                     //origin is 5, destination is 6, date is 7th row
                     foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
-                    if (foundDate > startDate && foundDate < endDate)
+                    if (foundDate >= startDate && foundDate <= endDate)
                     { //if the flight takes place between the start and end date
                         if (xlRange.Cells[i, 5].Value2.ToString() == origin && xlRange.Cells[i, 6].Value2.ToString() == destination)
                         { //if the origin and destination match
@@ -116,14 +116,14 @@ namespace Air3550
                             ID = xlRange.Cells[flight[i, 0], 1].Value2.ToString(),
                             Origin = Start.Text,
                             Destination = End.Text,
-                            Departure = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 7].Value2),
-                            Arrival = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 10].Value2),
+                            Departure = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 7].Value2).ToString("MM/dd/yyyy") + " " + DateTime.FromOADate(xlRange.Cells[flight[i, 0], 8].Value2).ToString("h:mm tt"),
+                            Arrival = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 10].Value2).ToString("MM/dd/yyyy") + " " + DateTime.FromOADate(xlRange.Cells[flight[i, 0], 11].Value2).ToString("h:mm tt"),
                             Price = "$" + xlRange.Cells[flight[i, 0], 17].Value2.ToString()
                         }; //create a new flight item to insert into the data grid
                         Flights.Items.Add(item);
                     }
                 }
-
+                xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
                 xlWorkbook.Close();
             }
             else
