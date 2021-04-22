@@ -64,7 +64,7 @@
         <TextBlock Name ="Plane" HorizontalAlignment="Left" Height="23" Margin="161,208,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" Loaded="Window_Loaded"/>
         <Button Content="Book" HorizontalAlignment="Left" Margin= "350,300,0,0" VerticalAlignment="Top" Width="100" Click="Book_Click"/>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="300,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="200" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="0,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="800" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <CheckBox Name="CreditCard" Content="Credit Card" HorizontalAlignment="Left" Margin="180,233,0,0" VerticalAlignment="Top"/>
         <CheckBox Name="Credit" Content="Credit" HorizontalAlignment="Left" Margin="290,233,0,0" VerticalAlignment="Top"/>

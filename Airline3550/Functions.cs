@@ -463,6 +463,25 @@ namespace Air3550
             xlWorkbook.Close(); //close the workbook
             return exists;
         }
+
+        public bool flightBooked (string userID, string flightID)
+        { //check if a user has booked a flight
+            bool booked = false; //value to return if the user is one the flight
+            int userRow = getIDRow(userID, 1); //get the userID's row in the database
+            int flightRow = getIDRow(flightID, 2);
+            //define the excel variables
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = getRows(1);
+            string flights = xlRange.Cells[userRow, 19].Value2.ToString(); //get the string for the flights the user is booked for
+            if (flights != "" && flights.Contains(flightID))
+            { //if the flights contains the flight, the user is already booked for it
+                booked = true; //set booked to true
+            }
+            xlWorkbook.Close(); //close the workbook
+            return booked;
+        }
     }
 
 

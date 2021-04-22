@@ -51,75 +51,85 @@ namespace Air3550
 
             //get access to functions
             Functions functions = new Functions();
-            DateTime dt = DateTime.Now;
 
             //get the origin, destination and dates
             origin = functions.getAirportCode(Start.Text);
             destination = functions.getAirportCode(End.Text);
-            DateTime startDate = Convert.ToDateTime(Departure.Text);
-            DateTime endDate = Convert.ToDateTime(Arrival.Text);
-            //string checker;
             
-            //define the excel variables
-            //Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = functions.database_connect();
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
-            Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = functions.getRows(2);
-            int colCount = xlRange.Columns.Count;
-            int[,] flight = new int[rowCount, 2]; //two dimensional array of potential flights
-            int[] twoD = new int[rowCount]; //use to record which flight returned is a round trip
+            if (!(origin == "" || destination == "" || Departure.Text == "" || Arrival.Text == "" || Departure.Text == "Select a date" || Arrival.Text == "Select a date"))
+            { //if origin, destination, startDate, and endDate have all been assigned values
+                DateTime startDate = Convert.ToDateTime(Departure.Text);
+                DateTime endDate = Convert.ToDateTime(Arrival.Text);
+                //string checker;
 
-            int numOfFlights = 0; //the number of flights in the array
-            int attendance; //the attendance of the flight
-            string plane; //the plane ID
-            DateTime foundDate;
+                //define the excel variables
+                //Excel.Application xlApp = new Excel.Application();
+                Excel.Workbook xlWorkbook = functions.database_connect();
+                Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+                Excel.Range xlRange = xlWorksheet.UsedRange;
+                int rowCount = functions.getRows(2);
+                int colCount = xlRange.Columns.Count;
+                int[,] flight = new int[rowCount, 2]; //two dimensional array of potential flights
+                int[] twoD = new int[rowCount]; //use to record which flight returned is a round trip
 
-            //need to adjust for two leg flight and round trip
+                int numOfFlights = 0; //the number of flights in the array
+                int attendance; //the attendance of the flight
+                string plane; //the plane ID
+                DateTime foundDate;
 
-            for (int i = 2; i <= rowCount; i++)
-            { //Find the flights going to and from the origin and destination
-                //string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
-                //origin is 5, destination is 6, date is 7th row
-                foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
-                if (foundDate > startDate && foundDate < endDate)
-                { //if the flight takes place between the start and end date
-                    if (xlRange.Cells[i, 5].Value2.ToString() == origin && xlRange.Cells[i, 6].Value2.ToString() == destination)
-                    { //if the origin and destination match
-                        attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString());
-                        plane = xlRange.Cells[i, 14].Value2.ToString();
-                        if (functions.fullFlight(attendance, plane) == false)
-                        { //if the flight isn't full
-                            flight[numOfFlights, 0] = i; //save the index of the flight
-                            numOfFlights++;
+                //need to adjust for two leg flight and round trip
+
+                for (int i = 2; i <= rowCount; i++)
+                { //Find the flights going to and from the origin and destination
+                    //string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
+                    //origin is 5, destination is 6, date is 7th row
+                    foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
+                    if (foundDate > startDate && foundDate < endDate)
+                    { //if the flight takes place between the start and end date
+                        if (xlRange.Cells[i, 5].Value2.ToString() == origin && xlRange.Cells[i, 6].Value2.ToString() == destination)
+                        { //if the origin and destination match
+                            attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                            plane = xlRange.Cells[i, 14].Value2.ToString();
+                            if (functions.fullFlight(attendance, plane) == false)
+                            { //if the flight isn't full
+                                flight[numOfFlights, 0] = i; //save the index of the flight
+                                numOfFlights++;
+                            }
                         }
                     }
                 }
-            }
 
-            if (endDate < DateTime.Today)
-            {
-                Warning.Text = "Please search for flights that are in the future";
-            }
-            if (numOfFlights == 0)
-            { //if num of flights = 0, then we didn't find any flights
-                Warning.Text = "No flights found";
+                if (endDate < DateTime.Today)
+                {
+                    Warning.Text = "Please search for flights that are in the future";
+                }
+                if (numOfFlights == 0)
+                { //if num of flights = 0, then we didn't find any flights
+                    Warning.Text = "No flights found";
+                }
+                else
+                { //otherwise
+                    for (int i = 0; i < numOfFlights; i++)
+                    { //for each flight we found
+                        var item = new flightItem
+                        {
+                            ID = xlRange.Cells[flight[i, 0], 1].Value2.ToString(),
+                            Origin = Start.Text,
+                            Destination = End.Text,
+                            Departure = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 7].Value2),
+                            Arrival = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 10].Value2),
+                            Price = "$" + xlRange.Cells[flight[i, 0], 17].Value2.ToString()
+                        }; //create a new flight item to insert into the data grid
+                        Flights.Items.Add(item);
+                    }
+                }
+
+                xlWorkbook.Close();
             }
             else
-            { //otherwise
-                for (int i = 0; i < numOfFlights; i++)
-                { //for each flight we found
-                    var item = new flightItem { ID = xlRange.Cells[flight[i,0], 1].Value2.ToString(),
-                        Origin = Start.Text,
-                        Destination = End.Text,
-                        Departure = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 7].Value2),
-                        Arrival = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 10].Value2),
-                        Price = "$" + xlRange.Cells[flight[i, 0], 17].Value2.ToString()}; //create a new flight item to insert into the data grid
-                    Flights.Items.Add(item);
-                }
+            { //if one of them has not been set
+                Warning.Text = "Assign values for origin, destination, and departure and arrival dates";
             }
-
-            xlWorkbook.Close();
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //Go back to the main menu
@@ -129,8 +139,16 @@ namespace Air3550
             Functions functions = new Functions();
             if((functions.isNum(flightID) == true) && (functions.isFlight(flightID) == true))
             { //if the flight ID exists, go to the flight
-                BookFlight bookFlight = new BookFlight(identification, flightID);
-                this.NavigationService.Navigate(bookFlight);
+                if (functions.flightBooked(identification, flightID) == false)
+                { //if the user is not already booked for the flight, take them to the booking page
+                    BookFlight bookFlight = new BookFlight(identification, flightID);
+                    this.NavigationService.Navigate(bookFlight);
+                }
+                else
+                { //otherwise, display a warning telling them they are already booked for it
+                    Warning.Text = "You are already booked for this flight";
+                }
+                
             }
             else
             { //otherwise, display an error
