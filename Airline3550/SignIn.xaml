@@ -19,8 +19,8 @@
         <TextBox Name ="Password" HorizontalAlignment="Left" Height="23" Margin="161,233,0,0" TextWrapping="Wrap" Text="Enter Password Here" TextAlignment="Center" VerticalAlignment="Top" Width="544" GotMouseCapture="Password_Enter"/>
         <TextBox Name ="ID" HorizontalAlignment="Left" Height="23" Margin="161,208,0,0" TextWrapping="Wrap" Text="Enter ID Here" TextAlignment="Center" VerticalAlignment="Top" Width="544" GotMouseCapture="ID_Enter"/>
         <Button Content="Submit" HorizontalAlignment="Left" Margin= "365,300,0,0" VerticalAlignment="Top" Width="70" Click="Submit_Click"/>
-        <Button Content="Create Account" HorizontalAlignment="Left" Margin="300,330,0,0" VerticalAlignment="Top" Width="100" Click="Create_Click"/>
-        <Button Content="Forgot Password" HorizontalAlignment="Left" Margin="400,330,0,0" VerticalAlignment="Top" Width="100" Click="Forgot_Click"/>
+        <Button Content="Create Account" HorizontalAlignment="Left" Margin="250,330,0,0" VerticalAlignment="Top" Width="150" Click="Create_Click"/>
+        <Button Content="Forgot Password or ID" HorizontalAlignment="Left" Margin="400,330,0,0" VerticalAlignment="Top" Width="150" Click="Forgot_Click"/>
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="300,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="200" RenderTransformOrigin="-3.929,4.7"/>
         </Border>

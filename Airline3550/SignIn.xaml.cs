@@ -59,6 +59,7 @@ namespace Air3550
             { //grab the password from the database
                 password = xlRange.Cells[IDrow, 20].Value2;
                 foundPassword = Encoding.ASCII.GetBytes(password);
+                xlWorkbook.Close(true);
 
                 if ((foundPassword.ToString() == passwordHash.ToString()))
                 {
@@ -93,15 +94,17 @@ namespace Air3550
                 }
                 else
                 {
+                    xlWorkbook.Close(true);
                     //Warning.Text = "Incorrect Password \n" + passwordHash + "\n" + foundPassword;
                     Warning.Text = "Incorrect Password";
                 }
             }
             else if (IDrow == 0)
             {
+                xlWorkbook.Close(true);
                 Warning.Text = "ID not found ";
             }
-            xlWorkbook.Close(true);
+            
 
         }
 

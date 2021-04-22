@@ -67,6 +67,10 @@ namespace Air3550
             SignIn signIn = new SignIn();
             this.NavigationService.Navigate(signIn);
         }
+        private void Password_Click(object sender, RoutedEventArgs e)
+        { //when the user clicks on the password box
+            Password.Clear(); //clear the password
+        }
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //to return to the main menu
             string warnings = functions.CEprofile(FirstName.Text, MiddleName.Text, LastName.Text, Address.Text, City.Text, Zip.Text, Phone.Text, Email.Text, Credit.Text, CSV.Text, Password.Text, Birth.Text, Expiration.Text);
@@ -95,8 +99,8 @@ namespace Air3550
                 xlWorksheet.Cells[IdRow, 15].value = Expiration.Text;
                 xlWorksheet.Cells[IdRow, 11].value = Phone.Text;
 
-                if (Password.Text != "")
-                {
+                if ((Password.Text != "Enter nothing to leave unchanged") || (Password.Text != ""))
+                { //we can't unencrypt a SHA512 Hash so the user not entering a password indicates that they want to leave it blank
                     byte[] password; //to save the password
                     using (SHA512 shaM = new SHA512Managed())
                     { //save the password as a SHA512 hash

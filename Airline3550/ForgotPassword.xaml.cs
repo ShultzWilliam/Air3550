@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Air3550
 {
@@ -30,10 +31,35 @@ namespace Air3550
         { //submit the password
 
             //check if the email exists
+            Functions functions = new Functions();
 
+            //define the excel variables
+            //Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = functions.database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int rowCount = functions.getRows(1);
+            int IDRow = 0;
             string email = Email.Text;
-            ResetPassword resetPassword = new ResetPassword(email);
-            this.NavigationService.Navigate(resetPassword);
+            for (int i = 1; i <= rowCount; i++)
+            { //go through the rows and find the email address
+                if (email == xlWorksheet.Cells[i, 10].Value2.ToString())
+                { //if we find the email address
+                    IDRow = i;
+                }
+            }
+
+            xlWorkbook.Close(true);
+            if (IDRow != 0)
+            { //if the IDRow is not zero, we found the email address
+                ResetPassword resetPassword = new ResetPassword(IDRow);
+                this.NavigationService.Navigate(resetPassword);
+            }
+            else
+            { //If it is zero, print a warning that we didn't find the email address
+                Warning.Text = "Specified Email Address was not found in the database";
+            }
+            
         }
     }
 }

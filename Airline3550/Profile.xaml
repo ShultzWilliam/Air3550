@@ -125,7 +125,7 @@
         <TextBox Name ="Credit" HorizontalAlignment="Left" Height="23" Margin="161,233,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544"/>
         <DatePicker Name ="Expiration" HorizontalAlignment="Left" Height="23" Margin="161,258,0,0" VerticalAlignment="Top" Width="544"/>
         <TextBox Name ="CSV" HorizontalAlignment="Left" Height="23" Margin="161,283,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544"/>
-        <TextBox Name ="Password" HorizontalAlignment="Left" Height="23" Margin="161,308,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" Loaded="Window_Loaded"/>
+        <TextBox Name ="Password" HorizontalAlignment="Left" Height="23" Text="Enter nothing to leave unchanged" Margin="161,308,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" GotMouseCapture="Password_Click" Loaded="Window_Loaded"/>
 
         <Button Content="Submit" HorizontalAlignment="Left" Margin= "350,385,0,0" VerticalAlignment="Top" Width="100" Click="Submit_Click"/>
         <Border BorderThickness="1" BorderBrush="Black">
