@@ -53,14 +53,20 @@ namespace Air3550
                 passwordHash = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
             }
             password = passwordHash.ToString();
+
+            
             IDrow = functions.getIDRow(id, 1);
 
             if (IDrow != 0)
             { //grab the password from the database
-                password = xlRange.Cells[IDrow, 20].Value2;
-                foundPassword = Encoding.ASCII.GetBytes(password);
+                // byte[] data = sha512Managed.ComputeHash(Encoding.UTF8.GetBytes(input));
+                password = xlRange.Cells[IDrow, 22].Value2;
+                using (SHA512 shaM = new SHA512Managed())
+                { //save the password as a SHA512 hash
+                    foundPassword = shaM.ComputeHash(Encoding.UTF8.GetBytes(password));
+                }
                 xlWorkbook.Close(true);
-
+                
                 if ((foundPassword.ToString() == passwordHash.ToString()))
                 {
                     string userType = functions.getUserType(IDrow); //get the user type from the database
@@ -94,7 +100,6 @@ namespace Air3550
                 }
                 else
                 {
-                    xlWorkbook.Close(true);
                     //Warning.Text = "Incorrect Password \n" + passwordHash + "\n" + foundPassword;
                     Warning.Text = "Incorrect Password";
                 }
