@@ -24,11 +24,13 @@ namespace Air3550
     public partial class CreateAccount : Page
     {
         Functions functions = new Functions(); //get the necessary functions
-        String Identification;
+        string Identification;
         public CreateAccount()
         {
             InitializeComponent();
+            State.Text = "Ohio";
             //create the excel variables
+            
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
@@ -55,10 +57,18 @@ namespace Air3550
             }
             ID.Text = Identification;
             xlWorkbook.Close();
+            
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
-        {
+        { //click to create the account
+            string warnings = functions.CEprofile(FirstName.Text, MiddleName.Text, LastName.Text, Address.Text, City.Text, Zip.Text, Phone.Text, Email.Text, Credit.Text, CSV.Text, Password.Text, Birth.Text, Expiration.Text);
+            if (warnings != "Correct" && Password.Text == "")
+            { //if we did not enter something or entered it incorrectly
+                Warning.Text = warnings;
+            }
+            else
+            { //otherwise
             //create the excel variables
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
@@ -94,7 +104,9 @@ namespace Air3550
 
             MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
             this.NavigationService.Navigate(mainMenu);
-
+            
+            }
+            
 
         }
 

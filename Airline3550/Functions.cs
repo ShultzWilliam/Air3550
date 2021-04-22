@@ -9,95 +9,176 @@ namespace Air3550
 {
     class Functions
     {
-        public string CEprofile(string name, string address, string city, string state, string ZIP, string phone, string email, string birth, string credit, string exp, string csv)
+        public string CEprofile(string firstName, string middleName, string lastName, string address, string city, string ZIP, string phone, string email, string credit, string csv, string password, string birth, string expiration)
         { //check that the profile is formatted correctly
-            int names = 0;
+            if (birth == "")
+            { //if the birth date wasn't entered
+                return "No birth date entered";
+            }
 
-            for (int i = 0; i < name.Length; i++)
-            { //check that the name is two or three words and that no chars are digits
-                if (name[i] == ' ')
-                {
-                    names++;
+            if (expiration == "")
+            { //if the expiration wasn't entered
+                return "No expiration date entered";
+            }
+
+            if (firstName == "")
+            { //if the first name wasn't entered
+                return "No first name entered";
+            }
+            for (int i = 0; i < firstName.Length; i++)
+            { //check if the first name is formatted correctly
+                if ((i == 0) && (firstName[i] > 90 || firstName[i] < 65))
+                { //if the first letter isn't capitalized
+                    return "First name formatting wrong. Start with a capital letter, the rest are lower case";
                 }
-                if (((i == 0) || (i > 0 && name[i - 1] == ' ')) && (name[i] > 90 || name[i] < 65))
-                { //if the beginning of the name isn't capitalized
-                    return "name formatting wrong";
-                }
-                if ((i > 0 && name[i - 1] != ' ') && (name[i] > 122 || name[i] < 97))
-                { //if the other letters in the name aren't lowercased (or letters)
-                    return "name formatting wrong";
+                if ((i > 0) && (firstName[i] > 122 || firstName[i] < 97))
+                { //if any other letters are capitalized
+                    return "First name formatting wrong. Start with a capital letter, the rest are lower case";
                 }
             }
 
-            if (names < 2 || names > 3)
-            { //keep checking the name
-                return "Name Wrong";
+            if (middleName == "")
+            { //if the middle name wasn't entered
+                return "No middle name entered";
+            }
+            for (int i = 0; i < middleName.Length; i++)
+            { //check if the middle name is formatted correctly
+                if ((i == 0) && (middleName[i] > 90 || middleName[i] < 65))
+                { //if the middle letter isn't capitalized
+                    return "Middle name formatting wrong. Start with a capital letter, the rest are lower case";
+                }
+                if ((i > 0) && (middleName[i] > 122 || middleName[i] < 97))
+                { //if any other letters are capitalized
+                    return "Middle name formatting wrong. Start with a capital letter, the rest are lower case";
+                }
             }
 
-            //check the address and email
+            if (lastName == "")
+            { //if the last name wasn't entered
+                return "No last name entered";
+            }
+            for (int i = 0; i < lastName.Length; i++)
+            { //check if the last name is formatted correctly
+                if ((i == 0) && (lastName[i] > 90 || lastName[i] < 65))
+                { //if the last letter isn't capitalized
+                    return "Last name formatting wrong. Start with a capital letter, the rest are lower case";
+                }
+                if ((i > 0) && (lastName[i] > 122 || lastName[i] < 97))
+                { //if any other letters are capitalized
+                    return "Last name formatting wrong. Start with a capital letter, the rest are lower case";
+                }
+            }
+
+            bool containsAt = false; //check if the email has @
+            if (email == "")
+            { //if the email wasn't entered
+                return "No email entered";
+            }
+            for (int i = 0; i < email.Length - 4; i++)
+            { //check if the email is formatted correctly
+                if (email[i] == 64)
+                { //if it contains @, set bool to true
+                    containsAt = true;
+                }
+            }
+
+            if (!((containsAt == true) && ((email.Substring(Math.Max(0, email.Length - 4)) == ".com") ||
+                (email.Substring(Math.Max(0, email.Length - 4)) == ".org") ||
+                (email.Substring(Math.Max(0, email.Length - 4)) == ".edu"))))
+            { //if the email formatting is wrong
+                return "Email formatting wrong. Must contain @ and end in .com, .org, or .edu";
+            }
+
+            if (address == "")
+            { //if the address wasn't entered
+                return "No address entered";
+            }
+
+            if (city == "")
+            { //if the city wasn't entered
+                return "No city entered";
+            }
 
             for (int i = 0; i < city.Length; i++)
             { //check that the city contains the correct characters
                 if (!((city[i] > 64 && city[i] < 91) || (city[i] > 96 && city[i] < 123) || city[i] == ' '))
                 {
-                    return "City Wrong";
+                    return "City Formatting Wrong. Words start with a capital letter, the other letters are lower case";
                 }
             }
 
-            for (int i = 0; i < state.Length; i++)
-            { //check that the state contains the correct characters
-                if (!((state[i] > 64 && state[i] < 91) || (state[i] > 96 && state[i] < 123) || state[i] == ' '))
-                {
-                    return "State Wrong";
-                }
+            if (ZIP == "")
+            { //if the zip code wasn't entered
+                return "No zip code entered";
             }
-
             if (!(ZIP.All(char.IsDigit)) || ZIP.Length != 5)
             { //check that the zip code is correct
-                return "ZIP Wrong";
+                return "ZIP Code Wrong. Should be 5 numbers";
             }
 
-            var pattern1 = @"\((?<AreaCode>\d{3})\)\s*(?<Number>\d{3}(?:-|\s*)\d{4})"; //create patterns for the phone number
-            var regexp1 = new System.Text.RegularExpressions.Regex(pattern1);
-            var pattern2 = @"\(?<AreaCode>\d{3}(?:-|\s*)?<Number>\d{3}(?:-|\s*)\d{4})";
-            var regexp2 = new System.Text.RegularExpressions.Regex(pattern2);
+            //var pattern1 = @"\((?<AreaCode>\d{3})\)\s*(?<Number>\d{3}(?:-|\s*)\d{4})"; //create patterns for the phone number
+            // var regexp1 = new System.Text.RegularExpressions.Regex(pattern1);
+            //var pattern2 = @"\(?<AreaCode>\d{3}(?:-|\s*)?<Number>\d{3}(?:-|\s*)\d{4})";
+            //var regexp2 = new System.Text.RegularExpressions.Regex(pattern2);
 
-            if (!(regexp1.IsMatch(phone) || regexp2.IsMatch(phone)))
-            { //if wrong format for the phone number
-                return "Phone Wrong";
+            if (phone == "")
+            { //if the phone number wasn't entered
+                return "No phone number entered";
             }
 
-            var pattern3 = @"\(<Number>\d{3}(?:/|\s*)\d{3}(?:/|\s*)\d{4})";
-            var regexp3 = new System.Text.RegularExpressions.Regex(pattern3); //create a pattern for the birth date
+            //if (!(regexp1.IsMatch(phone) || regexp2.IsMatch(phone)))
+            if (phone.Length == 12 || phone.Length == 14)
+            { //check the formatting of the phone number
+                if (!((Char.IsDigit(phone[0]) && Char.IsDigit(phone[1]) && Char.IsDigit(phone[2]) && phone[3] == 45 &&
+                    Char.IsDigit(phone[4]) && Char.IsDigit(phone[5]) && Char.IsDigit(phone[6]) && phone[7] == 45 &&
+                    Char.IsDigit(phone[8]) && Char.IsDigit(phone[9]) && Char.IsDigit(phone[10]) && Char.IsDigit(phone[11])) ||
+                    (phone[0] == 40 && Char.IsDigit(phone[1]) && Char.IsDigit(phone[2]) && Char.IsDigit(phone[3]) &&
+                    phone[4] == 41 && phone[5] == 32 && Char.IsDigit(phone[6]) && Char.IsDigit(phone[7]) && Char.IsDigit(phone[8]) &&
+                    phone[9] == 45 && Char.IsDigit(phone[10]) && Char.IsDigit(phone[11]) && Char.IsDigit(phone[12]) && Char.IsDigit(phone[13]))))
+                { //if wrong format for the phone number
+                    return "Phone Formatting Wrong. Must be of the form ###-###-#### or (###) ###-####";
+                }
+            }
+            else
+            {
+                return "Phone Formatting Wrong. Must be of the form ###-###-#### or (###) ###-####";
+            }
 
-            if (!(regexp3.IsMatch(birth)))
+            //var pattern4 = @"\(<Number>\d{4}(?:-|\s*)\d{4}(?:-|\s*)\d{4}(?:-|\s*)\d{4})";
+            //var regexp4 = new System.Text.RegularExpressions.Regex(pattern4); //create a pattern for the birth date
+
+            if (credit == "")
+            { //if the credit card number wasn't entered
+                return "No credit card number entered";
+            }
+
+            //if (!(regexp4.IsMatch(credit)))
+            if (credit.Length != 19 && !(Char.IsDigit(credit[0]) && Char.IsDigit(credit[1]) && Char.IsDigit(credit[2]) && Char.IsDigit(credit[3])
+                && credit[4] == 45 && Char.IsDigit(credit[5]) && Char.IsDigit(credit[6]) && Char.IsDigit(credit[7]) && Char.IsDigit(credit[8])
+                && credit[9] == 45 && Char.IsDigit(credit[10]) && Char.IsDigit(credit[11]) && Char.IsDigit(credit[12]) && Char.IsDigit(credit[13])
+                && credit[14] == 45 && Char.IsDigit(credit[15]) && Char.IsDigit(credit[16]) && Char.IsDigit(credit[17]) && Char.IsDigit(credit[18])))
+            { //return that the credit card format was wrong
+                return "Credit Card Formatting Wrong. Must be of the form ####-####-####-####";
+            }
+
+            //var pattern6 = @"\(<Number>\d{3})";
+            //var regexp6 = new System.Text.RegularExpressions.Regex(pattern6); //create a pattern for the birth date
+            if (csv == "")
+            { //if the csv wasn't entered
+                return "No csv entered";
+            }
+
+            //if (!(regexp6.IsMatch(csv)))
+            if (!(csv.All(char.IsDigit)) || csv.Length != 3)
             { //return that the birth date format was wrong
-                return "Birth Wrong";
+                return "Credit CSV Formatting Wrong. Must be three digits";
             }
 
-            var pattern4 = @"\(<Number>\d{4}(?:-|\s*)\d{4}(?:-|\s*)\d{4}(?:-|\s*)\d{4})";
-            var regexp4 = new System.Text.RegularExpressions.Regex(pattern4); //create a pattern for the birth date
+            //if (password == "")
+            //{ //if the password wasn't entered
+            //    return "No password entered";
+            //}
 
-            if (!(regexp4.IsMatch(credit)))
-            { //return that the birth date format was wrong
-                return "Credit Wrong";
-            }
-
-            var pattern5 = @"\(<Number>\d{2}(?:-|\s*)\d{2})";
-            var regexp5 = new System.Text.RegularExpressions.Regex(pattern5); //create a pattern for the birth date
-
-            if (!(regexp5.IsMatch(exp)))
-            { //return that the birth date format was wrong
-                return "Credit EXP Wrong";
-            }
-
-            var pattern6 = @"\(<Number>\d{3})";
-            var regexp6 = new System.Text.RegularExpressions.Regex(pattern6); //create a pattern for the birth date
-
-            if (!(regexp6.IsMatch(csv)))
-            { //return that the birth date format was wrong
-                return "Credit CSV Wrong";
-            }
             return "Correct";
         }
 

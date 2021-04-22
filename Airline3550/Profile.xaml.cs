@@ -34,6 +34,7 @@ namespace Air3550
         { //Load in the user ID
             InitializeComponent();
             Identification = id; //set the global variable to the passed in ID
+            ID.Text = Identification;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -68,65 +69,72 @@ namespace Air3550
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //to return to the main menu
-            
-            int IdRow = functions.getIDRow(Identification, 1);
-            Excel.Workbook xlWorkbook = functions.database_connect();
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-            Excel.Range xlRange = xlWorksheet.UsedRange;
-            //save the information to the database
-            xlWorksheet.Cells[IdRow, 3].value = FirstName.Text;
-            xlWorksheet.Cells[IdRow, 4].value = MiddleName.Text;
-            xlWorksheet.Cells[IdRow, 5].value = LastName.Text;
-            xlWorksheet.Cells[IdRow, 6].value = Address.Text;
-            xlWorksheet.Cells[IdRow, 7].value = City.Text;
-            xlWorksheet.Cells[IdRow, 8].value = State.Text;
-            xlWorksheet.Cells[IdRow, 9].value = Zip.Text;
-            xlWorksheet.Cells[IdRow, 10].value = Email.Text;
-            xlWorksheet.Cells[IdRow, 12].value = Birth.Text;
-            xlWorksheet.Cells[IdRow, 13].value = Credit.Text;
-            xlWorksheet.Cells[IdRow, 14].value = CSV.Text;
-            xlWorksheet.Cells[IdRow, 15].value = Expiration.Text;
-            xlWorksheet.Cells[IdRow, 11].value = Phone.Text;
+            string warnings = functions.CEprofile(FirstName.Text, MiddleName.Text, LastName.Text, Address.Text, City.Text, Zip.Text, Phone.Text, Email.Text, Credit.Text, CSV.Text, Password.Text, Birth.Text, Expiration.Text);
+            if (warnings != "Correct")
+            { //if we did not enter something or entered it incorrectly
+                Warning.Text = warnings;
+            }
+            else
+            { //otherwise
+                int IdRow = functions.getIDRow(Identification, 1);
+                Excel.Workbook xlWorkbook = functions.database_connect();
+                Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+                Excel.Range xlRange = xlWorksheet.UsedRange;
+                //save the information to the database
+                xlWorksheet.Cells[IdRow, 3].value = FirstName.Text;
+                xlWorksheet.Cells[IdRow, 4].value = MiddleName.Text;
+                xlWorksheet.Cells[IdRow, 5].value = LastName.Text;
+                xlWorksheet.Cells[IdRow, 6].value = Address.Text;
+                xlWorksheet.Cells[IdRow, 7].value = City.Text;
+                xlWorksheet.Cells[IdRow, 8].value = State.Text;
+                xlWorksheet.Cells[IdRow, 9].value = Zip.Text;
+                xlWorksheet.Cells[IdRow, 10].value = Email.Text;
+                xlWorksheet.Cells[IdRow, 12].value = Birth.Text;
+                xlWorksheet.Cells[IdRow, 13].value = Credit.Text;
+                xlWorksheet.Cells[IdRow, 14].value = CSV.Text;
+                xlWorksheet.Cells[IdRow, 15].value = Expiration.Text;
+                xlWorksheet.Cells[IdRow, 11].value = Phone.Text;
 
-            if (Password.Text != "")
-            {
-                byte[] password; //to save the password
-                using (SHA512 shaM = new SHA512Managed())
-                { //save the password as a SHA512 hash
-                    password = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
+                if (Password.Text != "")
+                {
+                    byte[] password; //to save the password
+                    using (SHA512 shaM = new SHA512Managed())
+                    { //save the password as a SHA512 hash
+                        password = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
+                    }
+                    xlWorksheet.Cells[IdRow, 22].value = password.ToString();
+
+                    xlWorksheet.Cells[IdRow, 27].value = Password.Text;
                 }
-                xlWorksheet.Cells[IdRow, 22].value = password.ToString();
 
-                xlWorksheet.Cells[IdRow, 27].value = Password.Text;
-            }
-            
-            string userType = functions.getUserType(IdRow);
-            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
-            xlWorkbook.Close(); //THIS ONE TOO
-            if (userType == "Customer")
-            {
-                MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
-                this.NavigationService.Navigate(mainMenu);
-            }
-            else if (userType == "Load Engineer")
-            {
-                MainMenuLoadEngineer mainMenu = new MainMenuLoadEngineer(Identification); //create a new main menu and go to it
-                this.NavigationService.Navigate(mainMenu);
-            }
-            else if (userType == "Accountant")
-            {
-                MainMenuAccountant mainMenu = new MainMenuAccountant(Identification); //create a new main menu and go to it
-                this.NavigationService.Navigate(mainMenu);
-            }
-            else if (userType == "Marketing Manager")
-            {
-                MainMenuMarketingManager mainMenu = new MainMenuMarketingManager(Identification); //create a new main menu and go to it
-                this.NavigationService.Navigate(mainMenu);
-            }
-            else if (userType == "Flight Manager")
-            {
-                MainMenuFlightManager mainMenu = new MainMenuFlightManager(Identification); //create a new main menu and go to it
-                this.NavigationService.Navigate(mainMenu);
+                string userType = functions.getUserType(IdRow);
+                xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                xlWorkbook.Close(); //THIS ONE TOO
+                if (userType == "Customer")
+                {
+                    MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
+                    this.NavigationService.Navigate(mainMenu);
+                }
+                else if (userType == "Load Engineer")
+                {
+                    MainMenuLoadEngineer mainMenu = new MainMenuLoadEngineer(Identification); //create a new main menu and go to it
+                    this.NavigationService.Navigate(mainMenu);
+                }
+                else if (userType == "Accountant")
+                {
+                    MainMenuAccountant mainMenu = new MainMenuAccountant(Identification); //create a new main menu and go to it
+                    this.NavigationService.Navigate(mainMenu);
+                }
+                else if (userType == "Marketing Manager")
+                {
+                    MainMenuMarketingManager mainMenu = new MainMenuMarketingManager(Identification); //create a new main menu and go to it
+                    this.NavigationService.Navigate(mainMenu);
+                }
+                else if (userType == "Flight Manager")
+                {
+                    MainMenuFlightManager mainMenu = new MainMenuFlightManager(Identification); //create a new main menu and go to it
+                    this.NavigationService.Navigate(mainMenu);
+                }
             }
         }
     }
