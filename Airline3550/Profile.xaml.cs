@@ -45,21 +45,21 @@ namespace Air3550
             int rowCount = functions.getRows(1);
             int IDRow = functions.getIDRow(Identification, 1);
             ID.Text = Identification;
-            FirstName.Text = xlWorksheet.Cells[IDRow, 3].Value2.ToString(); //Set the name in the text box
-            MiddleName.Text = xlWorksheet.Cells[IDRow, 4].Value2.ToString();
-            LastName.Text = xlWorksheet.Cells[IDRow, 5].Value2.ToString();
-            Address.Text = xlWorksheet.Cells[IDRow, 6].Value2.ToString(); //Set the address in the text box
-            Phone.Text = xlWorksheet.Cells[IDRow, 11].Value2.ToString(); //Set the phone in the text box
-            City.Text = xlWorksheet.Cells[IDRow, 7].Value2.ToString(); //Set the city in the text box
-            State.Text = xlWorksheet.Cells[IDRow, 8].Value2.ToString(); //Set the state in the text box
-            Zip.Text = xlWorksheet.Cells[IDRow, 9].Value2.ToString(); //Set the Zip Code in the text box
-            Email.Text = xlWorksheet.Cells[IDRow, 10].Value2.ToString(); //Set the email in the text box
-            Birth.SelectedDate = DateTime.FromOADate(xlWorksheet.Cells[IDRow, 12].Value2); //Set the birth date in the text box
-            Credit.Text = xlWorksheet.Cells[IDRow, 13].Value2.ToString(); //Set the credit card number in the text box
-            Expiration.SelectedDate = DateTime.FromOADate(xlWorksheet.Cells[IDRow, 15].Value2); //Set the expiration date in the text box
-            CSV.Text = xlWorksheet.Cells[IDRow, 14].Value2.ToString(); //Set the Credit Card CSV in the text box
-            Credits.Text = xlWorksheet.Cells[IDRow, 16].Value2.ToString();
-            Points.Text = xlWorksheet.Cells[IDRow, 17].Value2.ToString();
+            FirstName.Text = xlRange.Cells[IDRow, 3].Value2.ToString(); //Set the name in the text box
+            MiddleName.Text = xlRange.Cells[IDRow, 4].Value2.ToString();
+            LastName.Text = xlRange.Cells[IDRow, 5].Value2.ToString();
+            Address.Text = xlRange.Cells[IDRow, 6].Value2.ToString(); //Set the address in the text box
+            Phone.Text = xlRange.Cells[IDRow, 11].Value2.ToString(); //Set the phone in the text box
+            City.Text = xlRange.Cells[IDRow, 7].Value2.ToString(); //Set the city in the text box
+            State.Text = xlRange.Cells[IDRow, 8].Value2.ToString(); //Set the state in the text box
+            Zip.Text = xlRange.Cells[IDRow, 9].Value2.ToString(); //Set the Zip Code in the text box
+            Email.Text = xlRange.Cells[IDRow, 10].Value2.ToString(); //Set the email in the text box
+            Birth.SelectedDate = DateTime.FromOADate(xlRange.Cells[IDRow, 12].Value2); //Set the birth date in the text box
+            Credit.Text = xlRange.Cells[IDRow, 13].Value2.ToString(); //Set the credit card number in the text box
+            Expiration.SelectedDate = DateTime.FromOADate(xlRange.Cells[IDRow, 15].Value2); //Set the expiration date in the text box
+            CSV.Text = xlRange.Cells[IDRow, 14].Value2.ToString(); //Set the Credit Card CSV in the text box
+            Credits.Text = xlRange.Cells[IDRow, 16].Value2.ToString();
+            Points.Text = xlRange.Cells[IDRow, 17].Value2.ToString();
             xlWorkbook.Close(true);
         }
         private void Sign_Out(object sender, RoutedEventArgs e)
@@ -85,19 +85,19 @@ namespace Air3550
                 Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                 Excel.Range xlRange = xlWorksheet.UsedRange;
                 //save the information to the database
-                xlWorksheet.Cells[IdRow, 3].value = FirstName.Text;
-                xlWorksheet.Cells[IdRow, 4].value = MiddleName.Text;
-                xlWorksheet.Cells[IdRow, 5].value = LastName.Text;
-                xlWorksheet.Cells[IdRow, 6].value = Address.Text;
-                xlWorksheet.Cells[IdRow, 7].value = City.Text;
-                xlWorksheet.Cells[IdRow, 8].value = State.Text;
-                xlWorksheet.Cells[IdRow, 9].value = Zip.Text;
-                xlWorksheet.Cells[IdRow, 10].value = Email.Text;
-                xlWorksheet.Cells[IdRow, 12].value = Birth.Text;
-                xlWorksheet.Cells[IdRow, 13].value = Credit.Text;
-                xlWorksheet.Cells[IdRow, 14].value = CSV.Text;
-                xlWorksheet.Cells[IdRow, 15].value = Expiration.Text;
-                xlWorksheet.Cells[IdRow, 11].value = Phone.Text;
+                xlRange.Cells[IdRow, 3].value = FirstName.Text;
+                xlRange.Cells[IdRow, 4].value = MiddleName.Text;
+                xlRange.Cells[IdRow, 5].value = LastName.Text;
+                xlRange.Cells[IdRow, 6].value = Address.Text;
+                xlRange.Cells[IdRow, 7].value = City.Text;
+                xlRange.Cells[IdRow, 8].value = State.Text;
+                xlRange.Cells[IdRow, 9].value = Zip.Text;
+                xlRange.Cells[IdRow, 10].value = Email.Text;
+                xlRange.Cells[IdRow, 12].value = Birth.Text;
+                xlRange.Cells[IdRow, 13].value = Credit.Text;
+                xlRange.Cells[IdRow, 14].value = CSV.Text;
+                xlRange.Cells[IdRow, 15].value = Expiration.Text;
+                xlRange.Cells[IdRow, 11].value = Phone.Text;
 
                 if ((Password.Text != "Enter nothing to leave unchanged") || (Password.Text != ""))
                 { //we can't unencrypt a SHA512 Hash so the user not entering a password indicates that they want to leave it blank
@@ -106,9 +106,14 @@ namespace Air3550
                     { //save the password as a SHA512 hash
                         password = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
                     }
-                    xlWorksheet.Cells[IdRow, 22].value = password.ToString();
+                    StringBuilder hashString = new StringBuilder(); //convert the hash into a string of itself
+                    for (int i = 0; i < password.Length; i++)
+                    {
+                        hashString.Append(password[i].ToString("X2"));
+                    }
+                    xlRange.Cells[IdRow, 22].value = hashString.ToString();
 
-                    xlWorksheet.Cells[IdRow, 27].value = Password.Text;
+                    xlRange.Cells[IdRow, 27].value = Password.Text;
                 }
 
                 string userType = functions.getUserType(IdRow);

@@ -43,7 +43,7 @@ namespace Air3550
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
             int rowCount = functions.getRows(1);
-            ID.Text = xlWorksheet.Cells[IDRow, 1].Value2.ToString(); //display the user's ID number
+            ID.Text = xlRange.Cells[IDRow, 1].Value2.ToString(); //display the user's ID number
 
             xlWorkbook.Close(true);
         }
@@ -62,14 +62,20 @@ namespace Air3550
                 Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                 Excel.Range xlRange = xlWorksheet.UsedRange;
                 int rowCount = functions.getRows(1);
-                byte[] password; //to save the password
+                byte[] passwordHash; //to save the password
                 using (SHA512 shaM = new SHA512Managed())
                 { //save the password as a SHA512 hash
-                    password = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password1.Text));
+                    passwordHash = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password1.Text));
                 }
-                xlWorksheet.Cells[IDRow, 22].value = password.ToString();
+                StringBuilder hashString = new StringBuilder(); //convert the hash into a string of itself
+                for (int i = 0; i < passwordHash.Length; i++)
+                {
+                    hashString.Append(passwordHash[i].ToString("X2"));
+                }
+                string password = hashString.ToString();
+                xlRange.Cells[IDRow, 22].value = password;
 
-                xlWorksheet.Cells[IDRow, 27].value = Password1.Text;
+                xlRange.Cells[IDRow, 27].value = Password1.Text;
 
                 xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
                 xlWorkbook.Close(); //THIS ONE TOO

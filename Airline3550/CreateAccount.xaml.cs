@@ -28,7 +28,6 @@ namespace Air3550
         public CreateAccount()
         {
             InitializeComponent();
-            State.Text = "Ohio";
             //create the excel variables
             
             Excel.Workbook xlWorkbook = functions.database_connect();
@@ -63,7 +62,7 @@ namespace Air3550
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //click to create the account
             string warnings = functions.CEprofile(FirstName.Text, MiddleName.Text, LastName.Text, Address.Text, City.Text, Zip.Text, Phone.Text, Email.Text, Credit.Text, CSV.Text, Password.Text, Birth.Text, Expiration.Text);
-            if (warnings != "Correct" && Password.Text == "")
+            if (warnings != "Correct")
             { //if we did not enter something or entered it incorrectly
                 Warning.Text = warnings;
             }
@@ -75,32 +74,39 @@ namespace Air3550
             Excel.Range xlRange = xlWorksheet.UsedRange;
             int rowCount = xlRange.Rows.Count;
             int colCount = xlRange.Columns.Count;
-            byte[] password; //to save the password
+            byte[] passwordHash; //to save the password
             using (SHA512 shaM = new SHA512Managed())
             { //save the password as a SHA512 hash
-                password = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
+                passwordHash = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
             }
-            xlWorksheet.Cells[rowCount + 1, 1].value = Identification;
-            xlWorksheet.Cells[rowCount + 1, 2].value = "Customer";
-            xlWorksheet.Cells[rowCount + 1, 3].value = FirstName.Text;
-            xlWorksheet.Cells[rowCount + 1, 4].value = MiddleName.Text;
-            xlWorksheet.Cells[rowCount + 1, 5].value = LastName.Text;
-            xlWorksheet.Cells[rowCount + 1, 6].value = Address.Text;
-            xlWorksheet.Cells[rowCount + 1, 7].value = City.Text;
-            xlWorksheet.Cells[rowCount + 1, 8].value = State.Text;
-            xlWorksheet.Cells[rowCount + 1, 9].value = Zip.Text;
-            xlWorksheet.Cells[rowCount + 1, 10].value = Email.Text;
-            xlWorksheet.Cells[rowCount + 1, 11].value = Phone.Text;
-            xlWorksheet.Cells[rowCount + 1, 12].value = Birth.Text;
-            xlWorksheet.Cells[rowCount + 1, 13].value = Credit.Text;
-            xlWorksheet.Cells[rowCount + 1, 14].value = CSV.Text;
-            xlWorksheet.Cells[rowCount + 1, 15].value = Expiration.Text;
-            xlWorksheet.Cells[rowCount + 1, 22].value = password.ToString();
-            xlWorksheet.Cells[rowCount + 1, 27].value = Password.Text;
-            xlWorksheet.Cells[rowCount + 1, 16].value = "0"; //Credit
-            xlWorksheet.Cells[rowCount + 1, 17].value = "0"; //Points
-            xlWorksheet.Cells[rowCount + 1, 18].value = "0"; //Money Spent
-            xlWorkbook.Close(true);
+            StringBuilder hashString = new StringBuilder(); //convert the hash into a string of itself
+            for (int i = 0; i < passwordHash.Length; i++)
+            {
+                hashString.Append(passwordHash[i].ToString("X2"));
+            }
+            string password = hashString.ToString();
+            xlRange.Cells[rowCount + 1, 1].value = Identification;
+                xlRange.Cells[rowCount + 1, 2].value = "Customer";
+                xlRange.Cells[rowCount + 1, 3].value = FirstName.Text;
+                xlRange.Cells[rowCount + 1, 4].value = MiddleName.Text;
+                xlRange.Cells[rowCount + 1, 5].value = LastName.Text;
+                xlRange.Cells[rowCount + 1, 6].value = Address.Text;
+                xlRange.Cells[rowCount + 1, 7].value = City.Text;
+                xlRange.Cells[rowCount + 1, 8].value = State.Text;
+                xlRange.Cells[rowCount + 1, 9].value = Zip.Text;
+                xlRange.Cells[rowCount + 1, 10].value = Email.Text;
+                xlRange.Cells[rowCount + 1, 11].value = Phone.Text;
+                xlRange.Cells[rowCount + 1, 12].value = Birth.Text;
+                xlRange.Cells[rowCount + 1, 13].value = Credit.Text;
+                xlRange.Cells[rowCount + 1, 14].value = CSV.Text;
+                xlRange.Cells[rowCount + 1, 15].value = Expiration.Text;
+                xlRange.Cells[rowCount + 1, 22].value = password;
+                xlRange.Cells[rowCount + 1, 27].value = Password.Text;
+                xlRange.Cells[rowCount + 1, 16].value = "0"; //Credit
+                xlRange.Cells[rowCount + 1, 17].value = "0"; //Points
+                xlRange.Cells[rowCount + 1, 18].value = "0"; //Money Spent
+            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+            xlWorkbook.Close();
 
             MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
             this.NavigationService.Navigate(mainMenu);
