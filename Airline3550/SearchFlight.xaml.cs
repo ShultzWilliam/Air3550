@@ -73,9 +73,14 @@ namespace Air3550
                 int[] twoD = new int[rowCount]; //use to record which flight returned is a round trip
 
                 int numOfFlights = 0; //the number of flights in the array
-                int attendance; //the attendance of the flight
-                string plane; //the plane ID
-                DateTime foundDate;
+                int attendance, attendance2; //the attendance of the flight
+                string plane, plane2; //the plane ID
+                DateTime foundDate, foundDate2, foundEndDate, earliestEndDate;
+                double foundTime, foundTime2, earliestEndTime;
+                earliestEndDate = DateTime.Today;
+                earliestEndTime = 0;
+                string flights = "empty"; //string to save the flights we currently have
+
 
                 //need to adjust for two leg flight and round trip
 
@@ -84,20 +89,124 @@ namespace Air3550
                     //string userType = xlRange.Cells[IDcolumn, 2].Value2.ToString(); //get the user type from the database
                     //origin is 5, destination is 6, date is 7th row
                     foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
+                    
                     if (foundDate >= startDate && foundDate <= endDate)
                     { //if the flight takes place between the start and end date
                         if (xlRange.Cells[i, 5].Value2.ToString() == origin && xlRange.Cells[i, 6].Value2.ToString() == destination)
                         { //if the origin and destination match
-                            attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                            foundTime = Convert.ToDouble(xlRange.Cells[i, 11].Value2.ToString()); //find the end date and time
+                            foundEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                            attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString()); //along with the attendance and plane
                             plane = xlRange.Cells[i, 14].Value2.ToString();
-                            if (functions.fullFlight(attendance, plane) == false)
-                            { //if the flight isn't full
+                            if ((functions.fullFlight(attendance, plane) == false) && ((flights == "empty" || !(flights.Contains(xlRange.Cells[i, 1].Value2.ToString())))))
+                            { //if the flight isn't full and the flight isn't already in the array
                                 flight[numOfFlights, 0] = i; //save the index of the flight
-                                numOfFlights++;
+                                numOfFlights++; //increment the number of flights
+                                if (numOfFlights == 1)
+                                { //set the initial value of earliestEndTime and earliestEndDate
+                                    earliestEndTime = Convert.ToDouble(xlRange.Cells[i, 11].Value2.ToString());
+                                    earliestEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                                    flights = xlRange.Cells[i, 1].Value2.ToString();
+                                }
+                                else if (numOfFlights > 1 && (foundEndDate < earliestEndDate) && (foundTime < earliestEndTime))
+                                { //set the new earliest end time and date
+                                    earliestEndTime = Convert.ToDouble(xlRange.Cells[i, 11].Value2.ToString());
+                                    earliestEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                                    flights = flights + " " + xlRange.Cells[i, 1].Value2.ToString();
+                                }
+                            }
+                        }
+                        else if (xlRange.Cells[i, 5].Value2.ToString() == origin && xlRange.Cells[i, 6].Value2.ToString() != destination)
+                        { //if the origin matches but the destination doesn't
+                            string leg = xlRange.Cells[i, 6].Value2.ToString(); //save the value of the leg
+                            int legs = 0; //count the number of second locations we have
+                            foundTime = Convert.ToDouble(xlRange.Cells[i, 11].Value2.ToString()); //save the end time and date of the first flight
+                            foundEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                            attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString()); //along with the plane and attendance
+                            plane = xlRange.Cells[i, 14].Value2.ToString();
+                            if ((functions.fullFlight(attendance, plane) == false) && ((flights == "empty" || !(flights.Contains(xlRange.Cells[i, 1].Value2.ToString())))))
+                            { //if the flight isn't full
+                                for (int j = 2; j < rowCount; j++)
+                                { //go through the list again looking for 2nd legs
+                                    foundDate2 = DateTime.FromOADate(xlRange.Cells[j, 7].Value2); //get the date of the 2nd flight
+                                    foundTime2 = Convert.ToDouble(xlRange.Cells[j, 8].Value2.ToString()); //get the start time as well
+                                    if (foundDate2 >= startDate && foundDate2 <= endDate && (foundDate2 > foundDate || (foundDate2 == foundDate && foundTime2 > foundTime)))
+                                    { //if the flight takes place between the start and end date and is after the first leg flight
+                                        if (xlRange.Cells[j, 5].Value2.ToString() == leg && xlRange.Cells[j, 6].Value2.ToString() == destination)
+                                        { //if the origin and destination match
+                                            attendance2 = Int32.Parse(xlRange.Cells[j, 16].Value2.ToString());
+                                            plane2 = xlRange.Cells[j, 14].Value2.ToString(); //save the second flight's plane and attendance
+                                            if ((functions.fullFlight(attendance2, plane2) == false) && ((flights == "empty" || !(flights.Contains(xlRange.Cells[j, 1].Value2.ToString())))))
+                                            { //if the flight isn't full
+                                                if (legs == 0)
+                                                { //if this is the first leg
+                                                    flight[numOfFlights, 0] = i; //save the index of the flight
+                                                    numOfFlights++;
+                                                    flight[numOfFlights, 0] = j; //save the index of the second flight
+                                                    numOfFlights++;
+                                                    legs++; //increment the number of legs
+
+                                                    if (numOfFlights == 1)
+                                                    { //set the initial value of earliestEndTime and earliestEndDate
+                                                        earliestEndTime = Convert.ToDouble(xlRange.Cells[i, 11].Value2.ToString());
+                                                        earliestEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                                                        flights = xlRange.Cells[i, 1].Value2.ToString() + " " + xlRange.Cells[j, 1].Value2.ToString();
+                                                    }
+                                                    else if (numOfFlights > 1 && (foundEndDate < earliestEndDate) && (foundTime < earliestEndTime))
+                                                    { //set the new earliest end time and date
+                                                        earliestEndTime = Convert.ToDouble(xlRange.Cells[i, 11].Value2.ToString());
+                                                        earliestEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                                                        flights = flights + " " +  xlRange.Cells[i, 1].Value2.ToString() + " " + xlRange.Cells[j, 1].Value2.ToString();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    flight[numOfFlights, 0] = j; //save the index of the flight
+                                                    numOfFlights++;
+                                                    legs++;
+                                                    flights = flights + " " + xlRange.Cells[j, 1].Value2.ToString();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
+
+                if (((bool)RoundTrip.IsChecked == true) && (numOfFlights >= 1))
+                { //if round trip is checked, loop back through and flights back that take place after the earlies flight to
+                    for (int i = 2; i <= rowCount; i++)
+                    { //Find the flights going to and from the origin to the destination
+                      //origin is 5, destination is 6, date is 7th row
+                        foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
+
+                        if (foundDate >= startDate && foundDate <= endDate)
+                        { //if the flight takes place between the start and end date
+                            if (xlRange.Cells[i, 5].Value2.ToString() == destination && xlRange.Cells[i, 6].Value2.ToString() == origin)
+                            { //if the origin and destination match
+                                foundTime = Convert.ToDouble(xlRange.Cells[i, 8].Value2.ToString());
+                                foundEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                                attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                                if ((foundEndDate > earliestEndDate) || (foundEndDate == earliestEndDate) && (earliestEndTime < foundTime))
+                                {
+                                    plane = xlRange.Cells[i, 14].Value2.ToString();
+                                    if (functions.fullFlight(attendance, plane) == false)
+                                    { //if the flight isn't full
+                                        flight[numOfFlights, 0] = i; //save the index of the flight
+                                        numOfFlights++;
+                                        flights = flights + " " + xlRange.Cells[i, 1].Value2.ToString();
+                                        
+                                    }
+                                }
+                                
+                            }
+
+                        }
+                    }
+                }
+
 
                 if (endDate < DateTime.Today)
                 {
@@ -114,8 +223,8 @@ namespace Air3550
                         var item = new flightItem
                         {
                             ID = xlRange.Cells[flight[i, 0], 1].Value2.ToString(),
-                            Origin = Start.Text,
-                            Destination = End.Text,
+                            Origin = functions.getAirport(xlRange.Cells[flight[i, 0], 5].Value2.ToString()),
+                            Destination = functions.getAirport(xlRange.Cells[flight[i, 0], 6].Value2.ToString()),
                             Departure = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 7].Value2).ToString("MM/dd/yyyy") + " " + DateTime.FromOADate(xlRange.Cells[flight[i, 0], 8].Value2).ToString("h:mm tt"),
                             Arrival = DateTime.FromOADate(xlRange.Cells[flight[i, 0], 10].Value2).ToString("MM/dd/yyyy") + " " + DateTime.FromOADate(xlRange.Cells[flight[i, 0], 11].Value2).ToString("h:mm tt"),
                             Price = "$" + xlRange.Cells[flight[i, 0], 17].Value2.ToString()

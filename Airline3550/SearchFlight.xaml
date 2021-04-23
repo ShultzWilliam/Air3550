@@ -60,7 +60,7 @@
         <DatePicker Name ="Departure" HorizontalAlignment="Left" Height="23" Margin="161,83,0,0" VerticalAlignment="Top" Width="175"/>
         <DatePicker Name ="Arrival" HorizontalAlignment="Left" Height="23" Margin="420,83,0,0" VerticalAlignment="Top" Width="175"/>
         <Button Content="Search" HorizontalAlignment="Left" Margin= "161,108,0,0" VerticalAlignment="Top" Width="100" Click="Search_Click"/>
-        <CheckBox Content="Round Trip" HorizontalAlignment="Left" Margin="420,108,0,0" VerticalAlignment="Top"/>
+        <CheckBox Name ="RoundTrip" Content="Round Trip" HorizontalAlignment="Left" Margin="420,108,0,0" VerticalAlignment="Top"/>
         <DataGrid Name ="Flights" HorizontalAlignment="Left" Height="250" Margin="100,133,0,0" VerticalAlignment="Top" Width="600">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Flight ID"  Binding="{Binding ID}"/>
