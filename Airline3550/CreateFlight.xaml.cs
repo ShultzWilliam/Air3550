@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Security.Cryptography;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Air3550
 {
@@ -45,10 +47,89 @@ namespace Air3550
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //to create the flight
 
+            int NumAirports = 14;
+
             //function to save the flight to the database
             Functions functions = new Functions();
-            if (functions.isNum(Price.Text) && functions.isTime(Arrival_Time.Text) && functions.isTime(Departure_Time.Text))
+            if (functions.isNum(Price.Text) && functions.isTime(Arrival_Time.Text) && functions.isTime(Departure_Time.Text)
+                && Departure_Date.SelectedDate.HasValue && Arrival_Date.SelectedDate.HasValue)
             { //if the inputs are correct
+
+                //Add flight to excel doc
+                //create the excel variables
+                Excel.Workbook xlWorkbook = functions.database_connect();
+                Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+                Excel._Worksheet xlWorksheetAir = xlWorkbook.Sheets[4];
+                Excel.Range xlRange = xlWorksheet.UsedRange;
+                Excel.Range xlRangeAir = xlWorksheetAir.UsedRange;
+
+                //Get distance from Airport table
+                string sDistance = null;
+                int rowCount = functions.getRows(2);
+                int DistanceRow = 2;
+                string Location = Origin.Text;
+                string Test;
+
+                for (int i = 2; i <= NumAirports; i++)
+                {//Once origin row is found
+                    Test = xlRangeAir.Cells[i, 4].Value2.ToString();
+                    if (xlRangeAir.Cells[i, 4].Value2.ToString() == Location)
+                    {//Look for ending location
+                        DistanceRow = i;
+                        break;
+                    }
+                }
+
+                Location = Destination.Text;
+                for (int j = 10; j < j + NumAirports; j++)
+                {//Once ending location is found
+                    Test = xlRangeAir.Cells[1, j].Value2.ToString();
+                    if (xlRangeAir.Cells[1, j].Value2.ToString() == Location)
+                    {//Get distance
+                        sDistance = xlRangeAir.Cells[DistanceRow, j].Value2.ToString();
+                        break;
+                    }
+                }
+
+
+                string flightID = "opsie";
+                bool taken = true;
+                Random r = new Random(); //create a random number
+                                         //we need to create a random six digit ID number that hasn't been taken already
+                                         //therefore, we'll create a random number, loop through the users table, compare,
+                                         //and, if it hasn't been taken, assign it. Otherwise, we'll try again
+                while (taken == true)
+                {
+                    taken = false;
+                    int id;
+                    id = r.Next(100000, 999999); //get a random number
+                    flightID = id.ToString(); //convert it to a string
+                    for (int i = 1; i <= rowCount; i++)
+                    {
+                        if (xlRange.Cells[i, 1].Value2.ToString() == flightID)
+                        {
+                            taken = true;
+                        }
+                    }
+                }
+
+                xlRange.Cells[rowCount, 1] = flightID;
+
+                xlRange.Cells[rowCount, 5] = Origin.Text;
+                xlRange.Cells[rowCount, 6].Value2 = Destination.Text;
+                //xlRange.Cells[rowCount, 7].value = Departure_Date.SelectedDate.ToString();
+                xlRange.Cells[rowCount, 8].Value2 = Departure_Time.Text;
+                xlRange.Cells[rowCount, 9].Value2 = Departure_Terminal.Text;
+                xlRange.Cells[rowCount, 10].Value2 = Arrival_Date.SelectedDate.ToString();
+                //xlRange.Cells[rowCount, 11].value = Arrival_Time.Text;
+                xlRange.Cells[rowCount, 12].Value2 = Arrival_Terminal.Text;
+                xlRange.Cells[rowCount, 13].Value2 = sDistance;
+
+                xlRange.Cells[rowCount, 17].Value2 = Price.Text;
+
+                xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                xlWorkbook.Close(); //THIS ONE TOO
+
                 MainMenuLoadEngineer mainMenu = new MainMenuLoadEngineer(Identification); //create a new main menu and go to it
                 this.NavigationService.Navigate(mainMenu);
             }
@@ -56,9 +137,13 @@ namespace Air3550
             { //if the price input is incorrect
                 Warning.Text = "Incorrect price input";
             }
-            else
+            else if (!(functions.isTime(Arrival_Time.Text) && functions.isTime(Departure_Time.Text)))
             { //if the time input is incorrect
                 Warning.Text = "Incorrect time input";
+            }
+            else
+            {
+                Warning.Text = "Missing Destination or Arrival Location";
             }
 
         }
