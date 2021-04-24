@@ -46,16 +46,16 @@ namespace Air3550
 
             //load in the information to the page
             FlightID.Text = flightID;
-            Origin.Text = functions.getAirport(xlWorksheet.Cells[IDRow, 5].Value2.ToString());
-            Destination.Text = functions.getAirport(xlWorksheet.Cells[IDRow, 6].Value2.ToString());
+            Origin.Text = functions.getAirport(xlRange.Cells[IDRow, 5].Value2.ToString());
+            Destination.Text = functions.getAirport(xlRange.Cells[IDRow, 6].Value2.ToString());
             Departure_Date.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 7].Value2)).ToString("MM/dd/yyyy");
-            Departure_Time.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 8].Value2)).ToString("h:mm tt");
-            Departure_Terminal.Text = xlWorksheet.Cells[IDRow, 9].Value2.ToString();
+            Departure_Time.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 8].Value2)).ToString("h:mm tt");
+            Departure_Terminal.Text = xlRange.Cells[IDRow, 9].Value2.ToString();
             Arrival_Date.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 10].Value2)).ToString("MM/dd/yyyy");
-            Arrival_Time.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 11].Value2)).ToString("h:mm tt");
-            Arrival_Terminal.Text = xlWorksheet.Cells[IDRow, 12].Value2.ToString();
-            Price.Text = "$" + xlWorksheet.Cells[IDRow, 17].Value2.ToString();
-            Plane.Text = xlWorksheet.Cells[IDRow, 14].Value2.ToString();
+            Arrival_Time.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 11].Value2)).ToString("h:mm tt");
+            Arrival_Terminal.Text = xlRange.Cells[IDRow, 12].Value2.ToString();
+            Price.Text = "$" + xlRange.Cells[IDRow, 17].Value2.ToString();
+            Plane.Text = xlRange.Cells[IDRow, 14].Value2.ToString();
             xlWorkbook.Close(true);
         }
 
@@ -87,28 +87,28 @@ namespace Air3550
                     if (functions.isEmpty(1, userIDRow, 19))
                     { //if the user does not have any flights booked
                         userFlights = flightID; //just save the flight ID in
-                        xlWorksheet1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                        xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
                     }
                     else
                     { //if the user does have some flights
-                        userFlights = xlWorksheet1.Cells[userIDRow, 19].Value2.toString() + " " + flightID; //read in the users flights
-                        xlWorksheet1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                        userFlights = xlRange1.Cells[userIDRow, 19].Value2.toString() + " " + flightID; //read in the users flights
+                        xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
                     }
                     if (functions.isEmpty(2, flightIDRow, 15))
                     { //if the flight does not have any passengers
                         flightPassengers = flightID; //just save the flight ID in
-                        xlWorksheet2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
                     }
                     else
                     { //if the flight does
-                        flightPassengers = xlWorksheet2.Cells[flightIDRow, 15].Value2.toString() + " " + Identification; //read in the users flights
-                        xlWorksheet2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.toString() + " " + Identification; //read in the users flights
+                        xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
                     }
-                    xlWorksheet1.Cells[userIDRow, 16].Value = (credit - Double.Parse(Price.Text)).ToString();
+                    xlRange1.Cells[userIDRow, 16].Value = (credit - Double.Parse(Price.Text)).ToString();
 
-                    double profit = Double.Parse(xlWorksheet2.Cells[flightIDRow, 18].Value2.ToString());
+                    double profit = Double.Parse(xlRange2.Cells[flightIDRow, 18].Value2.ToString());
                     profit = profit + Double.Parse(Price.Text);
-                    xlWorksheet2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight
+                    xlRange2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight
 
                     xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
                     xlWorkbook.Close(); //THIS ONE TOO
@@ -124,35 +124,35 @@ namespace Air3550
                 if (functions.isEmpty(1, userIDRow, 19))
                 { //if the user does not have any flights booked
                     userFlights = flightID; //just save the flight ID in
-                    xlWorksheet1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                    xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
                 }
                 else
                 { //if the user does have some flights
-                    userFlights = xlWorksheet1.Cells[userIDRow, 19].Value2.toString() + " " + flightID; //read in the users flights
-                    xlWorksheet1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                    userFlights = xlRange1.Cells[userIDRow, 19].Value2.toString() + " " + flightID; //read in the users flights
+                    xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
                 }
                 if (functions.isEmpty(2, flightIDRow, 15))
                 { //if the flight does not have any passengers
                     flightPassengers = flightID; //just save the flight ID in
-                    xlWorksheet2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                    xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
                 }
                 else
                 { //if the flight does
-                    flightPassengers = xlWorksheet2.Cells[flightIDRow, 15].Value2.toString() + " " + Identification; //read in the users flights
-                    xlWorksheet2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                    flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.toString() + " " + Identification; //read in the users flights
+                    xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
                 }
 
-                double moneySpent = Double.Parse(xlWorksheet1.Cells[userIDRow, 18].Value2.ToString());
+                double moneySpent = Double.Parse(xlRange1.Cells[userIDRow, 18].Value2.ToString());
                 moneySpent = moneySpent + Double.Parse(Price.Text);
-                xlWorksheet1.Cells[userIDRow, 18].Value = moneySpent.ToString(); //update the amount of money the user haps spent
+                xlRange1.Cells[userIDRow, 18].Value = moneySpent.ToString(); //update the amount of money the user haps spent
 
-                double profit = Double.Parse(xlWorksheet2.Cells[flightIDRow, 18].Value2.ToString());
+                double profit = Double.Parse(xlRange2.Cells[flightIDRow, 18].Value2.ToString());
                 profit = profit + Double.Parse(Price.Text);
-                xlWorksheet2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight
+                xlRange2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight
 
                 //(do they only earn points after the flight takes off?)
-                double points = Double.Parse(xlWorksheet1.Cells[userIDRow, 17].Value2.ToString()) + double.Parse(Price.Text) / 10;
-                xlWorksheet1.Cells[userIDRow, 17].Value = points.ToString(); //give them points for their payment
+                double points = Double.Parse(xlRange1.Cells[userIDRow, 17].Value2.ToString()) + double.Parse(Price.Text) / 10;
+                xlRange1.Cells[userIDRow, 17].Value = points.ToString(); //give them points for their payment
 
 
                 //do the same for the airport!!!!!
@@ -179,24 +179,24 @@ namespace Air3550
                     if (functions.isEmpty(1, userIDRow, 19))
                     { //if the user does not have any flights booked
                         userFlights = flightID; //just save the flight ID in
-                        xlWorksheet1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                        xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
                     }
                     else
                     { //if the user does have some flights
-                        userFlights = xlWorksheet1.Cells[userIDRow, 19].Value2.toString() + " " + flightID; //read in the users flights
-                        xlWorksheet1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                        userFlights = xlRange1.Cells[userIDRow, 19].Value2.toString() + " " + flightID; //read in the users flights
+                        xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
                     }
                     if (functions.isEmpty(2, flightIDRow, 15))
                     { //if the flight does not have any passengers
                         flightPassengers = flightID; //just save the flight ID in
-                        xlWorksheet2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
                     }
                     else
                     { //if the flight does
-                        flightPassengers = xlWorksheet2.Cells[flightIDRow, 15].Value2.toString() + " " + Identification; //read in the users flights
-                        xlWorksheet2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.toString() + " " + Identification; //read in the users flights
+                        xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
                     }
-                    xlWorksheet1.Cells[userIDRow, 17].Value = (points - Double.Parse(Price.Text)*100).ToString();
+                    xlRange1.Cells[userIDRow, 17].Value = (points - Double.Parse(Price.Text)*100).ToString();
                     xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
                     xlWorkbook.Close(); //THIS ONE TOO
                                         //MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it

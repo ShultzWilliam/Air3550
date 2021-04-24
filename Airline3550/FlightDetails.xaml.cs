@@ -49,16 +49,16 @@ namespace Air3550
 
             //load in the information to the page
             FlightID.Text = flightID;
-            Origin.Text = functions.getAirport(xlWorksheet.Cells[IDRow, 5].Value2.ToString());
-            Destination.Text = functions.getAirport(xlWorksheet.Cells[IDRow, 6].Value2.ToString());
+            Origin.Text = functions.getAirport(xlRange.Cells[IDRow, 5].Value2.ToString());
+            Destination.Text = functions.getAirport(xlRange.Cells[IDRow, 6].Value2.ToString());
             Departure_Date.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 7].Value2)).ToString("MM/dd/yyyy");
-            Departure_Time.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 8].Value2)).ToString("h:mm tt");
-            Departure_Terminal.Text = xlWorksheet.Cells[IDRow, 9].Value2.ToString();
+            Departure_Time.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 8].Value2)).ToString("h:mm tt");
+            Departure_Terminal.Text = xlRange.Cells[IDRow, 9].Value2.ToString();
             Arrival_Date.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 10].Value2)).ToString("MM/dd/yyyy");
-            Arrival_Time.Text = (DateTime.FromOADate(xlWorksheet.Cells[IDRow, 11].Value2)).ToString("h:mm tt");
-            Arrival_Terminal.Text = xlWorksheet.Cells[IDRow, 12].Value2.ToString();
-            Price.Text = "$" + xlWorksheet.Cells[IDRow, 17].Value2.ToString();
-            Plane.Text = xlWorksheet.Cells[IDRow, 14].Value2.ToString();
+            Arrival_Time.Text = (DateTime.FromOADate(xlRange.Cells[IDRow, 11].Value2)).ToString("h:mm tt");
+            Arrival_Terminal.Text = xlRange.Cells[IDRow, 12].Value2.ToString();
+            Price.Text = "$" + xlRange.Cells[IDRow, 17].Value2.ToString();
+            Plane.Text = xlRange.Cells[IDRow, 14].Value2.ToString();
             xlWorkbook.Close(true);
         }
         private void Cancel_Flight(object sender, RoutedEventArgs e)

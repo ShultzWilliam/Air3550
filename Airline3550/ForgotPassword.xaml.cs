@@ -43,7 +43,7 @@ namespace Air3550
             string email = Email.Text;
             for (int i = 1; i <= rowCount; i++)
             { //go through the rows and find the email address
-                if (email == xlWorksheet.Cells[i, 10].Value2.ToString())
+                if (email == xlRange.Cells[i, 10].Value2.ToString())
                 { //if we find the email address
                     IDRow = i;
                 }

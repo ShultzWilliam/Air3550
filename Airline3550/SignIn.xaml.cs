@@ -42,7 +42,7 @@ namespace Air3550
             int colCount = xlRange.Columns.Count;
             int IDrow = 0;
             byte[] passwordHash;
-            byte[] foundPassword;
+            string foundPassword;
 
             String id, password; //initialize strings for the ID and Password
             //bool IDfound = false;
@@ -52,22 +52,24 @@ namespace Air3550
             { //save the password as a SHA512 hash
                 passwordHash = shaM.ComputeHash(Encoding.UTF8.GetBytes(Password.Text));
             }
-            password = passwordHash.ToString();
+            StringBuilder hashString = new StringBuilder(); //convert the hash into a string of itself
+            for (int i = 0; i < passwordHash.Length; i++)
+            {
+                hashString.Append(passwordHash[i].ToString("X2"));
+            }
+            password = hashString.ToString();
 
-            
+
             IDrow = functions.getIDRow(id, 1);
 
             if (IDrow != 0)
             { //grab the password from the database
                 // byte[] data = sha512Managed.ComputeHash(Encoding.UTF8.GetBytes(input));
-                password = xlRange.Cells[IDrow, 22].Value2;
-                using (SHA512 shaM = new SHA512Managed())
-                { //save the password as a SHA512 hash
-                    foundPassword = shaM.ComputeHash(Encoding.UTF8.GetBytes(password));
-                }
+                foundPassword = xlRange.Cells[IDrow, 22].Value2;
+                
                 xlWorkbook.Close(true);
                 
-                if ((foundPassword.ToString() == passwordHash.ToString()))
+                if ((foundPassword == password))
                 {
                     string userType = functions.getUserType(IDrow); //get the user type from the database
                     if (userType == "Customer")
