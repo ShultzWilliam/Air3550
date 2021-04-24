@@ -57,6 +57,7 @@
         <TextBlock Name ="Arrival_Time" HorizontalAlignment="Left" Height="23" Margin="380,158,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
         <TextBlock Name ="Arrival_Terminal" HorizontalAlignment="Left" Height="23" Margin="575,158,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
         <TextBlock Name ="Price" HorizontalAlignment="Left" Height="23" Margin="161,183,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" />
-        <TextBlock Name ="Plane" HorizontalAlignment="Left" Height="23" Margin="161,208,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" Loaded="Window_Loaded"/>        
+        <TextBlock Name ="Plane" HorizontalAlignment="Left" Height="23" Margin="161,208,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" Loaded="Window_Loaded"/>
+        <Button Content="Print User Record" HorizontalAlignment="Left" Margin="350,245,0,0" VerticalAlignment="Top" Width="100" Click="Print_Record"/>
     </Grid>
 </Page>

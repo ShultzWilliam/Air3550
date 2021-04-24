@@ -56,7 +56,7 @@ namespace Air3550
             origin = functions.getAirportCode(Start.Text);
             destination = functions.getAirportCode(End.Text);
             
-            if (!(origin == "" || destination == "" || Departure.Text == "" || Arrival.Text == "" || Departure.Text == "Select a date" || Arrival.Text == "Select a date"))
+            if ((!(origin == "" || destination == "" || Departure.Text == "" || Arrival.Text == "" || Departure.Text == "Select a date" || Arrival.Text == "Select a date")) && Arrival.SelectedDate >= DateTime.Today && Departure.SelectedDate >= DateTime.Today)
             { //if origin, destination, startDate, and endDate have all been assigned values
                 DateTime startDate = Convert.ToDateTime(Departure.Text);
                 DateTime endDate = Convert.ToDateTime(Arrival.Text);
@@ -237,7 +237,7 @@ namespace Air3550
             }
             else
             { //if one of them has not been set
-                Warning.Text = "Assign values for origin, destination, and departure and arrival dates";
+                Warning.Text = "Assign values for origin, destination, and departure and arrival dates that are after today";
             }
         }
         private void Submit_Click(object sender, RoutedEventArgs e)

@@ -23,6 +23,7 @@ namespace Air3550
     public partial class FlightHistory : Page
     {
         string flightID, identification; //initialize global variables
+        int userIDRow;
         Functions functions = new Functions();
 
         public FlightHistory()
@@ -55,7 +56,7 @@ namespace Air3550
             Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[2];
             Excel.Range xlRange2 = xlWorksheet2.UsedRange;
             int rowCount2 = functions.getRows(2);
-            int userIDRow = functions.getIDRow(identification, 1); //get the ID Rows for the flight and user IDs
+            userIDRow = functions.getIDRow(identification, 1); //get the ID Rows for the flight and user IDs
             int[] flightArray = new int[rowCount2];
             int numOfFlights = 0;
             if (functions.isEmpty(1, userIDRow, 21) == false)
@@ -108,16 +109,23 @@ namespace Air3550
         { //Go to the selected flight
             flightID = FlightID.Text;
 
-            //check if the selected flight exists
+            //create the excel variables
+            Excel.Workbook xlWorkbook = functions.database_connect();
+            Excel._Worksheet xlWorksheet1 = xlWorkbook.Sheets[1];
+            Excel.Range xlRange1 = xlWorksheet1.UsedRange;
+            int rowCount1 = functions.getRows(1);
+            string myFlights = xlRange1.Cells[userIDRow, 21].Value2.ToString(); //get the user's flights
 
-            Functions functions = new Functions();
-            if (functions.isNum(flightID) == true)
+
+            if ((functions.isNum(flightID) == true) && (functions.isFlight(flightID) == true) && (myFlights.Contains(flightID)))
             { //if the flight ID exists, go to the flight
+                xlWorkbook.Close();
                 OldFlight oldFlight = new OldFlight(identification, flightID);
                 this.NavigationService.Navigate(oldFlight);
             }
             else
             { //otherwise, display an error
+                xlWorkbook.Close();
                 Warning.Text = "Invalid Flight ID";
             }
         }

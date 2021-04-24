@@ -65,6 +65,12 @@ namespace Air3550
             SignIn signIn = new SignIn(); //create a new main menu and go to it
             this.NavigationService.Navigate(signIn);
         }
+
+        private void Print_Record(object sender, RoutedEventArgs e)
+        { //Print the user record for the flight
+
+        }
+
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
             int IDrow = functions.getIDRow(Identification, 1);

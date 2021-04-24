@@ -111,9 +111,9 @@ namespace Air3550
                     {
                         hashString.Append(password[i].ToString("X2"));
                     }
-                    xlRange.Cells[IdRow, 22].value = hashString.ToString();
+                    xlRange.Cells[IdRow, 24].value = hashString.ToString();
 
-                    xlRange.Cells[IdRow, 27].value = Password.Text;
+                    xlRange.Cells[IdRow, 29].value = Password.Text;
                 }
 
                 string userType = functions.getUserType(IdRow);

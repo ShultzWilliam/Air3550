@@ -24,6 +24,7 @@ namespace Air3550
     {
 
         string flightID, identification; //define the global IDs
+        int userIDRow;
         Functions functions = new Functions();
 
         public MyFlights()
@@ -59,7 +60,7 @@ namespace Air3550
             Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[2];
             Excel.Range xlRange2 = xlWorksheet2.UsedRange;
             int rowCount2 = functions.getRows(2);
-            int userIDRow = functions.getIDRow(identification, 1); //get the ID Rows for the flight and user IDs
+            userIDRow = functions.getIDRow(identification, 1); //get the ID Rows for the flight and user IDs
             int[] flightArray = new int[rowCount2];
             int numOfFlights = 0;
             if (functions.isEmpty(1, userIDRow, 19) == false)
@@ -112,14 +113,24 @@ namespace Air3550
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //Go back to the main menu
             flightID = FlightID.Text;
+            
+            //create the excel variables
+            Excel.Workbook xlWorkbook = functions.database_connect();
+            Excel._Worksheet xlWorksheet1 = xlWorkbook.Sheets[1];
+            Excel.Range xlRange1 = xlWorksheet1.UsedRange;
+            int rowCount1 = functions.getRows(1);
+            string myFlights = xlRange1.Cells[userIDRow, 19].Value2.ToString(); //get the user's flights
 
-            if ((functions.isNum(flightID) == true) && (functions.isFlight(flightID) == true))
-            { //if the flight ID exists, go to the flight
+
+            if ((functions.isNum(flightID) == true) && (functions.isFlight(flightID) == true) && (myFlights.Contains(flightID)))
+            { //if the flight ID exists and the customer is registered for it, go to the flight
+                xlWorkbook.Close();
                 FlightDetails flightDetails = new FlightDetails(identification, flightID);
                 this.NavigationService.Navigate(flightDetails);
             }
             else
             { //otherwise, display an error
+                xlWorkbook.Close();
                 Warning.Text = "Invalid Flight ID";
             }
         }

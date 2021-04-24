@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
@@ -475,15 +476,44 @@ namespace Air3550
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
             int rowCount = getRows(1);
-            string flights = xlRange.Cells[userRow, 19].Value2.ToString(); //get the string for the flights the user is booked for
-            if (flights != "" && flights.Contains(flightID))
-            { //if the flights contains the flight, the user is already booked for it
-                booked = true; //set booked to true
+            if (!isEmpty(1, userRow, 19))
+            {
+                string flights = xlRange.Cells[userRow, 19].Value2.ToString(); //get the string for the flights the user is booked for
+                if (flights != "" && flights.Contains(flightID))
+                { //if the flights contains the flight, the user is already booked for it
+                    booked = true; //set booked to true
+                }
             }
+            
             xlWorkbook.Close(); //close the workbook
             return booked;
         }
+        public void createUserRecord(string userID, string flightID, string method, string name, string price, string CCN)
+        { //function to create a new user record
+
+            string fileName = @"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\UserRecords\" + userID + @"\" + flightID + @".txt"; //create the path for the file
+                                                                                                                                                                // Check if file already exists. If yes, delete it.     
+            FileStream fs = File.Create(fileName, 5000);
+            //Pass the filepath and filename to the StreamWriter Constructor
+            StreamWriter sw = new StreamWriter(@"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\UserRecords\" + userID + @"\" + flightID + @".txt");
+            //Write the name
+            sw.WriteLine("Name :" + name);
+            //Write the price paid
+            sw.WriteLine("Price: " + price);
+            //Write the method of payment
+            sw.WriteLine("Method: " + method);
+            if (method == "Credit Card")
+            { //if a credit card was used to pay, write the credit card number
+                //Write the credit card number
+                sw.WriteLine("Credit Card Number: " + CCN);
+            }
+            
+            //Close the file
+            sw.Close();
+
+        }
     }
+
 
 
 }
