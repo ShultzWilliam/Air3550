@@ -9,6 +9,7 @@
       Title="Profile">
 
     <Grid>
+        <Button Content="Main Menu" HorizontalAlignment="Left" Margin="660,30,0,0" VerticalAlignment="Top" Width="100" Click="Main_Menu"/>
         <Button Content="Sign Out" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" Width="100" Click="Sign_Out"/>
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Height="23" Margin="340,28,0,0" TextWrapping="Wrap" Text="Welcome to Air3550!" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406"/>

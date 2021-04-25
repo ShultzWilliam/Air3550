@@ -99,7 +99,7 @@ namespace Air3550
                 xlRange.Cells[IdRow, 15].value = Expiration.Text;
                 xlRange.Cells[IdRow, 11].value = Phone.Text;
 
-                if ((Password.Text != "Enter nothing to leave unchanged") || (Password.Text != ""))
+                if ((Password.Text != "Enter nothing to leave unchanged") && (Password.Text != ""))
                 { //we can't unencrypt a SHA512 Hash so the user not entering a password indicates that they want to leave it blank
                     byte[] password; //to save the password
                     using (SHA512 shaM = new SHA512Managed())
@@ -111,9 +111,9 @@ namespace Air3550
                     {
                         hashString.Append(password[i].ToString("X2"));
                     }
-                    xlRange.Cells[IdRow, 24].value = hashString.ToString();
+                    xlRange.Cells[IdRow, 25].value = hashString.ToString();
 
-                    xlRange.Cells[IdRow, 29].value = Password.Text;
+                    xlRange.Cells[IdRow, 30].value = Password.Text;
                 }
 
                 string userType = functions.getUserType(IdRow);
@@ -144,6 +144,37 @@ namespace Air3550
                     MainMenuFlightManager mainMenu = new MainMenuFlightManager(Identification); //create a new main menu and go to it
                     this.NavigationService.Navigate(mainMenu);
                 }
+            }
+        }
+
+        private void Main_Menu(object sender, RoutedEventArgs e)
+        { //to return to the main menu
+            int IDrow = functions.getIDRow(Identification, 1);
+            string userType = functions.getUserType(IDrow);
+            if (userType == "Customer")
+            {
+                MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
+                this.NavigationService.Navigate(mainMenu);
+            }
+            else if (userType == "Load Engineer")
+            {
+                MainMenuLoadEngineer mainMenu = new MainMenuLoadEngineer(Identification); //create a new main menu and go to it
+                this.NavigationService.Navigate(mainMenu);
+            }
+            else if (userType == "Accountant")
+            {
+                MainMenuAccountant mainMenu = new MainMenuAccountant(Identification); //create a new main menu and go to it
+                this.NavigationService.Navigate(mainMenu);
+            }
+            else if (userType == "Marketing Manager")
+            {
+                MainMenuMarketingManager mainMenu = new MainMenuMarketingManager(Identification); //create a new main menu and go to it
+                this.NavigationService.Navigate(mainMenu);
+            }
+            else if (userType == "Flight Manager")
+            {
+                MainMenuFlightManager mainMenu = new MainMenuFlightManager(Identification); //create a new main menu and go to it
+                this.NavigationService.Navigate(mainMenu);
             }
         }
     }

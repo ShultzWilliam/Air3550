@@ -63,6 +63,12 @@ namespace Air3550
             this.NavigationService.Navigate(myFlights);
         }
 
+        private void Cancelled_Flights(object sender, RoutedEventArgs e)
+        { //Go to scheduled flights
+            FlightsCancelled flightsCancelled = new FlightsCancelled(Identification);
+            this.NavigationService.Navigate(flightsCancelled);
+        }
+
         private void My_History_Click(object sender, RoutedEventArgs e)
         { //Go to taken flights
             FlightHistory myHistory = new FlightHistory(Identification);

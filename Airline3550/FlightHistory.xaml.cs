@@ -47,6 +47,7 @@ namespace Air3550
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         { //Load in the data grid
+            Flights.Items.Clear();
             //define the excel variables
             //Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = functions.database_connect();
@@ -59,9 +60,9 @@ namespace Air3550
             userIDRow = functions.getIDRow(identification, 1); //get the ID Rows for the flight and user IDs
             int[] flightArray = new int[rowCount2];
             int numOfFlights = 0;
-            if (functions.isEmpty(1, userIDRow, 21) == false)
+            if (functions.isEmpty(1, userIDRow, 22) == false)
             { //if the flights cell isn't empty
-                string flights = xlRange1.Cells[userIDRow, 21].Value2.ToString(); //get the user's flights
+                string flights = xlRange1.Cells[userIDRow, 22].Value2.ToString(); //get the user's flights
 
                 for (int i = 1; i <= rowCount2; i++)
                 {
@@ -114,7 +115,7 @@ namespace Air3550
             Excel._Worksheet xlWorksheet1 = xlWorkbook.Sheets[1];
             Excel.Range xlRange1 = xlWorksheet1.UsedRange;
             int rowCount1 = functions.getRows(1);
-            string myFlights = xlRange1.Cells[userIDRow, 21].Value2.ToString(); //get the user's flights
+            string myFlights = xlRange1.Cells[userIDRow, 22].Value2.ToString(); //get the user's flights
 
 
             if ((functions.isNum(flightID) == true) && (functions.isFlight(flightID) == true) && (myFlights.Contains(flightID)))

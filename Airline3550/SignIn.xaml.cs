@@ -65,7 +65,7 @@ namespace Air3550
             if (IDrow != 0)
             { //grab the password from the database
                 // byte[] data = sha512Managed.ComputeHash(Encoding.UTF8.GetBytes(input));
-                foundPassword = xlRange.Cells[IDrow, 24].Value2;
+                foundPassword = xlRange.Cells[IDrow, 25].Value2;
                 
                 xlWorkbook.Close(true);
                 

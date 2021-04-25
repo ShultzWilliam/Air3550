@@ -41,8 +41,13 @@ namespace Air3550
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int rowCount = functions.getRows(2);
+            //int rowCount = functions.getRows(2);
             int IDRow = functions.getIDRow(flightID, 2);
+            //Excel.Workbook xlWorkbook2 = functions.database_connect();
+            Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[1];
+            Excel.Range xlRange2 = xlWorksheet2.UsedRange;
+            //int rowCount2 = functions.getRows(1);
+            int userIDRow = functions.getIDRow(Identification, 1);
 
             //load in the information to the page
             FlightID.Text = flightID;
@@ -56,6 +61,8 @@ namespace Air3550
             Arrival_Terminal.Text = xlRange.Cells[IDRow, 12].Value2.ToString();
             Price.Text = "$" + xlRange.Cells[IDRow, 17].Value2.ToString();
             Plane.Text = xlRange.Cells[IDRow, 14].Value2.ToString();
+            Credits.Text = xlRange2.Cells[userIDRow, 16].Value2.ToString();
+            Point.Text = xlRange2.Cells[userIDRow, 17].Value2.ToString();
             xlWorkbook.Close(true);
         }
 
@@ -63,10 +70,10 @@ namespace Air3550
         { //to book the flight
             //define the excel variables to read from both the flight and user databases
             Excel.Workbook xlWorkbook = functions.database_connect();
-            Excel._Worksheet xlWorksheet1 = xlWorkbook.Sheets[1];
+            Excel._Worksheet xlWorksheet1 = xlWorkbook.Sheets[1]; //for the user
             Excel.Range xlRange1 = xlWorksheet1.UsedRange;
             int rowCount1 = functions.getRows(1);
-            Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[2];
+            Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[2]; //for the flight
             Excel.Range xlRange2 = xlWorksheet2.UsedRange;
             int rowCount2 = functions.getRows(2);
             string userFlights, flightPassengers, paymentMethods; //create strings to read and modify the user's flights and the flight's passengers
@@ -74,32 +81,81 @@ namespace Air3550
             int flightIDRow = functions.getIDRow(flightID, 2);
             string name = xlRange1.Cells[userIDRow, 3].Value2.ToString() + " " + xlRange1.Cells[userIDRow, 5].Value2.ToString();  //get the full name of the user
 
+            if ((DateTime.Parse(Departure_Date.Text + " " + Departure_Time.Text)).AddMonths(-6) <= DateTime.Now)
+            { //if we are at or within six months of the flight
+                if ((bool)Credit.IsChecked == true && (bool)CreditCard.IsChecked == false && (bool)Points.IsChecked == false)
+                { //If the user is paying with in-app credit
+                    double credit = Double.Parse(xlRange1.Cells[userIDRow, 16].Value2.ToString());
+                    if (credit < Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString()))
+                    { //if the flight is too expensive for the number of credits we have
+                        Warning.Text = "Not enought credit";
+                        xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
+                        xlWorkbook.Close(); //THIS ONE TOO
+                    }
+                    else
+                    { //otherwise, book the flight
+                        if (functions.isEmpty(1, userIDRow, 19))
+                        { //if the user does not have any flights booked
+                            userFlights = flightID; //just save the flight ID in
+                            xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                            paymentMethods = "Credit";
+                            xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
+                        }
+                        else
+                        { //if the user does have some flights
+                            userFlights = xlRange1.Cells[userIDRow, 19].Value2.ToString() + " " + flightID; //read in the users flights
+                            xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                            paymentMethods = xlRange1.Cells[userIDRow, 20].Value2.ToString() + " " + "Credit";
+                            xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
+                        }
+                        if (functions.isEmpty(2, flightIDRow, 15))
+                        { //if the flight does not have any passengers
+                            flightPassengers = flightID; //just save the flight ID in
+                            xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        }
+                        else
+                        { //if the flight does
+                            flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.ToString() + " " + Identification; //read in the users flights
+                            xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        }
+                        xlRange1.Cells[userIDRow, 16].Value = (credit - Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString())).ToString();
 
-            //print financial record as well
+                        double profit = Double.Parse(xlRange2.Cells[flightIDRow, 18].Value2.ToString());
+                        profit = profit + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString());
+                        xlRange2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight (should I do this for this one?)
+                        double attendance = Double.Parse(xlRange2.Cells[flightIDRow, 16].Value2.ToString()) + 1;
+                        xlRange2.Cells[flightIDRow, 16].Value = attendance.ToString(); //update the attendance as well
 
-            if ((bool)Credit.IsChecked == true && (bool)CreditCard.IsChecked == false && (bool)Points.IsChecked == false)
-            { //If the user is paying with in-app credit
-                double credit = Double.Parse(xlRange1.Cells[userIDRow, 16].Value2.ToString());
-                if (credit < Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString()))
-                { //if the flight is too expensive for the number of credits we have
-                    Warning.Text = "Not enought credit";
-                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
-                    xlWorkbook.Close(); //THIS ONE TOO
+                        Excel._Worksheet xlWorksheet3 = xlWorkbook.Sheets[4]; //for the airport
+                        Excel.Range xlRange3 = xlWorksheet3.UsedRange;
+                        int rowCount3 = functions.getRows(4);
+                        int airportIDRow = functions.getIDRow(xlRange2.Cells[flightIDRow, 5].Value2.ToString(), 4); //get the row for the origin airport
+                        xlRange3.Cells[airportIDRow, 6].Value = (Double.Parse(xlRange3.Cells[airportIDRow, 6].Value2.ToString()) + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString())).ToString(); //increment the profit for the airport
+
+
+                        xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
+                        xlWorkbook.Close(); //THIS ONE TOO
+                                            //MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
+                                            //this.NavigationService.Navigate(mainMenu);
+                        SearchFlight searchFlight = new SearchFlight(Identification);
+                        this.NavigationService.Navigate(searchFlight);
+                    }
                 }
-                else
-                { //otherwise, book the flight
+                else if ((bool)Credit.IsChecked == false && (bool)CreditCard.IsChecked == true && (bool)Points.IsChecked == false)
+                { //if the user is paying with credit card
+                  //if the credit card is checked, we do not have to see if they have the necessary funds, just add them to the flight
                     if (functions.isEmpty(1, userIDRow, 19))
                     { //if the user does not have any flights booked
                         userFlights = flightID; //just save the flight ID in
                         xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
-                        paymentMethods = "Credit";
+                        paymentMethods = "CreditCard";
                         xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
                     }
                     else
                     { //if the user does have some flights
                         userFlights = xlRange1.Cells[userIDRow, 19].Value2.ToString() + " " + flightID; //read in the users flights
                         xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
-                        paymentMethods = xlRange1.Cells[userIDRow, 20].Value2.ToString() + " " +  "Credit";
+                        paymentMethods = xlRange1.Cells[userIDRow, 20].Value2.ToString() + " " + "CreditCard";
                         xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
                     }
                     if (functions.isEmpty(2, flightIDRow, 15))
@@ -112,15 +168,34 @@ namespace Air3550
                         flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.ToString() + " " + Identification; //read in the users flights
                         xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
                     }
-                    xlRange1.Cells[userIDRow, 16].Value = (credit - Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString())).ToString();
+
+                    double moneySpent = Double.Parse(xlRange1.Cells[userIDRow, 18].Value2.ToString());
+                    moneySpent = moneySpent + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString());
+                    xlRange1.Cells[userIDRow, 18].Value = moneySpent.ToString(); //update the amount of money the user has spent
 
                     double profit = Double.Parse(xlRange2.Cells[flightIDRow, 18].Value2.ToString());
                     profit = profit + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString());
-                    xlRange2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight (should I do this for this one?)
+                    xlRange2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight
                     double attendance = Double.Parse(xlRange2.Cells[flightIDRow, 16].Value2.ToString()) + 1;
                     xlRange2.Cells[flightIDRow, 16].Value = attendance.ToString(); //update the attendance as well
 
-                    //functions.createUserRecord(Identification, flightID, "In App Credit", name, Price.Text, "doesn't matter"); //create a record of the payment
+                    //(do they only earn points after the flight takes off?)
+                    //double points = Double.Parse(xlRange1.Cells[userIDRow, 17].Value2.ToString()) + double.Parse(Price.Text) / 10;
+                    //xlRange1.Cells[userIDRow, 17].Value = points.ToString(); //give them points for their payment
+
+                    Excel._Worksheet xlWorksheet4 = xlWorkbook.Sheets[5]; //save a record of the financial transaction
+                    Excel.Range xlRange4 = xlWorksheet4.UsedRange;
+                    int rowCount4 = functions.getRows(5);
+                    xlRange4.Cells[rowCount4 + 1, 1].Value = xlRange1.Cells[userIDRow, 3].Value2.ToString() + " " + xlRange1.Cells[userIDRow, 4].Value2.ToString() + " " + xlRange1.Cells[userIDRow, 5].Value2.ToString();
+                    xlRange4.Cells[rowCount4 + 1, 2].Value = xlRange1.Cells[userIDRow, 13].Value2.ToString();
+                    xlRange4.Cells[rowCount4 + 1, 3].Value = xlRange2.Cells[flightIDRow, 17].Value2.ToString();
+
+                    Excel._Worksheet xlWorksheet3 = xlWorkbook.Sheets[4]; //for the airport
+                    Excel.Range xlRange3 = xlWorksheet3.UsedRange;
+                    int rowCount3 = functions.getRows(4);
+                    int airportIDRow = functions.getIDRow(xlRange2.Cells[flightIDRow, 5].Value2.ToString(), 4); //get the row for the origin airport
+                    xlRange3.Cells[airportIDRow, 6].Value = (Double.Parse(xlRange3.Cells[airportIDRow, 6].Value2.ToString()) + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString())).ToString(); //increment the profit for the airport
+
 
                     xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
                     xlWorkbook.Close(); //THIS ONE TOO
@@ -129,127 +204,93 @@ namespace Air3550
                     SearchFlight searchFlight = new SearchFlight(Identification);
                     this.NavigationService.Navigate(searchFlight);
                 }
-            }
-            else if ((bool)Credit.IsChecked == false && (bool)CreditCard.IsChecked == true && (bool)Points.IsChecked == false)
-            { //if the user is paying with credit card
-                //if the credit card is checked, we do not have to see if they have the necessary funds, just add them to the flight
-                if (functions.isEmpty(1, userIDRow, 19))
-                { //if the user does not have any flights booked
-                    userFlights = flightID; //just save the flight ID in
-                    xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
-                    paymentMethods = "CreditCard";
-                    xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
-                }
-                else
-                { //if the user does have some flights
-                    userFlights = xlRange1.Cells[userIDRow, 19].Value2.ToString() + " " + flightID; //read in the users flights
-                    xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
-                    paymentMethods = xlRange1.Cells[userIDRow, 20].Value2.ToString() + " " + "CreditCard";
-                    xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
-                }
-                if (functions.isEmpty(2, flightIDRow, 15))
-                { //if the flight does not have any passengers
-                    flightPassengers = flightID; //just save the flight ID in
-                    xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
-                }
-                else
-                { //if the flight does
-                    flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.ToString() + " " + Identification; //read in the users flights
-                    xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
-                }
+                else if ((bool)Credit.IsChecked == false && (bool)CreditCard.IsChecked == false && (bool)Points.IsChecked == true)
+                { //if the user is paying with points
+                    double points = Double.Parse(xlRange1.Cells[userIDRow, 17].Value2.ToString()); ;
 
-                double moneySpent = Double.Parse(xlRange1.Cells[userIDRow, 18].Value2.ToString());
-                moneySpent = moneySpent + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString());
-                xlRange1.Cells[userIDRow, 18].Value = moneySpent.ToString(); //update the amount of money the user haps spent
-
-                double profit = Double.Parse(xlRange2.Cells[flightIDRow, 18].Value2.ToString());
-                profit = profit + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString());
-                xlRange2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight
-                double attendance = Double.Parse(xlRange2.Cells[flightIDRow, 16].Value2.ToString()) + 1;
-                xlRange2.Cells[flightIDRow, 16].Value = attendance.ToString(); //update the attendance as well
-
-                //(do they only earn points after the flight takes off?)
-                //double points = Double.Parse(xlRange1.Cells[userIDRow, 17].Value2.ToString()) + double.Parse(Price.Text) / 10;
-                //xlRange1.Cells[userIDRow, 17].Value = points.ToString(); //give them points for their payment
-
-
-                //do the same for the airport!!!!!
-
-
-
-                //functions.createUserRecord(Identification, flightID, "Credit Card", name, Price.Text, xlRange1.Cells[userIDRow, 13].Value2.ToString()); //create a record of the payment
-
-                xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
-                xlWorkbook.Close(); //THIS ONE TOO
-                //MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
-                //this.NavigationService.Navigate(mainMenu);
-                SearchFlight searchFlight = new SearchFlight(Identification);
-                this.NavigationService.Navigate(searchFlight);
-            }
-            else if ((bool)Credit.IsChecked == false && (bool)CreditCard.IsChecked == false && (bool)Points.IsChecked == true)
-            { //if the user is paying with points
-                double points = Double.Parse(xlRange1.Cells[userIDRow, 17].Value2.ToString()); ;
-
-                if (points/100 < Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString()))
-                { //if the flight is too expensive for the number of points we have
-                    Warning.Text = "Not enought points";
-                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
-                    xlWorkbook.Close(); //THIS ONE TOO
-                }
-                else
-                { //otherwise, book the flight
-                    if (functions.isEmpty(1, userIDRow, 19))
-                    { //if the user does not have any flights booked
-                        userFlights = flightID; //just save the flight ID in
-                        xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
-                        paymentMethods = "Points";
-                        xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
+                    if (points / 100 < Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString()))
+                    { //if the flight is too expensive for the number of points we have
+                        Warning.Text = "Not enought points";
+                        xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
+                        xlWorkbook.Close(); //THIS ONE TOO
                     }
                     else
-                    { //if the user does have some flights
-                        userFlights = xlRange1.Cells[userIDRow, 19].Value2.ToString() + " " + flightID; //read in the users flights
-                        xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
-                        paymentMethods = xlRange1.Cells[userIDRow, 20].Value2.ToString() + " " + "Points";
-                        xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
+                    { //otherwise, book the flight
+                        if (functions.isEmpty(1, userIDRow, 19))
+                        { //if the user does not have any flights booked
+                            userFlights = flightID; //just save the flight ID in
+                            xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                            paymentMethods = "Points";
+                            xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
+                        }
+                        else
+                        { //if the user does have some flights
+                            userFlights = xlRange1.Cells[userIDRow, 19].Value2.ToString() + " " + flightID; //read in the users flights
+                            xlRange1.Cells[userIDRow, 19].Value = userFlights; //add the new flight, and write those to the database
+                            paymentMethods = xlRange1.Cells[userIDRow, 20].Value2.ToString() + " " + "Points";
+                            xlRange1.Cells[userIDRow, 20].Value = paymentMethods;
+                        }
+                        if (functions.isEmpty(2, flightIDRow, 15))
+                        { //if the flight does not have any passengers
+                            flightPassengers = flightID; //just save the flight ID in
+                            xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        }
+                        else
+                        { //if the flight does
+                            flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.ToString() + " " + Identification; //read in the users flights
+                            xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
+                        }
+
+                        xlRange1.Cells[userIDRow, 17].Value = ((points / 100 - Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString())) * 100).ToString();
+
+
+                        double profit = Double.Parse(xlRange2.Cells[flightIDRow, 18].Value2.ToString());
+                        profit = profit + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString());
+                        xlRange2.Cells[flightIDRow, 18].Value = profit.ToString(); //update the profit of the flight
+                        double attendance = Double.Parse(xlRange2.Cells[flightIDRow, 16].Value2.ToString()) + 1;
+                        xlRange2.Cells[flightIDRow, 16].Value = attendance.ToString(); //update the attendance as well
+
+                        //(do they only earn points after the flight takes off?)
+                        //double points = Double.Parse(xlRange1.Cells[userIDRow, 17].Value2.ToString()) + double.Parse(Price.Text) / 10;
+                        //xlRange1.Cells[userIDRow, 17].Value = points.ToString(); //give them points for their payment
+
+                        
+
+                        Excel._Worksheet xlWorksheet3 = xlWorkbook.Sheets[4]; //for the airport
+                        Excel.Range xlRange3 = xlWorksheet3.UsedRange;
+                        int rowCount3 = functions.getRows(4);
+                        int airportIDRow = functions.getIDRow(xlRange2.Cells[flightIDRow, 5].Value2.ToString(), 4); //get the row for the origin airport
+                        xlRange3.Cells[airportIDRow, 6].Value = (Double.Parse(xlRange3.Cells[airportIDRow, 6].Value2.ToString()) + Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString())).ToString(); //increment the profit for the airport
+
+
+                        xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
+                        xlWorkbook.Close(); //THIS ONE TOO
+                                            //MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
+                                            //this.NavigationService.Navigate(mainMenu);
+                        SearchFlight searchFlight = new SearchFlight(Identification);
+                        this.NavigationService.Navigate(searchFlight);
                     }
-                    if (functions.isEmpty(2, flightIDRow, 15))
-                    { //if the flight does not have any passengers
-                        flightPassengers = flightID; //just save the flight ID in
-                        xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
-                    }
-                    else
-                    { //if the flight does
-                        flightPassengers = xlRange2.Cells[flightIDRow, 15].Value2.ToString() + " " + Identification; //read in the users flights
-                        xlRange2.Cells[flightIDRow, 15].Value = flightPassengers; //add the new flight, and write those to the database
-                    }
-
-                    xlRange1.Cells[userIDRow, 17].Value = (points/100 - Double.Parse(xlRange2.Cells[flightIDRow, 17].Value2.ToString())).ToString();
-                    double attendance = Double.Parse(xlRange2.Cells[flightIDRow, 16].Value2.ToString()) + 1;
-                    xlRange2.Cells[flightIDRow, 16].Value = attendance.ToString(); //update the attendance as well
-
-
-                    //functions.createUserRecord(Identification, flightID, "Points", name, (Double.Parse(Price.Text) * 100).ToString(), "doesn't matter");
-
+                }
+                else
+                { //otherwise, display a warning
                     xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
                     xlWorkbook.Close(); //THIS ONE TOO
-                                        //MainMenuCustomer mainMenu = new MainMenuCustomer(Identification); //create a new main menu and go to it
-                                        //this.NavigationService.Navigate(mainMenu);
-                    SearchFlight searchFlight = new SearchFlight(Identification);
-                    this.NavigationService.Navigate(searchFlight);
+                    Warning.Text = "Cannot select more than one payment method";
                 }
             }
             else
-            { //otherwise, display a warning
+            { //otherwise, display a warning that the flight cannot be booked yet
                 xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
                 xlWorkbook.Close(); //THIS ONE TOO
-                Warning.Text = "Cannot select more than one payment method";
+                Warning.Text = "Flights can only be booked within six months of the flight.";
             }
+
+            
 
         }
 
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
-            Functions functions = new Functions();
             int IDrow = functions.getIDRow(Identification, 1);
             string userType = functions.getUserType(IDrow);
             if (userType == "Customer")

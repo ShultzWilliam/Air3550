@@ -17,17 +17,14 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace Air3550
 {
     /// <summary>
-    /// Interaction logic for MyFlights.xaml
-    /// Where users can view flights they have not yet taken
+    /// Interaction logic for FlightsCancelled.xaml
     /// </summary>
-    public partial class MyFlights : Page
+    public partial class FlightsCancelled : Page
     {
-
-        string flightID, identification; //define the global IDs
+        string flightID, identification; //initialize global variables
         int userIDRow;
         Functions functions = new Functions();
-
-        public MyFlights()
+        public FlightsCancelled()
         {
             InitializeComponent();
         }
@@ -41,13 +38,11 @@ namespace Air3550
             public string Arrival { get; set; }
             public string Price { get; set; }
         }
-
-        public MyFlights(string id) : base()
+        public FlightsCancelled(string id) : base()
         { //define the user ID
             InitializeComponent();
             identification = id;
 
-            
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         { //Load in the data grid
@@ -64,16 +59,21 @@ namespace Air3550
             userIDRow = functions.getIDRow(identification, 1); //get the ID Rows for the flight and user IDs
             int[] flightArray = new int[rowCount2];
             int numOfFlights = 0;
-            if (functions.isEmpty(1, userIDRow, 19) == false)
+            if (functions.isEmpty(1, userIDRow, 23) == false)
             { //if the flights cell isn't empty
-                string flights = xlRange1.Cells[userIDRow, 19].Value2.ToString(); //get the user's flights
+                string flights = xlRange1.Cells[userIDRow, 23].Value2.ToString(); //get the user's flights
+                string[] flightsArray = flights.Split(' ');
 
-                for (int i = 1; i <= rowCount2; i++)
-                {
-                    if (flights.Contains(xlRange2.Cells[i, 1].Value2.ToString()))
-                    { //if the user is scheduled for the flight
-                        flightArray[numOfFlights] = i; //save the index
-                        numOfFlights++; //increment the number of flights
+                for (int j = 0; j < flightsArray.Length; j++)
+                { //for each time we cancelled a flight, go through and grab the instance. Unlike other scenarios, here the same flight can appear twice
+                    for (int i = 1; i <= rowCount2; i++)
+                    {
+                        if (flightsArray[j] == xlRange2.Cells[i, 1].Value2.ToString())
+                        { //if the user is scheduled for the flight
+                            flightArray[numOfFlights] = i; //save the index
+                            numOfFlights++; //increment the number of flights
+                            break;
+                        }
                     }
                 }
 
@@ -85,26 +85,15 @@ namespace Air3550
                 { //otherwise
                     for (int i = 0; i < numOfFlights; i++)
                     { //for each flight we found
-                        string flightIdentification = xlRange2.Cells[flightArray[i], 1].Value2.ToString(); //get the price we paid for the flight
-                        string[] userFlightsArray = flights.Split(' ');
-                        string[] pricesArray = (xlRange1.Cells[userIDRow, 21].Value2.ToString()).Split(' ');
-                        string price = "";
-                        for (int j = 0; j < userFlightsArray.Length; j++)
-                        { //for the length of userFlights
-                            if (userFlightsArray[j] == flightIdentification)
-                            { //if this is the flight
-                                price = pricesArray[j]; //save the price
-                                break;
-                            }
-                        }
+
                         var item = new flightItem
                         {
-                            ID = flightIdentification,
+                            ID = xlRange2.Cells[flightArray[i], 1].Value2.ToString(),
                             Origin = functions.getAirport(xlRange2.Cells[flightArray[i], 5].Value2.ToString()),
                             Destination = functions.getAirport(xlRange2.Cells[flightArray[i], 6].Value2.ToString()),
                             Departure = DateTime.FromOADate(xlRange2.Cells[flightArray[i], 7].Value2).ToString("MM/dd/yyyy") + " " + DateTime.FromOADate(xlRange2.Cells[flightArray[i], 8].Value2).ToString("h:mm tt"),
                             Arrival = DateTime.FromOADate(xlRange2.Cells[flightArray[i], 10].Value2).ToString("MM/dd/yyyy") + " " + DateTime.FromOADate(xlRange2.Cells[flightArray[i], 11].Value2).ToString("h:mm tt"),
-                            Price = "$" + price
+                            Price = "$" + xlRange2.Cells[flightArray[i], 17].Value2.ToString()
                         }; //create a new flight item to insert into the data grid
                         Flights.Items.Add(item);
                     }
@@ -112,34 +101,33 @@ namespace Air3550
             }
             else
             { //otherwise
-                Warning.Text = "You do not have any flights scheduled";
+                Warning.Text = "You have not cancelled any flights";
             }
             xlWorkbook.Close();
         }
 
-
-            private void Sign_Out(object sender, RoutedEventArgs e)
+        private void Sign_Out(object sender, RoutedEventArgs e)
         { //sign out of the application
             SignIn signIn = new SignIn();
             this.NavigationService.Navigate(signIn);
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
-        { //Go back to the main menu
+        { //Go to the selected flight
             flightID = FlightID.Text;
-            
+
             //create the excel variables
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet1 = xlWorkbook.Sheets[1];
             Excel.Range xlRange1 = xlWorksheet1.UsedRange;
             int rowCount1 = functions.getRows(1);
-            string myFlights = xlRange1.Cells[userIDRow, 19].Value2.ToString(); //get the user's flights
+            string myFlights = xlRange1.Cells[userIDRow, 23].Value2.ToString(); //get the user's flights
 
 
             if ((functions.isNum(flightID) == true) && (functions.isFlight(flightID) == true) && (myFlights.Contains(flightID)))
-            { //if the flight ID exists and the customer is registered for it, go to the flight
+            { //if the flight ID exists, go to the flight
                 xlWorkbook.Close();
-                FlightDetails flightDetails = new FlightDetails(identification, flightID);
-                this.NavigationService.Navigate(flightDetails);
+                CancelledFlight cancelledFlight = new CancelledFlight(identification, flightID);
+                this.NavigationService.Navigate(cancelledFlight);
             }
             else
             { //otherwise, display an error

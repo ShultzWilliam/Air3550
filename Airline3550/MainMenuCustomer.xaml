@@ -18,6 +18,7 @@
         <Button Content="Book Flight" HorizontalAlignment="Left" Margin="200,130,0,0" VerticalAlignment="Top" Width="100" Click="Book_Flight"/>
         <Button Content="My Flight History" HorizontalAlignment="Left" Margin="500,230,0,0" VerticalAlignment="Top" Width="100" Click="My_History_Click"/>
         <Button Content="My Flights" HorizontalAlignment="Left" Margin="200,230,0,0" VerticalAlignment="Top" Width="100" Click="My_Flights"/>
+        <Button Content="Cancelled Flights" HorizontalAlignment="Left" Margin="350,330,0,0" VerticalAlignment="Top" Width="100" Click="Cancelled_Flights"/>
 
     </Grid>
 </Page>

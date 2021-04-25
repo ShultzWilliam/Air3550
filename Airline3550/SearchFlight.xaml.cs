@@ -177,33 +177,41 @@ namespace Air3550
 
                 if (((bool)RoundTrip.IsChecked == true) && (numOfFlights >= 1))
                 { //if round trip is checked, loop back through and flights back that take place after the earlies flight to
+                    if ((!(Round.Text == "" || Return.Text == "" || Round.Text == "Select a date" || Return.Text == "Select a date")) && Round.SelectedDate >= DateTime.Today && Return.SelectedDate >= DateTime.Today)
+                    { //make sure that the round trip dates had values and are set to after the current date
+                    DateTime roundDate = Convert.ToDateTime(Round.Text);
+                    DateTime returnDate = Convert.ToDateTime(Return.Text);
                     for (int i = 2; i <= rowCount; i++)
                     { //Find the flights going to and from the origin to the destination
                       //origin is 5, destination is 6, date is 7th row
                         foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
 
-                        if (foundDate >= startDate && foundDate <= endDate)
-                        { //if the flight takes place between the start and end date
-                            if (xlRange.Cells[i, 5].Value2.ToString() == destination && xlRange.Cells[i, 6].Value2.ToString() == origin)
-                            { //if the origin and destination match
-                                foundTime = Convert.ToDouble(xlRange.Cells[i, 8].Value2.ToString());
-                                foundEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
-                                attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString());
-                                if ((foundEndDate > earliestEndDate) || (foundEndDate == earliestEndDate) && (earliestEndTime < foundTime))
-                                {
-                                    plane = xlRange.Cells[i, 14].Value2.ToString();
-                                    if (functions.fullFlight(attendance, plane) == false)
-                                    { //if the flight isn't full
-                                        flight[numOfFlights, 0] = i; //save the index of the flight
-                                        numOfFlights++;
-                                        flights = flights + " " + xlRange.Cells[i, 1].Value2.ToString();
-                                        
-                                    }
-                                }
-                                
-                            }
+                            if (foundDate >= roundDate && foundDate <= returnDate)
+                            { //if the flight takes place between the start and end date
+                                if (xlRange.Cells[i, 5].Value2.ToString() == destination && xlRange.Cells[i, 6].Value2.ToString() == origin)
+                                { //if the origin and destination match
+                                    foundTime = Convert.ToDouble(xlRange.Cells[i, 8].Value2.ToString());
+                                    foundEndDate = DateTime.FromOADate(xlRange.Cells[i, 10].Value2);
+                                    attendance = Int32.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                                    if ((foundEndDate > earliestEndDate) || (foundEndDate == earliestEndDate) && (earliestEndTime < foundTime))
+                                    {
+                                        plane = xlRange.Cells[i, 14].Value2.ToString();
+                                        if (functions.fullFlight(attendance, plane) == false)
+                                        { //if the flight isn't full
+                                            flight[numOfFlights, 0] = i; //save the index of the flight
+                                            numOfFlights++;
+                                            flights = flights + " " + xlRange.Cells[i, 1].Value2.ToString();
 
+                                        }
+                                    }
+
+                                }
+                            }
                         }
+                    }
+                    else
+                    { //otherwise, display an error
+                        Warning.Text = "Please select valid date values for the round trip";
                     }
                 }
 

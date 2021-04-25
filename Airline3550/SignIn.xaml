@@ -22,7 +22,7 @@
         <Button Content="Create Account" HorizontalAlignment="Left" Margin="250,330,0,0" VerticalAlignment="Top" Width="150" Click="Create_Click"/>
         <Button Content="Forgot Password or ID" HorizontalAlignment="Left" Margin="400,330,0,0" VerticalAlignment="Top" Width="150" Click="Forgot_Click"/>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="300,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="200" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="0,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="800" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
     </Grid>
 </Page>

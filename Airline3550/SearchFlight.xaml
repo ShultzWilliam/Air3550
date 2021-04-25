@@ -24,6 +24,12 @@
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="340,83,0,0" TextWrapping="Wrap" Text="Arrival Date:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Margin="70,108,0,0" TextWrapping="Wrap" Text="Round Trip Date:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Margin="340,108,0,0" TextWrapping="Wrap" Text="Return Date:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
 
         <ComboBox Name ="Start" HorizontalAlignment="Left" Height="23" Margin="161,58,0,0"   VerticalAlignment="Top" Width="175" >
             <ComboBoxItem Content="Cleveland, Ohio"></ComboBoxItem>
@@ -57,11 +63,14 @@
             <ComboBoxItem Content="Birmingham, Alabama"></ComboBoxItem>
             <ComboBoxItem Content="Kansas City, Missouri"></ComboBoxItem>
         </ComboBox>
+        
         <DatePicker Name ="Departure" HorizontalAlignment="Left" Height="23" Margin="161,83,0,0" VerticalAlignment="Top" Width="175"/>
         <DatePicker Name ="Arrival" HorizontalAlignment="Left" Height="23" Margin="420,83,0,0" VerticalAlignment="Top" Width="175"/>
-        <Button Content="Search" HorizontalAlignment="Left" Margin= "161,108,0,0" VerticalAlignment="Top" Width="100" Click="Search_Click"/>
-        <CheckBox Name ="RoundTrip" Content="Round Trip" HorizontalAlignment="Left" Margin="420,108,0,0" VerticalAlignment="Top"/>
-        <DataGrid Name ="Flights" HorizontalAlignment="Left" Height="250" Margin="100,133,0,0" VerticalAlignment="Top" Width="600">
+        <DatePicker Name ="Round" HorizontalAlignment="Left" Height="23" Margin="161,108,0,0" VerticalAlignment="Top" Width="175"/>
+        <DatePicker Name ="Return" HorizontalAlignment="Left" Height="23" Margin="420,108,0,0" VerticalAlignment="Top" Width="175"/>
+        <Button Content="Search" HorizontalAlignment="Left" Margin= "161,133,0,0" VerticalAlignment="Top" Width="100" Click="Search_Click"/>
+        <CheckBox Name ="RoundTrip" Content="Round Trip" HorizontalAlignment="Left" Margin="420,133,0,0" VerticalAlignment="Top"/>
+        <DataGrid Name ="Flights" HorizontalAlignment="Left" Height="225" Margin="100,158,0,0" VerticalAlignment="Top" Width="600">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Flight ID"  Binding="{Binding ID}"/>
                 <DataGridTextColumn Header="Origin"  Binding="{Binding Origin}"/>

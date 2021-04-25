@@ -73,9 +73,9 @@ namespace Air3550
                     hashString.Append(passwordHash[i].ToString("X2"));
                 }
                 string password = hashString.ToString();
-                xlRange.Cells[IDRow, 24].value = password;
+                xlRange.Cells[IDRow, 25].value = password;
 
-                xlRange.Cells[IDRow, 29].value = Password1.Text;
+                xlRange.Cells[IDRow, 30].value = Password1.Text;
 
                 xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
                 xlWorkbook.Close(); //THIS ONE TOO
