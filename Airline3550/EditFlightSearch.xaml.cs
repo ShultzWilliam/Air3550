@@ -30,6 +30,7 @@ namespace Air3550
         { //define the user ID
             InitializeComponent();
             identification = id;
+
         }
 
         private void Sign_Out(object sender, RoutedEventArgs e)

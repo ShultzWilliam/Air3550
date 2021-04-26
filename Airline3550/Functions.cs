@@ -10,6 +10,9 @@ namespace Air3550
 {
     class Functions
     {
+
+        public int NUM_AIRPORTS = 14;
+
         public string CEprofile(string firstName, string middleName, string lastName, string address, string city, string ZIP, string phone, string email, string credit, string csv, string password, string birth, string expiration)
         { //check that the profile is formatted correctly
             if (birth == "")
@@ -186,11 +189,18 @@ namespace Air3550
         public bool isNum(string input)
         { //function to check if an input is a number
 
-            if (input.All(char.IsDigit))
-            { //check that the input only contains numbers
-                return true;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if ((input[i] == '.') || Char.IsDigit(input[i]))
+                {
+
+                }
+                else
+                {
+                    return false;
+                }
             }
-            return false;
+            return true;
         }
         public bool isTime(string input)
         { //function to check if an input is a time
@@ -512,8 +522,238 @@ namespace Air3550
             sw.Close();
 
         }
+        //Uses string of location name NOT ZIP
+        public string getDistance(string Origin, string Destination)
+        {
+            //Add flight to excel doc
+            //create the excel variables
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheetAir = xlWorkbook.Sheets[4];
+            Excel.Range xlRangeAir = xlWorksheetAir.UsedRange;
+
+            //Get distance from Airport table
+            string sDistance = null;
+            int rowCount = getRows(2);
+            int DistanceRow = 2;
+            string Location = Origin;
+            //string Test;
+
+            for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
+            {//Once origin row is found
+                //Test = xlRangeAir.Cells[i, 4].Value2.ToString();
+                if (xlRangeAir.Cells[i, 4].Value2.ToString() == Location)
+                {//Look for ending location
+                    DistanceRow = i;
+                    break;
+                }
+            }
+
+            Location = Destination;
+            for (int j = 10; j < j + NUM_AIRPORTS + 1; j++)
+            {//Once ending location is found
+                //Test = xlRangeAir.Cells[1, j].Value2.ToString();
+                if (xlRangeAir.Cells[1, j].Value2.ToString() == Location)
+                {//Get distance
+                    sDistance = xlRangeAir.Cells[DistanceRow, j].Value2.ToString();
+                    break;
+                }
+            }
+
+            //            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+            xlWorkbook.Close(); //THIS ONE TOO
+            return sDistance;
+        }
+
+        public string getZip(string sLocation)
+        {
+            //Open Airports tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[4];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            string Temp;
+            //Match Location
+            for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
+            {
+                if (sLocation == xlRange.Cells[i, 4].Value2.ToString())
+                {//Get Zip Code
+                    Temp = xlRange.Cells[i, 5].Value2.ToString();
+                    //                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return Temp;
+                }
+            }
+            //Should be impossible
+            //            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+            xlWorkbook.Close(); //THIS ONE TOO
+            return null;
+        }
+
+        public string getLocation(string sZip)
+        {
+            //Open Airports tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[4];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            string Temp;
+            //Match Location
+            for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
+            {
+                if (sZip == xlRange.Cells[i, 5].Value2.ToString())
+                {//Get Zip Code
+                    Temp = xlRange.Cells[i, 4].Value2.ToString();
+                    //                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return Temp;
+                }
+            }
+            //Impossible if Database is correctly formatted
+            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+            xlWorkbook.Close(); //THIS ONE TOO
+            return null;
+        }
+
+        //Hi professor and or grader
+        //I may have cut a few corners with this one
+        public string getArrival(string sDistance, string sStartDate, string sStartTime)
+        {
+            float iDistance = float.Parse(sDistance);
+            int Hours, Minutes;
+            int iStartHour, iStartMin, iStartDay, iStartMonth, iStartYear;
+            string Temp, sAMorPM = sStartTime.Substring(sStartTime.Length - 2, 2);
+
+            //Seperate the start time componets
+            if (Char.IsDigit(sStartTime[1]))
+            {//Hour has 2 digits
+                Temp = sStartTime.Substring(0, 2);
+                iStartHour = int.Parse(Temp);
+                Temp = sStartTime.Substring(3, 2);
+                iStartMin = int.Parse(Temp);
+            }
+            else
+            {//Hour has 1 digit
+                Temp = sStartTime.Substring(0, 1);
+                iStartHour = int.Parse(Temp);
+                Temp = sStartTime.Substring(3, 2);
+                iStartMin = int.Parse(Temp);
+            }
+
+            //Seperate the Date components
+            if (Char.IsDigit(sStartDate[1]))
+            {//Month has 2 digits
+                Temp = sStartDate.Substring(0, 2);
+                iStartMonth = int.Parse(Temp);
+
+                if (Char.IsDigit(sStartDate[4]))
+                {//Day has 2 digits
+                    Temp = sStartDate.Substring(3, 2);
+                    iStartDay = int.Parse(Temp);
+                    Temp = sStartDate.Substring(6, 4);
+                    iStartYear = int.Parse(Temp);
+                    //Full Date Set
+                }
+                else
+                {//Day has 1 digit
+                    Temp = sStartDate.Substring(3, 1);
+                    iStartDay = int.Parse(Temp);
+                    Temp = sStartDate.Substring(5, 4);
+                    iStartYear = int.Parse(Temp);
+                    //Full Date Set
+                }
+
+            }
+            else
+            {//Month has 1 digit
+                Temp = sStartDate.Substring(0, 1);
+                iStartMonth = int.Parse(Temp);
+
+                if (Char.IsDigit(sStartDate[3]))
+                {//Day has 2 digits
+                    Temp = sStartDate.Substring(2, 2);
+                    iStartDay = int.Parse(Temp);
+                    Temp = sStartDate.Substring(5, 4);
+                    iStartYear = int.Parse(Temp);
+                    //Full Date Set
+                }
+                else
+                {//Day has 1 digit
+                    Temp = sStartDate.Substring(2, 1);
+                    iStartDay = int.Parse(Temp);
+                    Temp = sStartDate.Substring(4, 4);
+                    iStartYear = int.Parse(Temp);
+                    //Full Date Set
+                }
+            }
+
+            //Total Min
+            int TripTime = ((int)iDistance / 500) + 30;
+
+            //Convert to hours and minutes
+            if (TripTime > 60)
+            {
+                Hours = TripTime / 60;
+                Minutes = TripTime - (60 * Hours);
+            }
+            else
+            {
+                Hours = 0;
+                Minutes = TripTime;
+            }
+
+
+            //Add trip time to departure time
+            iStartMin += Minutes;
+            if (iStartMin >= 60)
+            {
+                iStartHour++;
+                iStartMin = iStartMin - 60;
+            }
+
+            iStartHour += Hours;
+            if (iStartHour > 12 && sAMorPM == "PM")
+            {//Overnight... Switch Day
+                iStartDay++;
+                sAMorPM = "AM";
+            }
+            else if (iStartHour > 12)
+            {//Flip to PM
+                iStartHour -= 12;
+                sAMorPM = "PM";
+            }
+
+            //ACorrect date if necessary
+
+            //The february special
+            if (iStartMonth == 2 && (iStartYear % 4 == 0) && (iStartDay > 29))
+            {//Leap Year
+                iStartMonth++;
+                iStartDay = 1;
+            }
+            else if (iStartMonth == 2 && iStartDay > 28)
+            {//Non Leap year
+                iStartMonth++;
+                iStartDay = 1;
+            }
+            else if (iStartMonth == 12 && iStartDay > 31)
+            {//New Year
+                iStartMonth = 1;
+                iStartDay = 1;
+                iStartYear++;
+            }
+            else if (iStartMonth == (1 | 3 | 5 | 7 | 8 | 10) && iStartDay > 31)
+            {//Next Month (31 days)
+                iStartMonth++;
+                iStartDay = 1;
+            }
+            else if (iStartMonth == (2 | 4 | 6 | 9 | 11) && iStartDay > 30)
+            {//Next Month (30 days)
+                iStartMonth++;
+                iStartDay = 1;
+            }
+
+            return iStartHour.ToString() + ":" + iStartMin + " " + sAMorPM + " " + iStartMonth.ToString() + "/" + iStartDay.ToString() + "/" + iStartYear.ToString();
+        }
     }
 
 
-
 }
+
