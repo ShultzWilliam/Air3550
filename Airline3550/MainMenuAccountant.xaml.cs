@@ -66,6 +66,13 @@ namespace Air3550
             FlightHistory myHistory = new FlightHistory(Identification);
             this.NavigationService.Navigate(myHistory);
         }
+
+        private void Flight_Records_Click(object sender, RoutedEventArgs e)
+        { //Go to taken flights
+            FlightHistory Flight_Records = new FlightHistory(Identification);
+            this.NavigationService.Navigate(Flight_Records);
+        }
+
         private void Airline_History(object sender, RoutedEventArgs e)
         { //Go to airline history
             AirlineHistory airlineHistory = new AirlineHistory(Identification);
