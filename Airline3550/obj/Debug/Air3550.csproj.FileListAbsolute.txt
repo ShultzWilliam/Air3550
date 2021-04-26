@@ -143,3 +143,9 @@ C:\Users\twild\Desktop\Air3550\Air3550\Airline3550\obj\Debug\Air3550.csproj.Core
 C:\Users\twild\Desktop\Air3550\Air3550\Airline3550\obj\Debug\Air3550.exe
 C:\Users\twild\Desktop\Air3550\Air3550\Airline3550\obj\Debug\Air3550.pdb
 C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\Air3550.csproj.ResolveComReference.cache
+C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\BoardingPass.g.cs
+C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\BoardingPass.baml
+C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\CancelledFlight.g.cs
+C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\FlightsCancelled.g.cs
+C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\CancelledFlight.baml
+C:\Users\Nathan Burns\source\repos\Air3550\Airline3550\obj\Debug\FlightsCancelled.baml

@@ -64,8 +64,14 @@
     <Compile Include="AirportFlight.xaml.cs">
       <DependentUpon>AirportFlight.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoardingPass.xaml.cs">
+      <DependentUpon>BoardingPass.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BookFlight.xaml.cs">
       <DependentUpon>BookFlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CancelledFlight.xaml.cs">
+      <DependentUpon>CancelledFlight.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreateFlight.xaml.cs">
       <DependentUpon>CreateFlight.xaml</DependentUpon>
@@ -90,6 +96,9 @@
     </Compile>
     <Compile Include="Flights.xaml.cs">
       <DependentUpon>Flights.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FlightsCancelled.xaml.cs">
+      <DependentUpon>FlightsCancelled.xaml</DependentUpon>
     </Compile>
     <Compile Include="ForgotPassword.xaml.cs">
       <DependentUpon>ForgotPassword.xaml</DependentUpon>
@@ -150,7 +159,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BoardingPass.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BookFlight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CancelledFlight.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -191,6 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Flights.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FlightsCancelled.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
