@@ -43,8 +43,10 @@ namespace Air3550
 
             //check if the flightID exists
             Functions functions = new Functions();
-            if (functions.isNum(flightID) == true)
+            int numRows = functions.getRows(2);
+            if (functions.isFlight(flightID) == true)
             { //if the flight ID exists, go to the flight
+
                 SchedulePlane schedulePlane = new SchedulePlane(identification, flightID);
                 this.NavigationService.Navigate(schedulePlane);
             }
@@ -52,7 +54,7 @@ namespace Air3550
             { //otherwise, display an error
                 Warning.Text = "Invalid Flight ID";
             }
-}
+        }
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
 

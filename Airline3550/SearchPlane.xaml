@@ -11,7 +11,6 @@
     <Grid>
         <Button Content="Sign Out" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" Width="100" Click="Sign_Out"/>
         <Button Content="Main Menu" HorizontalAlignment="Left" Margin="660,30,0,0" VerticalAlignment="Top" Width="100" Click="Main_Menu"/>
-        <DataGrid Name ="Flights" HorizontalAlignment="Left" Height="250" Margin="100,70,0,0" VerticalAlignment="Top" Width="600" />
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="260,330,0,0" TextWrapping="Wrap" Text="Flight ID:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>
         </Border>

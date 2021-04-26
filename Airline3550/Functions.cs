@@ -752,8 +752,210 @@ namespace Air3550
 
             return iStartHour.ToString() + ":" + iStartMin + " " + sAMorPM + " " + iStartMonth.ToString() + "/" + iStartDay.ToString() + "/" + iStartYear.ToString();
         }
+public string isPlaneAvailable(string Origin, string PlaneRequested)
+        {
+            //Open Airports tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[4];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
+            {
+                if (xlRange.Cells[i, 4].value.ToString() == Origin)
+                {//Check for selected plane
+
+
+                    if ((xlRange.Cells[i, 7].value < 1) && (xlRange.Cells[i, 8].value < 1) && (xlRange.Cells[i, 9].value < 1))
+                    {//No planes at airport
+
+                        xlWorkbook.Close(); //THIS ONE TOO
+                        return "EMPTY";
+                    }
+
+                    if (PlaneRequested == "737")
+                    {
+                        if (xlRange.Cells[i, 7].value > 0)
+                        {//Plane available remove from inventory
+                            xlRange.Cells[i, 7].value = xlRange.Cells[i, 7].value - 1;
+                            
+                            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                            xlWorkbook.Close(); //THIS ONE TOO
+                            return "FOUND";
+                        }
+                    }
+                    else if (PlaneRequested == "747")
+                    {
+                        if (xlRange.Cells[i, 8].value > 0)
+                        {//Plane available remove from inventory
+                            xlRange.Cells[i, 8].value = xlRange.Cells[i, 8].value - 1;
+
+                            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                            xlWorkbook.Close(); //THIS ONE TOO
+                            return "FOUND";
+                        }
+                    }
+                    else if (PlaneRequested == "767")
+                    {
+                        if (xlRange.Cells[i, 9].value > 0)
+                        {//Plane available remove from inventory
+                            xlRange.Cells[i, 9].value = xlRange.Cells[i, 9].value - 1;
+
+                            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                            xlWorkbook.Close(); //THIS ONE TOO
+                            return "FOUND";
+                        }
+                    }
+                }
+            }
+
+            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+            xlWorkbook.Close(); //THIS ONE TOO
+            return "ZERO";
+        }
+
+
+        //Gets crew and plane plane id
+        public string getCrewMeHartiesAndPlaneID(string Origin, string PlaneRequested)
+        {
+            //Open Planes tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            string sCrew = null;
+
+            for (int i = 2; i <= NUM_PLANES + 1; i++)
+            {//Look for correct plane
+
+                string tempPlane = xlRange.Cells[i, 2].Value2.ToString();
+                string tempOrigin = xlRange.Cells[i, 5].Value2.ToString();
+                string tempBooked = xlRange.Cells[i, 6].Value2.ToString();
+                if (PlaneRequested == xlRange.Cells[i, 2].Value2.ToString() && Origin == xlRange.Cells[i, 5].Value2.ToString() && (tempBooked == "FALSE" || tempBooked == "False" || tempBooked == "false"))
+                {//plane found get crew
+
+                    sCrew = xlRange.Cells[i, 4].Value2.ToString() + " " + xlRange.Cells[i, 1].Value2.ToString();
+                    //xlRange.Cells[i, 6].value = "FALSE";
+                    break;
+                }
+            }
+
+            //xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+            xlWorkbook.Close(); //THIS ONE TOO
+            return sCrew;
+        }
+
+
+        //Call method to set the taken value to true indicating takeoff has occured
+        public bool setInFlight(string flightID)
+        {
+            //Open Flights tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            int numFlights = getRows(2);
+
+            for (int i = 2; i <= numFlights + 1; i++)
+            {
+                if (flightID == xlRange.Cells[i, 1].Value2.ToString())
+                {
+                    xlRange.Cells[i, 2].value = "TRUE";
+                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return true;
+                }
+            }
+                return false;
+        }
+
+        //Call to add plane to new location after takeoff
+        public bool addPlaneToInventory(string Destination, string Plane)
+        {
+            //Open Airports tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[4];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+            
+
+            for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
+            {
+                if (Destination == xlRange.Cells[i, 4].Value2.ToString())
+                {
+                    if (Plane == "737")
+                    {
+                        xlRange.Cells[i, 7].Value2++;
+
+                    }
+                    else if (Plane == "747")
+                    {
+                        xlRange.Cells[i, 8].Value2++;
+                    }
+                    else if (Plane == "747")
+                    {
+                        xlRange.Cells[i, 9].Value2++;
+                    }
+                    else
+                    {
+                        xlWorkbook.Close(); //THIS ONE TOO
+                        return false;
+                    }
+
+                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return true;
+
+                }
+            }
+
+            xlWorkbook.Close(); //THIS ONE TOO
+            return false;
+        }
+
+        //Set the plane as booked so another flight cannot use it
+        public bool setPlaneBooked(string PlaneID)
+        {
+            //Open Planes tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            for (int i = 2; i < NUM_PLANES + 1; i++)
+            {
+                if (PlaneID == xlRange.Cells[i, 1].Value.ToString())
+                {//Found plane
+                    xlRange.Cells[i, 6].value = "TRUE";
+                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return true;
+                }
+            }
+            xlWorkbook.Close(); //THIS ONE TOO
+            return false;
+        }
+        //Call once the plane has take off to put in new location
+        public bool setPlaneLocation(string Destination, string Crew)
+        {
+            //Open Planes tab on excel
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            for (int i = 2; i < NUM_PLANES + 1; i++)
+            {
+                if (Crew == xlRange.Cells[i, 4].value)
+                {//Found plane
+
+                    xlRange.Cells[i, 5].value = Destination;
+                    xlRange.Cells[i, 6].value = "FALSE";
+                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return true;
+                }
+            }
+
+            xlWorkbook.Close(); //THIS ONE TOO
+            return false;
+        }
+
     }
-
-
 }
+
 
