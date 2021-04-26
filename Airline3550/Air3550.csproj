@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AccountentFlightRecord.xaml.cs">
+      <DependentUpon>AccountentFlightRecord.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AirlineHistory.xaml.cs">
       <DependentUpon>AirlineHistory.xaml</DependentUpon>
     </Compile>
@@ -99,9 +102,6 @@
     </Compile>
     <Compile Include="FlightsCancelled.xaml.cs">
       <DependentUpon>FlightsCancelled.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Flight_Record.xaml.cs">
-      <DependentUpon>Flight_Record.xaml</DependentUpon>
     </Compile>
     <Compile Include="ForgotPassword.xaml.cs">
       <DependentUpon>ForgotPassword.xaml</DependentUpon>
@@ -150,6 +150,10 @@
     <Compile Include="UserRecord.xaml.cs">
       <DependentUpon>UserRecord.xaml</DependentUpon>
     </Compile>
+    <Page Include="AccountentFlightRecord.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AirlineHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -215,10 +219,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FlightsCancelled.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Flight_Record.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

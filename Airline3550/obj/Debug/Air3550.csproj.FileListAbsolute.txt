@@ -227,6 +227,5 @@ C:\Users\twild\source\repos\Air3550\Airline3550\obj\Debug\Air3550.csproj.CoreCom
 C:\Users\twild\source\repos\Air3550\Airline3550\obj\Debug\Air3550.exe
 C:\Users\twild\source\repos\Air3550\Airline3550\obj\Debug\Air3550.pdb
 C:\Users\twild\source\repos\air3550\Airline3550\bin\Debug\Air3550.pdb
-C:\Users\twild\source\repos\air3550\Airline3550\obj\Debug\Air3550.csprojAssemblyReference.cache
-C:\Users\twild\source\repos\air3550\Airline3550\obj\Debug\Flight_Record.g.cs
-C:\Users\twild\source\repos\air3550\Airline3550\obj\Debug\Flight_Record.baml
+C:\Users\twild\source\repos\Air3550\Airline3550\obj\Debug\AccountentFlightRecord.g.cs
+C:\Users\twild\source\repos\Air3550\Airline3550\obj\Debug\AccountentFlightRecord.baml
