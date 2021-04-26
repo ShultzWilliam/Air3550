@@ -21,7 +21,7 @@
             <TextBlock HorizontalAlignment="Left" Margin="25,108,0,0" TextWrapping="Wrap" Text="Destination:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="25,133,0,0" TextWrapping="Wrap" Text="Departure Date:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="25,133,0,0" TextWrapping="Wrap" Text="Departure:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="320,133,0,0" TextWrapping="Wrap" Text="Time:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="70" RenderTransformOrigin="-3.929,4.7"/>
@@ -30,61 +30,34 @@
             <TextBlock HorizontalAlignment="Left" Margin="505,133,0,0" TextWrapping="Wrap" Text="Terminal:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="70" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="25,158,0,0" TextWrapping="Wrap" Text="Arrival Date:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
-        </Border>
-        <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="320,158,0,0" TextWrapping="Wrap" Text="Time:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="70" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="25,158,0,0" TextWrapping="Wrap" Text="Arrival:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="505,158,0,0" TextWrapping="Wrap" Text="Terminal:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="70" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="25,210,0,0" TextWrapping="Wrap" Text="Price:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="180,189,0,0" TextWrapping="Wrap" Text="Price:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
-        <ComboBox Name ="Origin" HorizontalAlignment="Left" Height="23" Margin="161,83,0,0"   VerticalAlignment="Top" Width="544" >
-            <ComboBoxItem Content="Cleveland, Ohio"></ComboBoxItem>
-            <ComboBoxItem Content="Nashville, Tennessee"></ComboBoxItem>
-            <ComboBoxItem Content="Miami, Florida"></ComboBoxItem>
-            <ComboBoxItem Content="Houston, Texas"></ComboBoxItem>
-            <ComboBoxItem Content="Queens, New York"></ComboBoxItem>
-            <ComboBoxItem Content="Billings, Montana"></ComboBoxItem>
-            <ComboBoxItem Content="Los Angeles, California"></ComboBoxItem>
-            <ComboBoxItem Content="Ketchikan, Arkansas"></ComboBoxItem>
-            <ComboBoxItem Content="Hilo, Hawaii"></ComboBoxItem>
-            <ComboBoxItem Content="Salt Lake City, Utah"></ComboBoxItem>
-            <ComboBoxItem Content="San Diego, California"></ComboBoxItem>
-            <ComboBoxItem Content="Abuquerque, New Mexico"></ComboBoxItem>
-            <ComboBoxItem Content="Burningham, Alaska"></ComboBoxItem>
-            <ComboBoxItem Content="Kansas City, Missouri"></ComboBoxItem>
-        </ComboBox>
-        <ComboBox Name ="Destination" HorizontalAlignment="Left" Height="23" Margin="161,108,0,0"   VerticalAlignment="Top" Width="544" >
-            <ComboBoxItem Content="Cleveland, Ohio"></ComboBoxItem>
-            <ComboBoxItem Content="Nashville, Tennessee"></ComboBoxItem>
-            <ComboBoxItem Content="Miami, Florida"></ComboBoxItem>
-            <ComboBoxItem Content="Houston, Texas"></ComboBoxItem>
-            <ComboBoxItem Content="Queens, New York"></ComboBoxItem>
-            <ComboBoxItem Content="Billings, Montana"></ComboBoxItem>
-            <ComboBoxItem Content="Los Angeles, California"></ComboBoxItem>
-            <ComboBoxItem Content="Ketchikan, Arkansas"></ComboBoxItem>
-            <ComboBoxItem Content="Hilo, Hawaii"></ComboBoxItem>
-            <ComboBoxItem Content="Salt Lake City, Utah"></ComboBoxItem>
-            <ComboBoxItem Content="San Diego, California"></ComboBoxItem>
-            <ComboBoxItem Content="Abuquerque, New Mexico"></ComboBoxItem>
-            <ComboBoxItem Content="Burningham, Alaska"></ComboBoxItem>
-            <ComboBoxItem Content="Kansas City, Missouri"></ComboBoxItem>
-        </ComboBox>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Margin="565,189,0,0" TextWrapping="Wrap" Text="Arrival Time:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
         <DatePicker Name ="Departure_Date" HorizontalAlignment="Left" Height="23" Margin="161,133,0,0"  VerticalAlignment="Top" Width="175"/>
         <TextBox Name ="Departure_Time" HorizontalAlignment="Left" Height="23" Margin="380,133,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
         <TextBox Name ="Departure_Terminal" HorizontalAlignment="Left" Height="23" Margin="575,133,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
-        <DatePicker Name ="Arrival_Date" HorizontalAlignment="Left" Height="23" Margin="161,158,0,0" VerticalAlignment="Top" Width="175"/>
-        <TextBox Name ="Arrival_Time" HorizontalAlignment="Left" Height="23" Margin="380,158,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
         <TextBox Name ="Arrival_Terminal" HorizontalAlignment="Left" Height="23" Margin="575,158,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
-        <Button Content="Calculate Price" HorizontalAlignment="Left" Margin= "350,185,0,0" VerticalAlignment="Top" Width="100" Click="Calculate_Click"/>
-        <TextBox Name ="Price" HorizontalAlignment="Left" Height="23" Margin="161,210,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" />
+        <Button Content="Calculate Price and Arrival" HorizontalAlignment="Left" Margin= "360,187,0,0" VerticalAlignment="Top" Width="150" Click="Calculate_Click"/>
+        <TextBox Name ="Price" HorizontalAlignment="Left" Height="23" Margin="161,210,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="175" />
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="300,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="200" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBox x:Name ="Arrival_Time" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="175" Margin="531,210,0,0" />
         </Border>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin= "365,265,0,0" VerticalAlignment="Top" Width="70" Loaded="Window_Loaded" Click="Submit_Click"/>
+        <Button Content="Submit" HorizontalAlignment="Left" Margin= "404,265,0,0" VerticalAlignment="Top" Width="70" Click="Submit_Click"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin= "404,301,0,0" VerticalAlignment="Top" Width="70" Click="Delete_Click"/>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock Name="Warning" HorizontalAlignment="Left" Margin="0,358,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="800" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <TextBox Name ="Origin_Textbox" HorizontalAlignment="Left" Height="23" Margin="161,81,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" />
+        <TextBox Name ="Destination_TextBox" HorizontalAlignment="Left" Height="23" Margin="161,105,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="544" />
+
 
     </Grid>
 </Page>
