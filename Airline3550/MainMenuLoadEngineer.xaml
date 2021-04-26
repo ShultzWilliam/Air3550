@@ -9,19 +9,14 @@
       Title="MainMenuLoadEngineer">
 
     <Grid>
+        <TextBlock HorizontalAlignment="Left" Height="23" Margin="340,28,0,0" TextWrapping="Wrap" Text="Welcome to Air3550!" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406"/>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Height="23" Margin="340,28,0,0" TextWrapping="Wrap" Text="Welcome to Air3550!" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406"/>
-        </Border>
-        <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock Name ="User"  HorizontalAlignment="Left" Height="23" Margin="340,58,0,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406" Loaded="Window_Loaded"/>
+            <TextBlock x:Name ="User"  HorizontalAlignment="Left" Height="23" Margin="358,59,0,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406" Loaded="Window_Loaded"/>
         </Border>
         <Button Content="Sign Out" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" Width="100" Click="Sign_Out"/>
-        <Button Content="Profile" HorizontalAlignment="Left" Margin="500,130,0,0" VerticalAlignment="Top" Width="100" Click="Edit_Profile"/>
-        <Button Content="Book Flight" HorizontalAlignment="Left" Margin="200,130,0,0" VerticalAlignment="Top" Width="100" Click="Book_Flight"/>
-        <Button Content="My Flight History" HorizontalAlignment="Left" Margin="500,230,0,0" VerticalAlignment="Top" Width="100" Click="My_History_Click"/>
-        <Button Content="My Flights" HorizontalAlignment="Left" Margin="200,230,0,0" VerticalAlignment="Top" Width="100" Click="My_Flights"/>
-        <Button Content="Flights" HorizontalAlignment="Left" Margin="500,330,0,0" VerticalAlignment="Top" Width="100" Click="Edit_Flights"/>
-        <Button Content="Schedule Flight" HorizontalAlignment="Left" Margin="200,330,0,0" VerticalAlignment="Top" Width="100" Click="Schedule_Flight"/>
+        <Button Content="Profile" HorizontalAlignment="Left" Margin="668,30,0,0" VerticalAlignment="Top" Width="100" Click="Profile"/>
+        <Button Content="Edit/Delete Route" HorizontalAlignment="Left" Margin="40,215,0,0" VerticalAlignment="Top" Width="100" Click="Edit_Flights"/>
+        <Button Content="Create Flight" HorizontalAlignment="Left" Margin="40,182,0,0" VerticalAlignment="Top" Width="100" Click="Create_Flight"/>
 
     </Grid>
 </Page>
