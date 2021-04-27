@@ -47,7 +47,7 @@ namespace Air3550
             InitializeComponent();
             identification = id;
 
-            
+
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         { //Load in the data grid
@@ -118,7 +118,7 @@ namespace Air3550
         }
 
 
-            private void Sign_Out(object sender, RoutedEventArgs e)
+        private void Sign_Out(object sender, RoutedEventArgs e)
         { //sign out of the application
             SignIn signIn = new SignIn();
             this.NavigationService.Navigate(signIn);
@@ -126,7 +126,7 @@ namespace Air3550
         private void Submit_Click(object sender, RoutedEventArgs e)
         { //Go back to the main menu
             flightID = FlightID.Text;
-            
+
             //create the excel variables
             Excel.Workbook xlWorkbook = functions.database_connect();
             Excel._Worksheet xlWorksheet1 = xlWorkbook.Sheets[1];

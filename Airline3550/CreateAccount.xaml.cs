@@ -101,7 +101,7 @@ namespace Air3550
                 xlRange.Cells[rowCount + 1, 14].value = CSV.Text;
                 xlRange.Cells[rowCount + 1, 15].value = Expiration.Text;
                 xlRange.Cells[rowCount + 1, 25].value = password;
-                xlRange.Cells[rowCount + 1, 30].value = Password.Text;
+                xlRange.Cells[rowCount + 1, 30].value = "0";
                 xlRange.Cells[rowCount + 1, 16].value = "0"; //Credit
                 xlRange.Cells[rowCount + 1, 17].value = "0"; //Points
                 xlRange.Cells[rowCount + 1, 18].value = "0"; //Money Spent

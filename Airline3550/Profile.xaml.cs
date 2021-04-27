@@ -60,6 +60,8 @@ namespace Air3550
             CSV.Text = xlRange.Cells[IDRow, 14].Value2.ToString(); //Set the Credit Card CSV in the text box
             Credits.Text = xlRange.Cells[IDRow, 16].Value2.ToString();
             Points.Text = xlRange.Cells[IDRow, 17].Value2.ToString();
+            moneySpent.Text = xlRange.Cells[IDRow, 18].Value2.ToString();
+            pointsUsed.Text = xlRange.Cells[IDRow, 30].Value2.ToString();
             xlWorkbook.Close(true);
         }
         private void Sign_Out(object sender, RoutedEventArgs e)
@@ -113,7 +115,7 @@ namespace Air3550
                     }
                     xlRange.Cells[IdRow, 25].value = hashString.ToString();
 
-                    xlRange.Cells[IdRow, 30].value = Password.Text;
+                    //xlRange.Cells[IdRow, 30].value = Password.Text;
                 }
 
                 string userType = functions.getUserType(IdRow);

@@ -133,16 +133,28 @@
             <TextBlock HorizontalAlignment="Left" Margin="25,333,0,0" TextWrapping="Wrap" Text="Credit:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock Name="Credits" HorizontalAlignment="Left" Margin="161,333,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock Name="Credits" HorizontalAlignment="Left" Margin="161,333,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="75" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="297,333,0,0" TextWrapping="Wrap" Text="Points:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="247,333,0,0" TextWrapping="Wrap" Text="Points:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="75" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock Name="Points" HorizontalAlignment="Left" Margin="433,333,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock Name="Points" HorizontalAlignment="Left" Margin="333,333,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="75" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-                <TextBlock Name="Warning" HorizontalAlignment="Left" Margin="0,358,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="800" RenderTransformOrigin="-3.929,4.7"/>
-            </Border>
-        </Grid>
+            <TextBlock HorizontalAlignment="Left" Margin="408,333,0,0" TextWrapping="Wrap" Text="Money Spent:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="75" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock Name="moneySpent" HorizontalAlignment="Left" Margin="483,333,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="75" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Margin="558,333,0,0" TextWrapping="Wrap" Text="Points Used:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="75" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock Name="pointsUsed" HorizontalAlignment="Left" Margin="633,333,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="75" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock Name="Warning" HorizontalAlignment="Left" Margin="0,358,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="800" RenderTransformOrigin="-3.929,4.7"/>
+        </Border>
+    </Grid>
 </Page>

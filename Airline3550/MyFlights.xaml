@@ -22,12 +22,12 @@
             </DataGrid.Columns>
         </DataGrid>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="260,350,0,0" TextWrapping="Wrap" Text="Flight ID:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="260,330,0,0" TextWrapping="Wrap" Text="Flight ID:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin= "450,350,0,0" VerticalAlignment="Top" Width="100" Click="Submit_Click"/>
-        <TextBox Name ="FlightID" HorizontalAlignment="Left" Height="20" Margin="350,350,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100" Loaded="Window_Loaded"/>
+        <Button Content="Submit" HorizontalAlignment="Left" Margin= "450,330,0,0" VerticalAlignment="Top" Width="100" Click="Submit_Click"/>
+        <TextBox Name ="FlightID" HorizontalAlignment="Left" Height="20" Margin="350,330,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100" Loaded="Window_Loaded"/>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="300,330,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="200" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock Name ="Warning" HorizontalAlignment="Left" Margin="300,360,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="200" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
     </Grid>
 </Page>

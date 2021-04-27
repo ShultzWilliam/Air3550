@@ -57,12 +57,13 @@ namespace Air3550
             Excel.Range xlRange2 = xlWorksheet2.UsedRange;
             int rowCount2 = functions.getRows(2);
             userIDRow = functions.getIDRow(identification, 1); //get the ID Rows for the flight and user IDs
-            int[] flightArray = new int[rowCount2];
+
             int numOfFlights = 0;
             if (functions.isEmpty(1, userIDRow, 23) == false)
             { //if the flights cell isn't empty
                 string flights = xlRange1.Cells[userIDRow, 23].Value2.ToString(); //get the user's flights
                 string[] flightsArray = flights.Split(' ');
+                int[] flightArray = new int[flightsArray.Length];
 
                 for (int j = 0; j < flightsArray.Length; j++)
                 { //for each time we cancelled a flight, go through and grab the instance. Unlike other scenarios, here the same flight can appear twice

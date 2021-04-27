@@ -230,3 +230,5 @@ C:\Users\twild\source\repos\air3550\Airline3550\bin\Debug\Air3550.pdb
 C:\Users\twild\source\repos\Air3550\Airline3550\obj\Debug\AccountentFlightRecord.g.cs
 C:\Users\twild\source\repos\Air3550\Airline3550\obj\Debug\AccountentFlightRecord.baml
 C:\Users\twild\Source\Repos\Air3550\Airline3550\obj\Debug\Air3550.csprojAssemblyReference.cache
+C:\Users\Nathan Burns\Source\Repos\Air3550\Airline3550\obj\Debug\AccountentFlightRecord.g.cs
+C:\Users\Nathan Burns\Source\Repos\Air3550\Airline3550\obj\Debug\AccountentFlightRecord.baml

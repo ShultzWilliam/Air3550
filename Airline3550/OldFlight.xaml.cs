@@ -66,10 +66,6 @@ namespace Air3550
             this.NavigationService.Navigate(signIn);
         }
 
-        private void Print_Record(object sender, RoutedEventArgs e)
-        { //Print the user record for the flight
-
-        }
 
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu

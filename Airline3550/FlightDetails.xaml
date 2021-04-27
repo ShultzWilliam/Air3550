@@ -23,7 +23,7 @@
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="325,83,0,0" TextWrapping="Wrap" Text="Destination:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
-        
+
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="25,108,0,0" TextWrapping="Wrap" Text="Departure Date:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
@@ -58,7 +58,7 @@
         <TextBlock Name ="Arrival_Time" HorizontalAlignment="Left" Height="23" Margin="380,133,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
         <TextBlock Name ="Arrival_Terminal" HorizontalAlignment="Left" Height="23" Margin="575,133,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="130"/>
         <TextBlock Name ="Price" HorizontalAlignment="Left" Height="23" Margin="161,158,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="175" />
-        <TextBlock Name ="Plane" HorizontalAlignment="Left" Height="23" Margin="450,158,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="175" Loaded="Window_Loaded"/>
+        <TextBlock Name ="Plane" HorizontalAlignment="Left" Height="23" Margin="450,158,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="175"/>
         <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock HorizontalAlignment="Left" Margin="25,183,0,0" TextWrapping="Wrap" Text="Paid for With:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
