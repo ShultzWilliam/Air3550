@@ -69,10 +69,12 @@ namespace Air3550
             FlightHistory myHistory = new FlightHistory(Identification);
             this.NavigationService.Navigate(myHistory);
         }
-        private void Flight_Log(object sender, RoutedEventArgs e)
-        { //Search for flights to book planes for
-            FlightLog flightLog = new FlightLog(Identification);
-            this.NavigationService.Navigate(flightLog);
+
+        private void Flight_Manifest(object sender, RoutedEventArgs e)
+        {// go to the flightManifest screen
+            FlightManifest flightManifest = new FlightManifest(Identification);
+            this.NavigationService.Navigate(flightManifest);
+
         }
     }
 }

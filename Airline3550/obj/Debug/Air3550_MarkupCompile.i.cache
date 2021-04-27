@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\twild\Source\Repos\Air3550\Airline3550\obj\Debug\
+C:\Users\twild\source\repos\air3550\Airline3550\obj\Debug\
 Air3550
 none
 false
 DEBUG;TRACE
-C:\Users\twild\Source\Repos\Air3550\Airline3550\App.xaml
+C:\Users\twild\source\repos\air3550\Airline3550\App.xaml
 34829822237
 
 40129260444
 161951547161
 AccountentFlightRecord.xaml;AirlineHistory.xaml;Airport.xaml;AirportFlight.xaml;BoardingPass.xaml;BookFlight.xaml;CancelledFlight.xaml;CreateAccount.xaml;CreateFlight.xaml;Dictionary1.xaml;EditFlight.xaml;EditFlightSearch.xaml;FlightDetails.xaml;FlightHistory.xaml;FlightLog.xaml;FlightManifest.xaml;Flights.xaml;FlightsCancelled.xaml;ForgotPassword.xaml;MainMenuAccountant.xaml;MainMenuCustomer.xaml;MainMenuFlightManager.xaml;MainMenuLoadEngineer.xaml;MainMenuMarketingManager.xaml;MainWindow.xaml;MyFlights.xaml;OldFlight.xaml;Profile.xaml;ResetPassword.xaml;SchedulePlane.xaml;SearchFlight.xaml;SearchPlane.xaml;SignIn.xaml;UserRecord.xaml;
 
-False
+True
 

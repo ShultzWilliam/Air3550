@@ -28,11 +28,10 @@ namespace Air3550
         {
             InitializeComponent();
         }
-        public FlightManifest(string id, string ID) : base()
+        public FlightManifest(string id) : base()
         { //define the user and flight IDs
             InitializeComponent();
             identification = id;
-            flightID = ID;
         }
 
         private void Sign_Out(object sender, RoutedEventArgs e)
@@ -40,23 +39,7 @@ namespace Air3550
             SignIn signIn = new SignIn();
             this.NavigationService.Navigate(signIn);
         }
-        private void Submit_Click(object sender, RoutedEventArgs e)
-        { //Go back to the main menu
-            IDCHECK = FlightID.Text;
-            //check if the flightID exists
 
-            Functions functions = new Functions();
-            if (functions.isNum(IDCHECK) == true)
-            { //if the user ID exists, go to the user
-                FlightID.Text = string.Empty;
-                UserRecord flightManifest = new UserRecord(identification, IDCHECK);
-                this.NavigationService.Navigate(flightManifest);
-            }
-            else
-            { //otherwise, display an error
-                Warning.Text = "Invalid Flight ID";
-            }
-        }
         private void Main_Menu(object sender, RoutedEventArgs e)
         { //to return to the main menu
             MainMenuFlightManager mainMenu = new MainMenuFlightManager(identification); //create a new main menu and go to it

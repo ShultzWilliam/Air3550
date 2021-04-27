@@ -11,35 +11,34 @@
     <Grid>
         <Button Content="Sign Out" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" Width="100" Click="Sign_Out"/>
         <Button Content="Main Menu" HorizontalAlignment="Left" Margin="660,30,0,0" VerticalAlignment="Top" Width="100" Click="Main_Menu"/>
-        <DataGrid Name ="Airports" HorizontalAlignment="Left" Height="250" Margin="100,70,0,0" VerticalAlignment="Top" Width="600" />
+        <DataGrid Name ="Airports" HorizontalAlignment="Left" Height="250" Margin="25,70,0,0" VerticalAlignment="Top" Width="750" />
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="260,330,0,0" TextWrapping="Wrap" Text="Airport:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="90" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="45,330,0,0" TextWrapping="Wrap" Text="Total Flights:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin= "450,330,0,0" VerticalAlignment="Top" Width="100" Click="Submit_Click"/>
-        <ComboBox Name ="Airport" HorizontalAlignment="Left" Height="20" Margin="350,330,0,0" VerticalAlignment="Top" Width="100">
-            <ComboBoxItem Content="Cleveland, Ohio"></ComboBoxItem>
-            <ComboBoxItem Content="Nashville, Tennessee"></ComboBoxItem>
-            <ComboBoxItem Content="Miami, Florida"></ComboBoxItem>
-            <ComboBoxItem Content="Houston, Texas"></ComboBoxItem>
-            <ComboBoxItem Content="Queens, New York"></ComboBoxItem>
-            <ComboBoxItem Content="Billings, Montana"></ComboBoxItem>
-            <ComboBoxItem Content="Los Angeles, California"></ComboBoxItem>
-            <ComboBoxItem Content="Ketchikan, Arkansas"></ComboBoxItem>
-            <ComboBoxItem Content="Hilo, Hawaii"></ComboBoxItem>
-            <ComboBoxItem Content="Salt Lake City, Utah"></ComboBoxItem>
-            <ComboBoxItem Content="San Diego, California"></ComboBoxItem>
-            <ComboBoxItem Content="Abuquerque, New Mexico"></ComboBoxItem>
-            <ComboBoxItem Content="Burningham, Alaska"></ComboBoxItem>
-            <ComboBoxItem Content="Kansas City, Missouri"></ComboBoxItem>
-        </ComboBox>
+        <TextBox Name ="TotalFlightss" HorizontalAlignment="Left" Height="20" Margin="160,330,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100"/>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="45,370,0,0" TextWrapping="Wrap" Text="Total Flights:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="45,355,0,0" TextWrapping="Wrap" Text="Total Profits:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
-            <TextBlock HorizontalAlignment="Left" Margin="45,395,0,0" TextWrapping="Wrap" Text="Total Profits:" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
+            <TextBlock HorizontalAlignment="Left" Margin="330,30,0,0" TextWrapping="Wrap" Text="Airline History" VerticalAlignment="Top" TextAlignment="Center" Height="20" Width="125" RenderTransformOrigin="-3.929,4.7"/>
         </Border>
-        <TextBlock Name ="Total_Flights" HorizontalAlignment="Left" Height="23" Margin="161,370,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100" />
-        <TextBlock Name ="Total_Profit" HorizontalAlignment="Left" Height="23" Margin="161,395,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100" />
-        
+        <TextBox Name ="TotalProfits" HorizontalAlignment="Left" Height="20" Margin="160,355,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100"/>
+        <DataGrid Name ="Flights" HorizontalAlignment="Left" Height="250" Margin="25,70,0,0" VerticalAlignment="Top" Width="750">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Flight ID"  Binding="{Binding ID}"/>
+                <DataGridTextColumn Header="Origin"  Binding="{Binding Origin}"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" />
+                <DataGridTextColumn Header="Departure"  Binding="{Binding Departure}"/>
+                <DataGridTextColumn Header="Arrival" Binding="{Binding Arrival}" />
+                <DataGridTextColumn Header="Price"  Binding="{Binding Price}"/>
+                <DataGridTextColumn Header="Attendence"  Binding="{Binding Attendence}"/>
+                <DataGridTextColumn Header="AttendenceRatio"  Binding="{Binding AttendenceRatio}"/>
+                <DataGridTextColumn Header="Profit"  Binding="{Binding Profit}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock Name ="Total_Flights" HorizontalAlignment="Left" Height="23" Margin="161,330,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100" />
+        <TextBlock Name ="Total_Profit" HorizontalAlignment="Left" Height="23" Margin="161,355,0,0" TextWrapping="Wrap"  TextAlignment="Center" VerticalAlignment="Top" Width="100" />
+        <Button Content="Flight_History" HorizontalAlignment="Left" Margin= "350,330,0,0" VerticalAlignment="Top" Width="100" Click="Submit_Click"/>
+
     </Grid>
 </Page>

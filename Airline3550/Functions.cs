@@ -224,7 +224,7 @@ namespace Air3550
         public Excel.Workbook database_connect()
         { //easy way to connect to a database so that, when a user needs to change the file path, they only do so in one location
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\Nathan Burns\Desktop\Classes\Software Engineering\Air3550_Database\Air3550Database.xlsx");
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\twild\Desktop\Air3550Database.xlsx");
 
             //Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\twild\Desktop\Air3550Database.xlsx");
             return xlWorkbook;

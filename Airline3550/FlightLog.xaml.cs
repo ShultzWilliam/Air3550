@@ -47,7 +47,7 @@ namespace Air3550
             Functions functions = new Functions();
             if (functions.isNum(flightID) == true)
             { //if the flight ID exists, go to the flightManifest
-                FlightManifest flightManifest = new FlightManifest(identification, flightID);
+                FlightManifest flightManifest = new FlightManifest(identification);
                 this.NavigationService.Navigate(flightManifest);
             }
             else
