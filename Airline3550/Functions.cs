@@ -823,7 +823,7 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             Excel.Range xlRange = xlWorksheet.UsedRange;
             string sCrew = null;
 
-            for (int i = 2; i <= NUM_PLANES + 1; i++)
+            for (int i = 2; i <= 9 + 1; i++)
             {//Look for correct plane
 
                 string tempPlane = xlRange.Cells[i, 2].Value2.ToString();
@@ -917,7 +917,7 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-            for (int i = 2; i < NUM_PLANES + 1; i++)
+            for (int i = 2; i < 9 + 1; i++)
             {
                 if (PlaneID == xlRange.Cells[i, 1].Value.ToString())
                 {//Found plane
@@ -938,7 +938,7 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-            for (int i = 2; i < NUM_PLANES + 1; i++)
+            for (int i = 2; i < 9 + 1; i++)
             {
                 if (Crew == xlRange.Cells[i, 4].value)
                 {//Found plane
