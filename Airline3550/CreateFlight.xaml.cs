@@ -49,8 +49,28 @@ namespace Air3550
 
             //function to save the flight to the database
             Functions functions = new Functions();
-            if (functions.isNum(Price.Text) && functions.isTime(Departure_Time.Text)
-                && Departure_Date.SelectedDate.HasValue)
+
+            if (!(functions.isNum(Price.Text)))
+            { //if the price input is incorrect
+                Warning.Text = "Incorrect price input";
+            }
+            else if (!functions.isTime(Departure_Time.Text))
+            { //if the time input is incorrect
+                Warning.Text = "Incorrect Departure Time";
+            }
+            else if (!Departure_Date.SelectedDate.HasValue)
+            {
+                Warning.Text = "Missing Destination Location";
+            }
+            else if (String.IsNullOrEmpty(Arrival_Time.Text))
+            {
+                Warning.Text = "Please calculate an Arrival Time";
+            }
+            if (String.IsNullOrEmpty(Departure_Terminal.Text) || String.IsNullOrEmpty(Arrival_Terminal.Text))
+            {
+                Warning.Text = "Missing Terminal";
+            }
+            else
             { //if the inputs are correct
 
                 //Add flight to excel doc
@@ -114,7 +134,9 @@ namespace Air3550
                 xlRange.Cells[rowCount + 1, 12].value = Arrival_Terminal.Text;
                 xlRange.Cells[rowCount + 1, 13].value = sDistance;
 
+                xlRange.Cells[rowCount + 1, 16].value = "0";
                 xlRange.Cells[rowCount + 1, 17].value = Price.Text;
+                xlRange.Cells[rowCount + 1, 18].value = "0";
 
                 xlRange.Cells[rowCount + 1, 20].value = Identification;
 
@@ -124,20 +146,9 @@ namespace Air3550
                 MainMenuLoadEngineer mainMenu = new MainMenuLoadEngineer(Identification); //create a new main menu and go to it
                 this.NavigationService.Navigate(mainMenu);
             }
-            else if (!(functions.isNum(Price.Text)))
-            { //if the price input is incorrect
-                Warning.Text = "Incorrect price input";
-            }
-            else if (!(functions.isTime(Arrival_Time.Text) && functions.isTime(Departure_Time.Text)))
-            { //if the time input is incorrect
-                Warning.Text = "Incorrect time input";
-            }
-            else
-            {
-                Warning.Text = "Missing Destination or Arrival Location";
-            }
 
         }
+
         private void Calculate_Click(object sender, RoutedEventArgs e)
         { //to calculate the price of the flight
 
@@ -146,9 +157,14 @@ namespace Air3550
             int iArrivalInfoDivide;
 
             Functions functions = new Functions();
+
             if (!functions.isTime(Departure_Time.Text))
+            { //if the time input is incorrect
+                Warning.Text = "Incorrect Departure Time";
+            }
+            else if (!Departure_Date.SelectedDate.HasValue)
             {
-                Warning.Text = "Incorrect time input";
+                Warning.Text = "Missing Destination Location";
             }
             else
             {
@@ -164,7 +180,6 @@ namespace Air3550
                 //if a flight is a two leg, add $8
 
                 price += (0.12 * double.Parse(sDistance));
-                price = Math.Round(price, 2);
 
                 int arrival, departure; //save values to get the aspects of the time and price 
                 string arrivalHour, arrivalMinute, departureHour, departureMinute;
@@ -177,6 +192,7 @@ namespace Air3550
                 departureMinute = Departure_Time.Text.Substring(departure + 1, 2);
                 arrivalTime = Int32.Parse(arrivalHour) + ((double)Int32.Parse(arrivalMinute) / 60); //convert the time to an integer, with minutes as decimal
                 departureTime = Int32.Parse(departureHour) + ((double)Int32.Parse(departureMinute) / 60); //convert the time to an integer, with minutes as decimal
+
                 if (sArrivalTime.Contains("PM"))
                 { //if it includes PM, add 12 to the time value
                     arrivalTime = arrivalTime + 12;
@@ -202,14 +218,10 @@ namespace Air3550
                     price = price * 0.9;
                 }
 
+                price = Math.Round(price, 2);
                 Price.Text = price.ToString(); //display the price
                 Arrival_Time.Text = sArrivalInfo; //display the arrival info
             }
-        }
-
-        string getDistance()
-        {
-            return null;
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Air3550
             //check if the flightID exists
 
             Functions functions = new Functions();
-            if (functions.isNum(flightID) == true)
+            if (functions.isFlight(flightID) == true)
             { //if the flight ID exists, go to the flight
                 EditFlight editFlight = new EditFlight(identification, flightID);
                 this.NavigationService.Navigate(editFlight);

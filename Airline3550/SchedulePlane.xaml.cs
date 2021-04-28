@@ -23,7 +23,7 @@ namespace Air3550
     public partial class SchedulePlane : Page
     {
         string flightID, Identification; //initialize global variables
-        int flightRow = 1;
+        int flightRow = 2;
 
         public SchedulePlane()
         {
@@ -39,7 +39,6 @@ namespace Air3550
         { //when the window is loaded, load in the flight info
 
             //load in the data from the database
-
 
             Functions functions = new Functions();
 
@@ -97,18 +96,8 @@ namespace Air3550
 
             }
 
-
-            //Default
-            FlightID.Text = flightID;
-            Origin.Text = "Origin";
-            Destination.Text = "Destination";
-            Departure_Date.Text = "4/29/2021";
-            Departure_Time.Text = "5:00 AM";
-            Departure_Terminal.Text = "A";
-            Departure_Date.Text = "4/29/2021";
-            Departure_Time.Text = "5:00 PM";
-            Departure_Terminal.Text = "B";
-            Price.Text = "$" + Convert.ToString(95);
+            Warning.Text = "Database Error";
+            return;
         }
         private void Schedule_Click(object sender, RoutedEventArgs e)
         { //to book the flight
@@ -116,8 +105,13 @@ namespace Air3550
             //schedule the flight
             Functions functions = new Functions();
 
-            string PlaneStatus = functions.isPlaneAvailable(Origin.Text, Plane.Text);
-            //string sCrew = functions.getCrewMeHarties(Origin.Text, Plane.Text);
+            if (Plane.Text != "737" && Plane.Text != "747" && Plane.Text != "767")
+            {
+                Warning.Text = "Please enter a valid plane model (737, 747, 767)";
+                return;
+            }
+
+            string PlaneStatus = functions.isPlaneAvailableAndRemove(Origin.Text, Plane.Text);
 
             if (PlaneStatus == "FOUND")
             {//Add Plane to flightID
@@ -125,7 +119,7 @@ namespace Air3550
                 string sPilots, sAttendant, sPlaneID;
                 string sCrewPlaneID = functions.getCrewMeHartiesAndPlaneID(Origin.Text, Plane.Text);
 
-                if (sCrewPlaneID == null)
+                if (String.IsNullOrEmpty(sCrewPlaneID))
                 {
                     Warning.Text = "Database Error";
                     return;

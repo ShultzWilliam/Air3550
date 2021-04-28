@@ -12,6 +12,7 @@ namespace Air3550
     {
 
         public int NUM_AIRPORTS = 14;
+		public int NUM_PLANES = 9;
 
         public string CEprofile(string firstName, string middleName, string lastName, string address, string city, string ZIP, string phone, string email, string credit, string csv, string password, string birth, string expiration)
         { //check that the profile is formatted correctly
@@ -224,7 +225,7 @@ namespace Air3550
         public Excel.Workbook database_connect()
         { //easy way to connect to a database so that, when a user needs to change the file path, they only do so in one location
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\twild\Desktop\Air3550Database.xlsx");
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\rismi\source\Air3550Database.xlsx");
 
             //Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\twild\Desktop\Air3550Database.xlsx");
             return xlWorkbook;
@@ -551,7 +552,7 @@ namespace Air3550
             }
 
             Location = Destination;
-            for (int j = 10; j < j + NUM_AIRPORTS + 1; j++)
+            for (int j = 10; j < NUM_AIRPORTS + 10; j++)
             {//Once ending location is found
                 //Test = xlRangeAir.Cells[1, j].Value2.ToString();
                 if (xlRangeAir.Cells[1, j].Value2.ToString() == Location)
@@ -561,7 +562,6 @@ namespace Air3550
                 }
             }
 
-            //            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
             xlWorkbook.Close(); //THIS ONE TOO
             return sDistance;
         }
@@ -601,10 +601,9 @@ namespace Air3550
             for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
             {
                 if (sZip == xlRange.Cells[i, 5].Value2.ToString())
-                {//Get Zip Code
+                {//Get Location
                     Temp = xlRange.Cells[i, 4].Value2.ToString();
-                    //                    xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
-                    xlWorkbook.Close(); //THIS ONE TOO
+                    xlWorkbook.Close();
                     return Temp;
                 }
             }
@@ -635,7 +634,7 @@ namespace Air3550
             {//Hour has 1 digit
                 Temp = sStartTime.Substring(0, 1);
                 iStartHour = int.Parse(Temp);
-                Temp = sStartTime.Substring(3, 2);
+                Temp = sStartTime.Substring(2, 2);
                 iStartMin = int.Parse(Temp);
             }
 
@@ -686,8 +685,8 @@ namespace Air3550
                 }
             }
 
-            //Total Min
-            int TripTime = ((int)iDistance / 500) + 30;
+            //Total Min (rounded)
+            int TripTime = (((int)iDistance / 500) * 60) + 30;
 
             //Convert to hours and minutes
             if (TripTime > 60)
@@ -715,11 +714,23 @@ namespace Air3550
             {//Overnight... Switch Day
                 iStartDay++;
                 sAMorPM = "AM";
+                iStartHour -= 12;
             }
             else if (iStartHour > 12)
             {//Flip to PM
                 iStartHour -= 12;
                 sAMorPM = "PM";
+            }
+            else if (iStartHour == 12)
+            {
+                if (sAMorPM == "PM")
+                {
+                    sAMorPM = "AM";
+                }
+                else
+                {
+                    sAMorPM = "PM";
+                }
             }
 
             //ACorrect date if necessary
@@ -741,20 +752,30 @@ namespace Air3550
                 iStartDay = 1;
                 iStartYear++;
             }
-            else if (iStartMonth == (1 | 3 | 5 | 7 | 8 | 10) && iStartDay > 31)
+            else if ((iStartMonth == 1 || iStartMonth == 3 || iStartMonth == 5 || iStartMonth == 7 || iStartMonth == 8 || iStartMonth == 10) && iStartDay > 31)
             {//Next Month (31 days)
                 iStartMonth++;
                 iStartDay = 1;
             }
-            else if (iStartMonth == (2 | 4 | 6 | 9 | 11) && iStartDay > 30)
+            else if ((iStartMonth == 2 || iStartMonth == 4 || iStartMonth == 6 || iStartMonth == 9 || iStartMonth == 11) && iStartDay > 30)
             {//Next Month (30 days)
                 iStartMonth++;
                 iStartDay = 1;
             }
 
-            return iStartHour.ToString() + ":" + iStartMin + " " + sAMorPM + " " + iStartMonth.ToString() + "/" + iStartDay.ToString() + "/" + iStartYear.ToString();
+            if (iStartMin < 10)
+            {
+                return iStartHour.ToString() + ":" + "0" + iStartMin + " " + sAMorPM + " " + iStartMonth.ToString() + "/" + iStartDay.ToString() + "/" + iStartYear.ToString();
+            }
+            else
+            {
+                return iStartHour.ToString() + ":" + iStartMin + " " + sAMorPM + " " + iStartMonth.ToString() + "/" + iStartDay.ToString() + "/" + iStartYear.ToString();
+            }
+
         }
-public string isPlaneAvailable(string Origin, string PlaneRequested)
+
+
+        public string isPlaneAvailableAndRemove(string Origin, string PlaneRequested)
         {
             //Open Airports tab on excel
             Excel.Workbook xlWorkbook = database_connect();
@@ -762,15 +783,15 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
             for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
-            {
+            {//Look through the airports
                 if (xlRange.Cells[i, 4].value.ToString() == Origin)
-                {//Check for selected plane
+                {//Found Airport
 
 
                     if ((xlRange.Cells[i, 7].value < 1) && (xlRange.Cells[i, 8].value < 1) && (xlRange.Cells[i, 9].value < 1))
                     {//No planes at airport
 
-                        xlWorkbook.Close(); //THIS ONE TOO
+                        xlWorkbook.Close();
                         return "EMPTY";
                     }
 
@@ -780,8 +801,8 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
                         {//Plane available remove from inventory
                             xlRange.Cells[i, 7].value = xlRange.Cells[i, 7].value - 1;
                             
-                            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
-                            xlWorkbook.Close(); //THIS ONE TOO
+                            xlWorkbook.Application.ActiveWorkbook.Save();
+                            xlWorkbook.Close();
                             return "FOUND";
                         }
                     }
@@ -791,8 +812,8 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
                         {//Plane available remove from inventory
                             xlRange.Cells[i, 8].value = xlRange.Cells[i, 8].value - 1;
 
-                            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
-                            xlWorkbook.Close(); //THIS ONE TOO
+                            xlWorkbook.Application.ActiveWorkbook.Save();
+                            xlWorkbook.Close();
                             return "FOUND";
                         }
                     }
@@ -802,16 +823,16 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
                         {//Plane available remove from inventory
                             xlRange.Cells[i, 9].value = xlRange.Cells[i, 9].value - 1;
 
-                            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
-                            xlWorkbook.Close(); //THIS ONE TOO
+                            xlWorkbook.Application.ActiveWorkbook.Save();
+                            xlWorkbook.Close();
                             return "FOUND";
                         }
                     }
                 }
             }
 
-            xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
-            xlWorkbook.Close(); //THIS ONE TOO
+            xlWorkbook.Application.ActiveWorkbook.Save();
+            xlWorkbook.Close();
             return "ZERO";
         }
 
@@ -823,26 +844,23 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            string sCrew = null;
+            string sCrewAndID = null;
 
-            for (int i = 2; i <= 9 + 1; i++)
+            for (int i = 2; i <= NUM_PLANES + 1; i++)
             {//Look for correct plane
 
-                string tempPlane = xlRange.Cells[i, 2].Value2.ToString();
-                string tempOrigin = xlRange.Cells[i, 5].Value2.ToString();
                 string tempBooked = xlRange.Cells[i, 6].Value2.ToString();
                 if (PlaneRequested == xlRange.Cells[i, 2].Value2.ToString() && Origin == xlRange.Cells[i, 5].Value2.ToString() && (tempBooked == "FALSE" || tempBooked == "False" || tempBooked == "false"))
                 {//plane found get crew
 
-                    sCrew = xlRange.Cells[i, 4].Value2.ToString() + " " + xlRange.Cells[i, 1].Value2.ToString();
-                    //xlRange.Cells[i, 6].value = "FALSE";
+                    sCrewAndID = xlRange.Cells[i, 4].Value2.ToString() + " " + xlRange.Cells[i, 1].Value2.ToString();
                     break;
                 }
             }
 
             //xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU OPEN
             xlWorkbook.Close(); //THIS ONE TOO
-            return sCrew;
+            return sCrewAndID;
         }
 
 
@@ -853,9 +871,9 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            int numFlights = getRows(2);
+            int numRows = getRows(2);
 
-            for (int i = 2; i <= numFlights + 1; i++)
+            for (int i = 2; i <= numRows; i++)
             {
                 if (flightID == xlRange.Cells[i, 1].Value2.ToString())
                 {
@@ -919,7 +937,7 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-            for (int i = 2; i < 9 + 1; i++)
+            for (int i = 2; i < NUM_PLANES + 1; i++)
             {
                 if (PlaneID == xlRange.Cells[i, 1].Value.ToString())
                 {//Found plane
@@ -933,16 +951,16 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
             return false;
         }
         //Call once the plane has take off to put in new location
-        public bool setPlaneLocation(string Destination, string Crew)
+        public bool setPlaneLocation(string Destination, string PlaneID)
         {
             //Open Planes tab on excel
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-            for (int i = 2; i < 9 + 1; i++)
+            for (int i = 2; i < NUM_PLANES + 1; i++)
             {
-                if (Crew == xlRange.Cells[i, 4].value)
+                if (PlaneID == xlRange.Cells[i, 1].Value.ToString())
                 {//Found plane
 
                     xlRange.Cells[i, 5].value = Destination;
@@ -955,6 +973,75 @@ public string isPlaneAvailable(string Origin, string PlaneRequested)
 
             xlWorkbook.Close(); //THIS ONE TOO
             return false;
+        }
+
+        public string getDestination(string FlightID)
+        {
+            string Destination = null;
+
+            //Open Flights tab on excel
+            int NumRows = getRows(2);
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            for (int i = 2; i <= NumRows; i++)
+            {
+                if (FlightID == xlRange.Cells[i, 1].Value.ToString())
+                {
+                    Destination = xlRange.Cells[i, 6].Value.ToString();
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return Destination;
+                }
+            }
+            xlWorkbook.Close(); //THIS ONE TOO
+            return Destination;
+        }
+
+        public string getPlaneID(string FlightID)
+        {
+            string PlaneID = null;
+
+            //Open Flights tab on excel
+            int NumRows = getRows(2);
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[2];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            for (int i = 2; i <= NumRows; i++)
+            {
+                if (FlightID == xlRange.Cells[i, 1].Value.ToString())
+                {
+                    PlaneID = xlRange.Cells[i, 14].Value.ToString();
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return PlaneID;
+                }
+            }
+            xlWorkbook.Close(); //THIS ONE TOO
+            return PlaneID;
+        }
+
+        public string getPlaneModel(string PlaneID)
+        {
+            string Model = null;
+
+            //Open Planes tab on excel
+            int NumRows = getRows(2);
+            Excel.Workbook xlWorkbook = database_connect();
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[3];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            for (int i = 2; i <= NumRows; i++)
+            {
+                if (PlaneID == xlRange.Cells[i, 1].Value.ToString())
+                {
+                    Model = xlRange.Cells[i, 2].Value.ToString();
+                    xlWorkbook.Close(); //THIS ONE TOO
+                    return Model;
+                }
+            }
+            xlWorkbook.Close(); //THIS ONE TOO
+            return Model;
         }
 
     }

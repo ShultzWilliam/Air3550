@@ -22,7 +22,7 @@ namespace Air3550
     /// </summary>
     public partial class FlightManifest : Page
     {
-        string flightID, identification, IDCHECK; //initialize global variables
+        string identification, IDCHECK; //initialize global variables
 
         public FlightManifest()
         {
@@ -72,6 +72,14 @@ namespace Air3550
                     }
                 }
                 xlWorkbook.Close(true);
+
+                //Jacob Added
+                //Reset flight variables in database
+                string Destination = functions.getLocation(functions.getDestination(FlightID.Text));
+                string PlaneID = functions.getPlaneID(FlightID.Text);
+                functions.setInFlight(FlightID.Text);
+                functions.setPlaneLocation(Destination, PlaneID);
+                functions.addPlaneToInventory(Destination, functions.getPlaneModel(PlaneID));
 
                 // finding all the customers
                Excel.Workbook xlWorkbook2 = functions.database_connect();
