@@ -12,7 +12,7 @@ namespace Air3550
     {
 
         public int NUM_AIRPORTS = 14;
-		public int NUM_PLANES = 9;
+		public int NUM_PLANES = 10;
 
         public string CEprofile(string firstName, string middleName, string lastName, string address, string city, string ZIP, string phone, string email, string credit, string csv, string password, string birth, string expiration)
         { //check that the profile is formatted correctly
@@ -20,10 +20,19 @@ namespace Air3550
             { //if the birth date wasn't entered
                 return "No birth date entered";
             }
+            if (Convert.ToDateTime(birth).AddYears(18) > DateTime.Today)
+            {
+                return "You are not old enough to register for this app";
+            }
 
             if (expiration == "")
             { //if the expiration wasn't entered
                 return "No expiration date entered";
+            }
+
+            if (Convert.ToDateTime(expiration).Day != 1)
+            {
+                return "Make the day of the expiration date the first of the month";
             }
 
             if (firstName == "")

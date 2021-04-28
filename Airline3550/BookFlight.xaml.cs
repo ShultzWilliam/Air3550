@@ -192,6 +192,18 @@ namespace Air3550
                 xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
                 xlWorkbook.Close(); //THIS ONE TOO
             }
+            else if (DateTime.FromOADate(xlRange1.Cells[userIDRow, 15].Value2) < DateTime.Today)
+            {
+                Warning.Text = "Your Credit Card Has Expired";
+                xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
+                xlWorkbook.Close(); //THIS ONE TOO
+            }
+            else if (DateTime.Parse(Departure_Date.Text + " " + Departure_Time.Text) < DateTime.Now)
+            {
+                Warning.Text = "This flight has already departed";
+                xlWorkbook.Application.ActiveWorkbook.Save(); //MAKE SURE TO USE THESE TO SAVE AND CLOSE EVERY WORKBOOK YOU CHANGE
+                xlWorkbook.Close(); //THIS ONE TOO
+            }
             else
             {
                 if ((DateTime.Parse(Departure_Date.Text + " " + Departure_Time.Text)).AddMonths(-6) <= DateTime.Now && (DateTime.Parse(Arrival_Date.Text + " " + Arrival_Time.Text)).AddMonths(-6) <= DateTime.Now)

@@ -13,13 +13,13 @@
             <TextBlock HorizontalAlignment="Left" Height="23" Margin="340,28,0,0" TextWrapping="Wrap" Text="Welcome to Air3550!" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406"/>
         </Border>
         <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock HorizontalAlignment="Left" Height="23" Margin="640,28,0,0" TextWrapping="Wrap" Text="Flight Manager" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406"/>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black">
             <TextBlock Name ="User"  HorizontalAlignment="Left" Height="23" Margin="340,58,0,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.333,0.406" Loaded="Window_Loaded"/>
         </Border>
         <Button Content="Sign Out" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" Width="100" Click="Sign_Out"/>
         <Button Content="Profile" HorizontalAlignment="Left" Margin="500,130,0,0" VerticalAlignment="Top" Width="100" Click="Edit_Profile"/>
-        <Button Content="Book Flight" HorizontalAlignment="Left" Margin="200,130,0,0" VerticalAlignment="Top" Width="100" Click="Book_Flight"/>
-        <Button Content="My Flight History" HorizontalAlignment="Left" Margin="500,230,0,0" VerticalAlignment="Top" Width="100" Click="My_History_Click"/>
-        <Button Content="My Flights" HorizontalAlignment="Left" Margin="200,230,0,0" VerticalAlignment="Top" Width="100" Click="My_Flights"/>
-        <Button Content="Flight Manifest" HorizontalAlignment="Left" Margin="350,330,0,0" VerticalAlignment="Top" Width="100" Click="Flight_Manifest"/>
+        <Button Content="Flight Manifest" HorizontalAlignment="Left" Margin="200,130,0,0" VerticalAlignment="Top" Width="100" Click="Flight_Manifest"/>
     </Grid>
 </Page>

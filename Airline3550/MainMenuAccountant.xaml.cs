@@ -50,22 +50,7 @@ namespace Air3550
             Profile profile = new Profile(Identification);
             this.NavigationService.Navigate(profile);
         }
-        private void Book_Flight(object sender, RoutedEventArgs e)
-        { //book a flight
-            SearchFlight searchFlight = new SearchFlight(Identification);
-            this.NavigationService.Navigate(searchFlight);
-        }
 
-        private void My_Flights(object sender, RoutedEventArgs e)
-        { //Go to scheduled flights
-            MyFlights myFlights = new MyFlights(Identification);
-            this.NavigationService.Navigate(myFlights);
-        }
-        private void My_History_Click(object sender, RoutedEventArgs e)
-        { //Go to taken flights
-            FlightHistory myHistory = new FlightHistory(Identification);
-            this.NavigationService.Navigate(myHistory);
-        }
         private void Airline_History(object sender, RoutedEventArgs e)
         { //Go to airline history
             AirlineHistory airlineHistory = new AirlineHistory(Identification);

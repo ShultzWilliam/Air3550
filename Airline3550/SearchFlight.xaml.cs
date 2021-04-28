@@ -102,7 +102,7 @@ namespace Air3550
                     //origin is 5, destination is 6, date is 7th row
                     foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
 
-                    if (foundDate >= startDate && foundDate <= endDate)
+                    if (foundDate >= startDate && foundDate <= endDate && !(functions.isEmpty(2, i, 14)))
                     { //if the flight takes place between the start and end date
                         if (xlRange.Cells[i, 5].Value2.ToString() == origin && xlRange.Cells[i, 6].Value2.ToString() == destination)
                         { //if the origin and destination match
@@ -144,7 +144,7 @@ namespace Air3550
                                 { //go through the list again looking for 2nd legs
                                     foundDate2 = DateTime.FromOADate(xlRange.Cells[j, 7].Value2); //get the date of the 2nd flight
                                     foundTime2 = Convert.ToDouble(xlRange.Cells[j, 8].Value2.ToString()); //get the start time as well
-                                    if (foundDate2 >= startDate && foundDate2 <= endDate && (foundDate2 > foundEndDate || (foundDate2 == foundEndDate && (foundTime2 - 2.0 / 72) >= foundTime)))
+                                    if (foundDate2 >= startDate && foundDate2 <= endDate && (foundDate2 > foundEndDate || (foundDate2 == foundEndDate && (foundTime2 - 2.0 / 72) >= foundTime - 0.000000000001)) && !(functions.isEmpty(2, j, 14)))
                                     { //if the flight takes place between the start and end date and is at least forty minutes after the first leg flight
                                         if (xlRange.Cells[j, 5].Value2.ToString() == leg && xlRange.Cells[j, 6].Value2.ToString() == destination)
                                         { //if the leg and destination match
@@ -185,7 +185,7 @@ namespace Air3550
                                                 { //go through the list again looking for 2nd legs
                                                     foundDate3 = DateTime.FromOADate(xlRange.Cells[k, 7].Value2); //get the date of the 2nd flight
                                                     foundTime3 = Convert.ToDouble(xlRange.Cells[k, 8].Value2.ToString()); //get the start time as well
-                                                    if (foundDate3 >= startDate && foundDate3 <= endDate && (foundDate3 > foundEndDate2 || (foundDate3 == foundEndDate2 && (foundTime3 - 2.0 / 72) >= foundTime2)))
+                                                    if (foundDate3 >= startDate && foundDate3 <= endDate && (foundDate3 > foundEndDate2 || (foundDate3 == foundEndDate2 && (foundTime3 - 2.0 / 72) >= foundTime2 - 0.000000000001)) && !(functions.isEmpty(2, k, 14)))
                                                     { //if the flight takes place between the start and end date and is at least forty minutes after the first leg flight
                                                         if (xlRange.Cells[k, 5].Value2.ToString() == leg2 && xlRange.Cells[k, 6].Value2.ToString() == destination && leg2 != origin)
                                                         { //if the leg and destination match and the leg is not the origin
@@ -238,7 +238,7 @@ namespace Air3550
                             //origin is 5, destination is 6, date is 7th row
                             foundDate = DateTime.FromOADate(xlRange.Cells[i, 7].Value2); //get the date of the flight
                             foundTime = Convert.ToDouble(xlRange.Cells[i, 8].Value2.ToString());
-                            if (foundDate >= roundDate && foundDate <= returnDate && (foundDate > earliestEndDate || (foundDate == earliestEndDate && foundTime - 0.0278 > earliestEndTime)))
+                            if (foundDate >= roundDate && foundDate <= returnDate && (foundDate > earliestEndDate || (foundDate == earliestEndDate && foundTime - 2.0 / 72 > earliestEndTime - 0.000000000001)) && !(functions.isEmpty(2, i, 14)))
                             { //if the flight takes place between the start and end date
                                 if (xlRange.Cells[i, 5].Value2.ToString() == destination && xlRange.Cells[i, 6].Value2.ToString() == origin)
                                 { //if the origin and destination match
@@ -281,7 +281,7 @@ namespace Air3550
                                         { //go through the list again looking for 2nd legs
                                             foundDate2 = DateTime.FromOADate(xlRange.Cells[j, 7].Value2); //get the date of the 2nd flight
                                             foundTime2 = Convert.ToDouble(xlRange.Cells[j, 8].Value2.ToString()); //get the start time as well
-                                            if (foundDate2 >= roundDate && foundDate2 <= returnDate && (foundDate2 > foundEndDate || (foundDate2 == foundEndDate && (foundTime2 - 2.0/72) >= foundTime)))
+                                            if (foundDate2 >= roundDate && foundDate2 <= returnDate && (foundDate2 > foundEndDate || (foundDate2 == foundEndDate && (foundTime2 - 2.0 / 72) >= foundTime - 0.000000000001)) && !(functions.isEmpty(2, j, 14)))
                                             { //if the flight takes place between the start and end date and is at least forty minutes after the first leg flight
                                                 if (xlRange.Cells[j, 5].Value2.ToString() == leg && xlRange.Cells[j, 6].Value2.ToString() == origin)
                                                 { //if the leg and destination match
@@ -324,7 +324,7 @@ namespace Air3550
                                                         { //go through the list again looking for 2nd legs
                                                             foundDate3 = DateTime.FromOADate(xlRange.Cells[k, 7].Value2); //get the date of the 2nd flight
                                                             foundTime3 = Convert.ToDouble(xlRange.Cells[k, 8].Value2.ToString()); //get the start time as well
-                                                            if (foundDate3 >= roundDate && foundDate3 <= returnDate && (foundDate3 > foundEndDate2 || (foundDate3 == foundEndDate2 && (foundTime3 - 2.0/72) >= foundTime2)))
+                                                            if (foundDate3 >= roundDate && foundDate3 <= returnDate && (foundDate3 > foundEndDate2 || (foundDate3 == foundEndDate2 && (foundTime3 - 2.0 / 72) >= foundTime2 - 0.000000000001)) && !(functions.isEmpty(2, k, 14)))
                                                             { //if the flight takes place between the start and end date and is at least forty minutes after the first leg flight
                                                                 if (xlRange.Cells[k, 5].Value2.ToString() == leg2 && xlRange.Cells[k, 6].Value2.ToString() == origin && leg2 != destination)
                                                                 { //if the leg and destination match and the leg is not the origin
