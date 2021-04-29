@@ -12,7 +12,7 @@ namespace Air3550
     {
 
         public int NUM_AIRPORTS = 14;
-		public int NUM_PLANES = 10;
+        public int NUM_PLANES = 10;
 
         public string CEprofile(string firstName, string middleName, string lastName, string address, string city, string ZIP, string phone, string email, string credit, string csv, string password, string birth, string expiration)
         { //check that the profile is formatted correctly
@@ -234,7 +234,7 @@ namespace Air3550
         public Excel.Workbook database_connect()
         { //easy way to connect to a database so that, when a user needs to change the file path, they only do so in one location
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\rismi\source\Air3550Database.xlsx");
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\twild\Desktop\FinalAir3550Database.xlsx");
 
             //Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\twild\Desktop\Air3550Database.xlsx");
             return xlWorkbook;
@@ -446,7 +446,7 @@ namespace Air3550
             //while the rows aren't null, loop through and increment the counter
             while (true)
             {
-                if (((xlRange.Cells[rowCount + 1, 1].Value2) == null) || (xlRange.Cells[rowCount + 1, 1].Value2.ToString()==""))
+                if (((xlRange.Cells[rowCount + 1, 1].Value2) == null) || (xlRange.Cells[rowCount + 1, 1].Value2.ToString() == ""))
                 { //if the cell is null or empty, break
                     break;
                 }
@@ -488,7 +488,7 @@ namespace Air3550
             return exists;
         }
 
-        public bool flightBooked (string userID, string flightID)
+        public bool flightBooked(string userID, string flightID)
         { //check if a user has booked a flight
             bool booked = false; //value to return if the user is one the flight
             int userRow = getIDRow(userID, 1); //get the userID's row in the database
@@ -506,7 +506,7 @@ namespace Air3550
                     booked = true; //set booked to true
                 }
             }
-            
+
             xlWorkbook.Close(); //close the workbook
             return booked;
         }
@@ -529,7 +529,7 @@ namespace Air3550
                 //Write the credit card number
                 sw.WriteLine("Credit Card Number: " + CCN);
             }
-            
+
             //Close the file
             sw.Close();
 
@@ -809,7 +809,7 @@ namespace Air3550
                         if (xlRange.Cells[i, 7].value > 0)
                         {//Plane available remove from inventory
                             xlRange.Cells[i, 7].value = xlRange.Cells[i, 7].value - 1;
-                            
+
                             xlWorkbook.Application.ActiveWorkbook.Save();
                             xlWorkbook.Close();
                             return "FOUND";
@@ -892,7 +892,8 @@ namespace Air3550
                     return true;
                 }
             }
-                return false;
+            xlWorkbook.Close(); //THIS ONE TOO
+            return false;
         }
 
         //Call to add plane to new location after takeoff
@@ -902,7 +903,7 @@ namespace Air3550
             Excel.Workbook xlWorkbook = database_connect();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[4];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            
+
 
             for (int i = 2; i <= NUM_AIRPORTS + 1; i++)
             {
