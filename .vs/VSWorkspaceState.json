@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Airline3550"
+    "\\Airline3550",
+    "\\Airline3550\\bin",
+    "\\Airline3550\\bin\\Debug",
+    "\\Airline3550\\bin\\Release",
+    "\\Airline3550\\obj"
   ],
   "SelectedNode": "\\Air3550.sln",
   "PreviewInSolutionExplorer": false

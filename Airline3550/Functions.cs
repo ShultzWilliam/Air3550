@@ -627,7 +627,7 @@ namespace Air3550
         public string getArrival(string sDistance, string sStartDate, string sStartTime)
         {
             float iDistance = float.Parse(sDistance);
-            int Hours, Minutes;
+            double Hours, Minutes;
             int iStartHour, iStartMin, iStartDay, iStartMonth, iStartYear;
             string Temp, sAMorPM = sStartTime.Substring(sStartTime.Length - 2, 2);
 
@@ -711,14 +711,14 @@ namespace Air3550
 
 
             //Add trip time to departure time
-            iStartMin += Minutes;
+            iStartMin += Convert.ToInt32(Minutes);
             if (iStartMin >= 60)
             {
                 iStartHour++;
                 iStartMin = iStartMin - 60;
             }
 
-            iStartHour += Hours;
+            iStartHour += Convert.ToInt32(Hours);
             if (iStartHour > 12 && sAMorPM == "PM")
             {//Overnight... Switch Day
                 iStartDay++;

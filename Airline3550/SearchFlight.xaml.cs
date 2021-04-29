@@ -21,7 +21,6 @@ namespace Air3550
     /// </summary>
     public partial class SearchFlight : Page
     {
-        //AdventureWorksLT2008Entities dataEntities = new AdventureWorksLT2008Entities();
         string origin, destination, identification; //initialize global variables
         int flightID;
         Functions functions = new Functions();
